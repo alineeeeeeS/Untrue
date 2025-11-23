@@ -19,9 +19,11 @@ RUN apk update && apk add --no-cache \
     tesseract-ocr-data-spa \
     tesseract-ocr-data-eng
 
-# Crear symlink para compatibilidad con rutas antiguas de Replit
+# Crear symlinks para compatibilidad con rutas antiguas de Replit
 RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
-    ln -sf /usr/bin/yt-dlp /home/runner/workspace/.pythonlibs/bin/yt-dlp
+    ln -sf /usr/bin/yt-dlp /home/runner/workspace/.pythonlibs/bin/yt-dlp && \
+    mkdir -p /home/runner/workspace/node_modules/ffmpeg-static && \
+    ln -sf /usr/bin/ffmpeg /home/runner/workspace/node_modules/ffmpeg-static/ffmpeg
 
 WORKDIR /app
 
