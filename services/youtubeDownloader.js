@@ -6,29 +6,62 @@ import { promisify } from 'util';
 
 const execPromise = promisify(exec);
 
-// Usar el mismo yt-dlp que sabemos que funciona con TikTok
 const ytDlpCommand = '/home/runner/workspace/.pythonlibs/bin/yt-dlp';
 const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
 
-// Opciones anti-bloqueo para YouTube
+// ESTRATEGIA ANTI-BLOQUEO MEJORADA
 const YT_DLP_OPTIONS = [
     '--no-playlist',
     '--no-warnings',
     '--force-ipv4',
     '--throttled-rate 100K',
-    '--extractor-args youtube:player-client=android,web'
+    '--sleep-requests 1',
+    '--sleep-interval 3',
+    '--max-sleep-interval 10',
+    '--extractor-args "youtube:player-client=android,web;player_skip=configs"',
+    '--user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"',
+    '--add-header "Accept:*/*"',
+    '--add-header "Accept-Language:en-US,en;q=0.9"',
+    '--add-header "Accept-Encoding:gzip, deflate, br"',
+    '--add-header "DNT:1"',
+    '--add-header "Connection:keep-alive"',
+    '--add-header "Sec-Fetch-Dest:empty"',
+    '--add-header "Sec-Fetch-Mode:cors"',
+    '--add-header "Sec-Fetch-Site:same-origin"',
+    '--add-header "Sec-GPC:1"',
+    '--ignore-errors',
+    '--no-check-certificates',
+    '--prefer-insecure'
 ].join(' ');
 
+// MAPA DE CALIDADES - ORDENADAS DE MEJOR A PEOR
+const QUALITY_MAP = {
+    // VIDEO
+    'best': 'best[height<=1080]',        // Mejor calidad hasta 1080p
+    '1080p': 'best[height<=1080]',       // 1080p
+    '720p': 'best[height<=720]',         // 720p  
+    '480p': 'best[height<=480]',         // 480p (CALIDAD MEDIA POR DEFECTO)
+    '360p': 'best[height<=360]',         // 360p
+    '240p': 'best[height<=240]',         // 240p
+    'worst': 'worst',                    // Peor calidad
+    
+    // AUDIO - ORDENADAS DE MEJOR A PEOR CALIDAD
+    'audio_best': 'bestaudio[ext=m4a]/bestaudio[ext=mp3]/bestaudio',
+    'audio_high': 'bestaudio[ext=m4a]/bestaudio[ext=mp3]',
+    'audio_medium': 'bestaudio[ext=mp3]/bestaudio[ext=m4a]',
+    'audio_low': 'bestaudio'
+};
+
 /**
- * Obtiene la información del video de YouTube
+ * Obtiene información del video
  */
 export async function getYouTubeVideoInfo(queryOrUrl) {
-    const infoCommand = `"${ytDlpCommand}" --dump-json ${YT_DLP_OPTIONS} "${queryOrUrl}"`;
+    const command = `"${ytDlpCommand}" --dump-json ${YT_DLP_OPTIONS} "${queryOrUrl}"`;
 
     try {
-        const { stdout } = await execPromise(infoCommand);
+        const { stdout } = await execPromise(command);
         const info = JSON.parse(stdout);
-
+        
         const uploadDate = info.upload_date ? 
             `${info.upload_date.substring(6, 8)}/${info.upload_date.substring(4, 6)}/${info.upload_date.substring(0, 4)}` : 
             'N/A';
@@ -47,9 +80,6 @@ export async function getYouTubeVideoInfo(queryOrUrl) {
     }
 }
 
-/**
- * Información por defecto
- */
 function getDefaultVideoInfo() {
     return {
         title: 'Contenido de YouTube',
@@ -62,18 +92,50 @@ function getDefaultVideoInfo() {
 }
 
 /**
- * Descarga video de YouTube
+ * Parsea los argumentos para extraer calidad y URL/búsqueda
+ */
+function parseVideoArgs(args) {
+    const qualities = Object.keys(QUALITY_MAP);
+    let quality = '480p'; // CALIDAD MEDIA POR DEFECTO
+    let queryParts = [...args];
+    let userSpecifiedQuality = false;
+
+    // Buscar especificador de calidad en los argumentos
+    for (let i = 0; i < queryParts.length; i++) {
+        const part = queryParts[i].toLowerCase();
+        if (qualities.includes(part) && part !== 'audio_best' && part !== 'audio_high' && part !== 'audio_medium' && part !== 'audio_low') {
+            quality = part;
+            userSpecifiedQuality = true;
+            queryParts.splice(i, 1); // Remover la calidad de los argumentos
+            break;
+        }
+    }
+
+    const queryOrUrl = queryParts.join(' ');
+    const isSearch = !queryParts[0]?.startsWith('http');
+
+    return {
+        quality,
+        queryOrUrl: isSearch ? `ytsearch1:${queryOrUrl}` : queryOrUrl,
+        isSearch,
+        originalQuery: queryParts.join(' '),
+        userSpecifiedQuality
+    };
+}
+
+/**
+ * Descarga video de YouTube - CALIDAD MEDIA POR DEFECTO
  */
 export async function downloadYoutubeVideo(args) {
-    const isSearch = !args[0].startsWith('http');
-    const queryOrUrl = isSearch ? `ytsearch1:${args.join(' ')}` : args[0];
-
-    const tempFileName = `youtube-video-${Date.now()}.mp4`; 
+    const { quality, queryOrUrl, isSearch, originalQuery, userSpecifiedQuality } = parseVideoArgs(args);
+    
+    const tempFileName = `youtube-video-${Date.now()}.mp4`;
     const tempFilePath = join(tmpdir(), tempFileName);
 
     let videoInfo = getDefaultVideoInfo();
 
     console.log(`📥 Descargando Video de YouTube: ${isSearch ? 'Búsqueda' : 'URL'}`);
+    console.log(`🎯 Calidad: ${quality} ${userSpecifiedQuality ? '(especificada por usuario)' : '(por defecto)'}`);
 
     try {
         videoInfo = await getYouTubeVideoInfo(queryOrUrl);
@@ -82,37 +144,34 @@ export async function downloadYoutubeVideo(args) {
         console.error("Error obteniendo información:", error);
     }
 
-    // Formato optimizado para WhatsApp con opciones anti-bloqueo
-    const command = `"${ytDlpCommand}" -f "best[height<=720]" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`;
+    const format = QUALITY_MAP[quality] || QUALITY_MAP['480p'];
+    const command = `"${ytDlpCommand}" -f "${format}" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`;
 
     try {
         await execPromise(command);
 
-        // Verificar que el archivo se creó
-        if (!fs.existsSync(tempFilePath)) {
-            throw new Error("Archivo no fue creado");
+        if (fs.existsSync(tempFilePath) && fs.statSync(tempFilePath).size > 0) {
+            const stats = fs.statSync(tempFilePath);
+            console.log(`✅ Video descargado (${quality}): ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+
+            return {
+                filePath: tempFilePath,
+                videoInfo: videoInfo,
+                quality: quality,
+                userSpecifiedQuality: userSpecifiedQuality
+            };
+        } else {
+            throw new Error('Archivo vacío o no creado');
         }
-
-        const stats = fs.statSync(tempFilePath);
-        if (stats.size === 0) {
-            throw new Error("Archivo está vacío");
-        }
-
-        console.log(`✅ Video descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-
-        return {
-            filePath: tempFilePath,
-            videoInfo: videoInfo
-        };
     } catch (error) {
-        console.error("❌ Error al descargar:", error.message);
+        console.error(`❌ Error al descargar video (${quality}):`, error.message);
         cleanUpFile(tempFilePath);
         return null;
     }
 }
 
 /**
- * Descarga audio de YouTube
+ * Descarga audio de YouTube - MEJOR CALIDAD POSIBLE CON FALLBACKS INTELIGENTES
  */
 export async function downloadYoutubeAudio(args) {
     const isSearch = !args[0].startsWith('http');
@@ -129,72 +188,64 @@ export async function downloadYoutubeAudio(args) {
         console.error("Error obteniendo información:", error);
     }
 
-    const tempFileName = `youtube-audio-${Date.now()}.m4a`;
+    const tempFileName = `youtube-audio-${Date.now()}`;
     const tempFilePath = join(tmpdir(), tempFileName);
 
-    // COMANDO CORREGIDO - Con opciones anti-bloqueo
-    const command = `"${ytDlpCommand}" -f "bestaudio[ext=m4a]" ${YT_DLP_OPTIONS} --ffmpeg-location "${ffmpegCommand}" --output "${tempFilePath}" "${queryOrUrl}"`;
-
-    try {
-        await execPromise(command);
-
-        if (!fs.existsSync(tempFilePath)) {
-            throw new Error("Archivo de audio no fue creado");
+    // ESTRATEGIAS DE AUDIO ORDENADAS DE MEJOR A BUENA CALIDAD
+    const audioStrategies = [
+        {
+            name: 'Mejor calidad (m4a)',
+            command: `"${ytDlpCommand}" -f "bestaudio[ext=m4a]" ${YT_DLP_OPTIONS} --output "${tempFilePath}.m4a" "${queryOrUrl}"`,
+            fileExt: '.m4a'
+        },
+        {
+            name: 'Alta calidad (mp3)',
+            command: `"${ytDlpCommand}" -f "bestaudio[ext=mp3]" ${YT_DLP_OPTIONS} --ffmpeg-location "${ffmpegCommand}" --output "${tempFilePath}.mp3" "${queryOrUrl}"`,
+            fileExt: '.mp3'
+        },
+        {
+            name: 'Calidad media (cualquier formato)',
+            command: `"${ytDlpCommand}" -f "bestaudio" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`,
+            fileExt: ''
         }
+    ];
 
-        const stats = fs.statSync(tempFilePath);
-        if (stats.size === 0) {
-            throw new Error("Archivo de audio está vacío");
+    for (let i = 0; i < audioStrategies.length; i++) {
+        const strategy = audioStrategies[i];
+        const currentFilePath = tempFilePath + strategy.fileExt;
+
+        try {
+            console.log(`🔊 Intentando audio: ${strategy.name}...`);
+            await execPromise(strategy.command);
+
+            if (fs.existsSync(currentFilePath) && fs.statSync(currentFilePath).size > 1024) {
+                const stats = fs.statSync(currentFilePath);
+                console.log(`✅ Audio descargado (${strategy.name}): ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                
+                return {
+                    filePath: currentFilePath,
+                    videoInfo: videoInfo,
+                    quality: strategy.name
+                };
+            }
+
+            cleanUpFile(currentFilePath);
+
+        } catch (error) {
+            console.log(`❌ Estrategia de audio "${strategy.name}" falló:`, error.message);
+            cleanUpFile(currentFilePath);
         }
-
-        console.log(`✅ Audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-
-        return {
-            filePath: tempFilePath,
-            videoInfo: videoInfo
-        };
-    } catch (error) {
-        console.error("❌ Error al descargar audio:", error.message);
-
-        // Intentar método alternativo sin FFmpeg
-        console.log("🔄 Intentando método alternativo sin FFmpeg...");
-        return await downloadYoutubeAudioAlternative(args, tempFilePath, videoInfo);
     }
+
+    console.log("❌ Todas las estrategias de audio fallaron");
+    return null;
 }
 
 /**
- * Método alternativo para descargar audio sin FFmpeg
+ * Obtiene lista de calidades disponibles para mostrar en ayuda
  */
-async function downloadYoutubeAudioAlternative(args, tempFilePath, videoInfo) {
-    const isSearch = !args[0].startsWith('http');
-    const queryOrUrl = isSearch ? `ytsearch1:${args.join(' ')}` : args[0];
-
-    // Intentar descargar formato de audio nativo sin conversión
-    const command = `"${ytDlpCommand}" -f "bestaudio" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`;
-
-    try {
-        await execPromise(command);
-
-        if (!fs.existsSync(tempFilePath)) {
-            throw new Error("Archivo de audio no fue creado");
-        }
-
-        const stats = fs.statSync(tempFilePath);
-        if (stats.size === 0) {
-            throw new Error("Archivo de audio está vacío");
-        }
-
-        console.log(`✅ Audio descargado (método alternativo): ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-
-        return {
-            filePath: tempFilePath,
-            videoInfo: videoInfo
-        };
-    } catch (error) {
-        console.error("❌ Error en método alternativo:", error.message);
-        cleanUpFile(tempFilePath);
-        return null;
-    }
+export function getAvailableQualities() {
+    return Object.keys(QUALITY_MAP).filter(q => !q.startsWith('audio_'));
 }
 
 /**
@@ -204,9 +255,8 @@ export function cleanUpFile(filePath) {
     if (filePath && fs.existsSync(filePath)) {
         try {
             fs.unlinkSync(filePath);
-            console.log(`🗑️ Archivo temporal eliminado: ${filePath}`);
         } catch (error) {
-            console.error(`❌ Error eliminando archivo: ${error.message}`);
+            // Ignorar errores de limpieza
         }
     }
 }
