@@ -4,7 +4,7 @@ FROM node:20-alpine
 RUN apk update && apk add --no-cache \
     ffmpeg \
     python3 \
-    py3-pip \
+    yt-dlp \
     make \
     g++ \
     cairo-dev \
@@ -18,9 +18,6 @@ RUN apk update && apk add --no-cache \
     tesseract-ocr \
     tesseract-ocr-data-spa \
     tesseract-ocr-data-eng
-
-# Instalar yt-dlp para descargas de videos
-RUN pip3 install yt-dlp
 
 WORKDIR /app
 
