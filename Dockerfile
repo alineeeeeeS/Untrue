@@ -19,6 +19,10 @@ RUN apk update && apk add --no-cache \
     tesseract-ocr-data-spa \
     tesseract-ocr-data-eng
 
+# Crear symlink para compatibilidad con rutas antiguas de Replit
+RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
+    ln -sf /usr/bin/yt-dlp /home/runner/workspace/.pythonlibs/bin/yt-dlp
+
 WORKDIR /app
 
 # Copiar package.json primero para mejor cache
