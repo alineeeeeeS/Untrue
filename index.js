@@ -1,18 +1,20 @@
 import { connectToWhatsApp } from './bot.js';
 import express from 'express';
 
-const app = express();
+// Railway usa process.env.PORT, si no existe usa 3000
 const PORT = process.env.PORT || 3000;
 
-console.log('🚀 Iniciando Bot WhatsApp en Koyeb...');
+const app = express();
 
-// Health checks simples
+console.log('🤖 Bot WhatsApp - Railway 24/7');
+
 app.get('/', (req, res) => {
     res.json({ 
         status: 'online', 
-        platform: 'Koyeb',
+        platform: 'Railway',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        port: PORT
     });
 });
 
@@ -24,23 +26,20 @@ app.get('/ping', (req, res) => {
     res.json({ pong: Date.now() });
 });
 
-// Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🌐 Servidor listo en puerto ${PORT}`);
-    console.log('📱 Iniciando conexión WhatsApp...');
+    console.log(`🚀 Bot ejecutándose en puerto ${PORT}`);
+    console.log('📱 Plataforma: Railway (24/7 garantizado)');
 });
 
-// Iniciar bot WhatsApp
-async function initializeBot() {
+// Iniciar bot
+async function startBot() {
     try {
         await connectToWhatsApp();
-        console.log('✅ Bot WhatsApp CONECTADO y funcionando');
+        console.log('✅ Bot WhatsApp conectado');
     } catch (error) {
-        console.error('❌ Error conectando bot:', error.message);
-        console.log('🔄 Reintentando en 10 segundos...');
-        setTimeout(initializeBot, 10000);
+        console.error('❌ Error bot:', error);
+        setTimeout(startBot, 15000);
     }
 }
 
-// Delay inicial para estabilizar el servidor
-setTimeout(initializeBot, 5000);
+setTimeout(startBot, 3000);
