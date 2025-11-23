@@ -1,0 +1,1169 @@
+[2025-11-17T00:01:20.983Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"71.4 a 29.6 bro","type":"received"}
+[2025-11-17T00:06:45.995Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T00:38:54.553Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:13:29.360Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcJcabJ/","type":"received"}
+[2025-11-17T01:13:38.104Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T01:13:38.106Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcJcabJ/"],"success":true,"result":null}
+[2025-11-17T01:13:55.153Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:17:15.922Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Jugando a jugar cartas","type":"received"}
+[2025-11-17T01:17:29.081Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:24:57.765Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:25:26.221Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:25:36.173Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Jugando a jugar cartas","type":"received"}
+[2025-11-17T01:33:48.211Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T01:33:52.116Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@30837949124772","type":"received"}
+[2025-11-17T01:34:16.653Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T01:34:43.461Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T01:34:49.172Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"de pana","type":"received"}
+[2025-11-17T02:21:29.985Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@30837949124772","type":"received"}
+[2025-11-17T02:21:32.360Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Lo q conseguí","type":"received"}
+[2025-11-17T02:21:36.026Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcequKh/","type":"received"}
+[2025-11-17T02:21:43.327Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q","type":"received"}
+[2025-11-17T02:21:45.135Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T02:21:45.136Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcequKh/"],"success":true,"result":null}
+[2025-11-17T02:21:49.741Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T02:22:01.272Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"enero del 2023","type":"received"}
+[2025-11-17T02:22:03.400Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"alaputa","type":"received"}
+[2025-11-17T02:22:37.819Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Taba bueno el edit","type":"received"}
+[2025-11-17T02:23:02.599Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"busque los de alosno","type":"received"}
+[2025-11-17T02:24:44.132Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcdkn5f/","type":"received"}
+[2025-11-17T02:24:56.146Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T02:24:56.148Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcdkn5f/"],"success":true,"result":null}
+[2025-11-17T02:24:59.924Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Ni siquiera se que dice la canción 👌","type":"received"}
+[2025-11-17T02:27:24.135Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T02:37:50.789Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T02:38:55.094Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T03:55:10.563Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T03:55:10.675Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T03:55:10.677Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T03:55:10.746Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T03:55:10.756Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T03:55:11.332Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:55:11.335Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:55:11.335Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T03:55:11.335Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T03:55:11.558Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Magnesio, vitamina y colágeno… 👌🏻","type":"received"}
+[2025-11-17T03:55:40.576Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T03:55:40.579Z] [DEBUG] [logrotate] Log eliminado: 2025-11-10.log 
+[2025-11-17T03:55:40.580Z] [INFO] [logrotate] Rotación completada: 1 archivos antiguos eliminados 
+[2025-11-17T03:55:40.586Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":37,"totalSize":948383,"totalSizeMB":"0.90","logFiles":37,"backupFiles":0}
+[2025-11-17T03:55:40.586Z] [INFO] [logrotate] ✅ Rotación completada en 8ms {"duration":8,"report":{"totalFiles":37,"totalSize":948383,"totalSizeMB":"0.90","logFiles":37,"backupFiles":0}}
+[2025-11-17T03:55:42.971Z] [INFO] [message] Mensaje received {"user":"251891527225594@lid","message":"","type":"received"}
+[2025-11-17T03:55:51.909Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T03:55:53.496Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T03:56:43.163Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcdKm21/","type":"received"}
+[2025-11-17T03:56:53.039Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:56:53.040Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcdKm21/"],"success":true,"result":null}
+[2025-11-17T04:29:15.377Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T04:30:57.161Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#tt https://vm.tiktok.com/ZMAcRCtUN/","type":"received"}
+[2025-11-17T04:31:04.611Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T04:31:04.612Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"30837949124772@lid","command":"tt","args":["https://vm.tiktok.com/ZMAcRCtUN/"],"success":true,"result":null}
+[2025-11-17T05:03:58.773Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T12:14:39.935Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#reel https://www.instagram.com/reel/DMjCEPqxPgJ/?igsh=MWgxdzNiNnZ5NzlxdQ==","type":"received"}
+[2025-11-17T12:14:40.870Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"120363160616746507@g.us","command":"reel","args":["https://www.instagram.com/reel/DMjCEPqxPgJ/?igsh=MWgxdzNiNnZ5NzlxdQ=="],"success":true,"result":null}
+[2025-11-17T12:14:45.334Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Nojoda","type":"received"}
+[2025-11-17T12:45:48.341Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"larks tongues en clase","type":"received"}
+[2025-11-17T12:45:51.272Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"maldito disco","type":"received"}
+[2025-11-17T12:47:31.786Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"una paja en clase cuando","type":"received"}
+[2025-11-17T12:48:02.395Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"todavia no","type":"received"}
+[2025-11-17T12:48:04.695Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"peligroso","type":"received"}
+[2025-11-17T12:59:24.177Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T12:59:45.853Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:06:32.287Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:09:08.782Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:21:46.995Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:21:59.454Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:23:21.319Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:24:06.204Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:24:40.030Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:25:00.723Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:28:35.635Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:28:38.049Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:29:00.543Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:34:13.841Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:47:21.127Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"MALDITASEA","type":"received"}
+[2025-11-17T13:47:24.180Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Me encontré a mi egg","type":"received"}
+[2025-11-17T13:47:28.760Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"💔","type":"received"}
+[2025-11-17T13:48:26.365Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se encontró el webo","type":"received"}
+[2025-11-17T13:50:50.271Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T13:50:54.805Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Esq ando en la U","type":"received"}
+[2025-11-17T13:50:56.807Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Y me la topé","type":"received"}
+[2025-11-17T13:55:50.054Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T13:55:52.078Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T14:09:24.433Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T14:09:45.626Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T14:09:55.135Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y q pasa ps","type":"received"}
+[2025-11-17T14:10:01.679Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"le tienes miedo bro?","type":"received"}
+[2025-11-17T14:40:16.551Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T15:15:57.242Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T15:16:11.387Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T15:21:54.947Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"🎄","type":"received"}
+[2025-11-17T15:22:59.129Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Los maluma baby 🤣🤣🥰🥰🥰🥰","type":"received"}
+[2025-11-17T15:23:50.214Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T15:25:31.150Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Día 1: 3 millas en 30 min 🥵","type":"received"}
+[2025-11-17T15:36:46.992Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Seguimos en nuestra formación en la UNELLEZ ⚖️","type":"received"}
+[2025-11-17T15:37:31.354Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T15:39:51.765Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T15:53:53.761Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T16:18:10.344Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T16:18:10.463Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T16:18:10.466Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T16:18:10.546Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T16:18:10.555Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T16:18:11.117Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:18:11.170Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:18:11.170Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T16:18:11.170Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T16:18:40.348Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T16:18:40.349Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T16:18:40.353Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":37,"totalSize":962217,"totalSizeMB":"0.92","logFiles":37,"backupFiles":0}
+[2025-11-17T16:18:40.353Z] [INFO] [logrotate] ✅ Rotación completada en 4ms {"duration":4,"report":{"totalFiles":37,"totalSize":962217,"totalSizeMB":"0.92","logFiles":37,"backupFiles":0}}
+[2025-11-17T16:26:03.297Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T16:26:03.352Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T16:26:03.354Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T16:26:03.444Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T16:26:03.456Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T16:26:03.953Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:26:03.973Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:26:03.973Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T16:26:03.974Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T16:26:33.310Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T16:26:33.311Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T16:26:33.316Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":37,"totalSize":964234,"totalSizeMB":"0.92","logFiles":37,"backupFiles":0}
+[2025-11-17T16:26:33.316Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":37,"totalSize":964234,"totalSizeMB":"0.92","logFiles":37,"backupFiles":0}}
+[2025-11-17T16:28:27.475Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T16:28:29.369Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T16:30:06.828Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T16:31:18.387Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#tt https://vm.tiktok.com/ZMAcrv5um/","type":"received"}
+[2025-11-17T16:31:26.050Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:31:26.051Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"30837949124772@lid","command":"tt","args":["https://vm.tiktok.com/ZMAcrv5um/"],"success":true,"result":null}
+[2025-11-17T16:31:52.643Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAcrv5um/","type":"received"}
+[2025-11-17T16:31:59.910Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:31:59.911Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcrv5um/"],"success":true,"result":null}
+[2025-11-17T16:37:15.747Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"HERMANOS","type":"received"}
+[2025-11-17T16:37:24.731Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T16:38:18.173Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T16:38:42.647Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q pasó q no mataron a maduro","type":"received"}
+[2025-11-17T16:38:45.374Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nojoda","type":"received"}
+[2025-11-17T16:38:48.601Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Qn sabe","type":"received"}
+[2025-11-17T16:38:56.081Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tiene q hacer uno las vainas si no no hacen nada","type":"received"}
+[2025-11-17T16:39:11.179Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T16:39:57.160Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T16:41:14.513Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Llévensela rápido que me va a robar el almuerzo (literalmente)","type":"received"}
+[2025-11-17T16:54:57.764Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Venden 60","type":"received"}
+[2025-11-17T17:01:56.602Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAch43nM/","type":"received"}
+[2025-11-17T17:02:02.729Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T17:02:02.730Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAch43nM/"],"success":true,"result":null}
+[2025-11-17T17:02:06.086Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"todos son los MY BOMVO @39106298044576","type":"received"}
+[2025-11-17T17:05:09.510Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"JAJSKAKS","type":"received"}
+[2025-11-17T17:20:01.361Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:23:33.613Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:24:01.688Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero se cagó o q","type":"received"}
+[2025-11-17T17:24:03.344Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pq se sale","type":"received"}
+[2025-11-17T17:24:10.307Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:24:21.057Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se cagó pq la otra se la iba a ganar","type":"received"}
+[2025-11-17T17:24:25.934Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"4 - 0","type":"received"}
+[2025-11-17T17:24:31.863Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"3","type":"received"}
+[2025-11-17T17:24:32.295Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"una ultima o q","type":"received"}
+[2025-11-17T17:24:37.241Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"entre","type":"received"}
+[2025-11-17T17:25:05.092Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"dele","type":"received"}
+[2025-11-17T17:28:25.105Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:28:31.477Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero quien tiene más copas pues","type":"received"}
+[2025-11-17T17:29:21.207Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:29:28.415Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T17:29:31.766Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T17:30:09.009Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:30:10.512Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T17:30:12.907Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T17:32:28.648Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T17:41:33.566Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:42:16.723Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"disco hoy o q","type":"received"}
+[2025-11-17T17:42:28.260Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:43:08.739Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tengo dos examenes mñn","type":"received"}
+[2025-11-17T17:43:11.337Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:43:22.338Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajá y q pasa","type":"received"}
+[2025-11-17T17:43:28.652Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:47:02.198Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y es q allá no le da tiempo de estudiar en el salón o q","type":"received"}
+[2025-11-17T17:48:13.638Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no da tiempo a nada","type":"received"}
+[2025-11-17T17:48:24.888Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no hay descanso con ninguna materia broder","type":"received"}
+[2025-11-17T17:48:38.104Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"como así","type":"received"}
+[2025-11-17T17:48:45.772Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no tienen recreo 🥺","type":"received"}
+[2025-11-17T17:49:03.586Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nojoda ni 10 minutos","type":"received"}
+[2025-11-17T17:49:45.575Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"media hora","type":"received"}
+[2025-11-17T17:49:54.641Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero tengo el examen mñn a primera","type":"received"}
+[2025-11-17T17:49:59.650Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el arrecho","type":"received"}
+[2025-11-17T17:50:13.629Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el otro es a ultima entonces lo repaso relajao","type":"received"}
+[2025-11-17T17:50:39.753Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y de q es","type":"received"}
+[2025-11-17T17:51:33.527Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"historia","type":"received"}
+[2025-11-17T17:52:43.475Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ahh eso es fácil","type":"received"}
+[2025-11-17T17:52:47.072Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"simón bolivar y eso","type":"received"}
+[2025-11-17T17:52:51.611Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa","type":"received"}
+[2025-11-17T17:52:52.489Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:52:57.647Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"francisco de mirando","type":"received"}
+[2025-11-17T17:53:08.255Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jose antonio paez","type":"received"}
+[2025-11-17T17:53:14.083Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sucre","type":"received"}
+[2025-11-17T17:53:15.556Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"paez","type":"received"}
+[2025-11-17T17:53:21.317Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"negro primero","type":"received"}
+[2025-11-17T17:53:21.818Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ahh ya lo puso","type":"received"}
+[2025-11-17T17:53:35.873Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"manuelita saenz","type":"received"}
+[2025-11-17T17:54:10.925Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"simón díaz","type":"received"}
+[2025-11-17T17:54:17.419Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"alí primera","type":"received"}
+[2025-11-17T17:54:38.812Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:54:45.779Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"gustavo petro","type":"received"}
+[2025-11-17T17:54:47.386Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"uribe","type":"received"}
+[2025-11-17T17:54:50.851Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pablo escobar","type":"received"}
+[2025-11-17T17:54:53.415Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"santos","type":"received"}
+[2025-11-17T17:54:59.606Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"falcao","type":"received"}
+[2025-11-17T17:55:00.734Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"james","type":"received"}
+[2025-11-17T17:55:08.065Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lucho","type":"received"}
+[2025-11-17T17:55:16.633Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"benzema","type":"received"}
+[2025-11-17T17:55:17.926Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"vini","type":"received"}
+[2025-11-17T17:55:19.435Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"modric","type":"received"}
+[2025-11-17T17:55:35.183Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esos bichos todos eran maricos","type":"received"}
+[2025-11-17T17:55:43.544Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T17:55:51.819Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sucre se cogía a bolivar encima del caballo","type":"received"}
+[2025-11-17T18:00:42.087Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eso sale en la pelicula yo lo vi","type":"received"}
+[2025-11-17T18:01:11.351Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eso seguro fue q lo empezaron a usar bichos q eran maricos de verdad pues","type":"received"}
+[2025-11-17T18:01:25.269Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y entonces los otros al ver q ellos lo usaban pero no eran maricos pues les dió arrechera","type":"received"}
+[2025-11-17T18:01:28.433Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"digo yo","type":"received"}
+[2025-11-17T18:01:30.869Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo taba ahí","type":"received"}
+[2025-11-17T18:01:48.166Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"para pensar","type":"received"}
+[2025-11-17T18:02:47.022Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T18:02:47.182Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T18:02:47.185Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T18:02:47.282Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T18:02:47.293Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T18:02:47.737Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:02:47.751Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:02:47.752Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T18:02:47.751Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T18:03:17.031Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T18:03:17.034Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T18:03:17.043Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":37,"totalSize":987733,"totalSizeMB":"0.94","logFiles":37,"backupFiles":0}
+[2025-11-17T18:03:17.043Z] [INFO] [logrotate] ✅ Rotación completada en 11ms {"duration":11,"report":{"totalFiles":37,"totalSize":987733,"totalSizeMB":"0.94","logFiles":37,"backupFiles":0}}
+[2025-11-17T18:03:17.354Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa fue así","type":"received"}
+[2025-11-17T18:03:22.546Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo taba ahí","type":"received"}
+[2025-11-17T18:03:25.139Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ahi ta","type":"received"}
+[2025-11-17T18:03:26.974Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa fue así","type":"received"}
+[2025-11-17T18:03:30.872Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"comprobado por la ka","type":"received"}
+[2025-11-17T18:03:32.866Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ve","type":"received"}
+[2025-11-17T18:03:35.991Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:03:36.849Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T18:03:38.676Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T18:03:40.728Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no le digo yo","type":"received"}
+[2025-11-17T18:04:07.810Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcrv5um/","type":"received"}
+[2025-11-17T18:04:14.083Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:04:14.084Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcrv5um/"],"success":true,"result":null}
+[2025-11-17T18:04:29.258Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@39106298044576 ya descarga imágenes de tiktok","type":"received"}
+[2025-11-17T18:04:54.604Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la tajada ya es avaricia","type":"received"}
+[2025-11-17T18:05:02.599Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"con el puro arroz se llena","type":"received"}
+[2025-11-17T18:05:07.118Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"un huevo frito ahí uff","type":"received"}
+[2025-11-17T18:05:10.793Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:05:47.950Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:06:06.101Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:06:11.798Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:06:15.316Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"avc si avc no","type":"received"}
+[2025-11-17T18:06:53.581Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el bicho si cr7 no 🤼‍♂️","type":"received"}
+[2025-11-17T18:06:56.007Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ttaud https://vm.tiktok.com/ZMAcrv5um/","type":"received"}
+[2025-11-17T18:07:00.183Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:07:00.184Z] [SUCCESS] [command] Comando ejecutado: ttaud {"user":"30837949124772@lid","command":"ttaud","args":["https://vm.tiktok.com/ZMAcrv5um/"],"success":true,"result":null}
+[2025-11-17T18:07:25.668Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ttaud https://vm.tiktok.com/ZMAch43nM/","type":"received"}
+[2025-11-17T18:07:30.522Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:07:30.523Z] [SUCCESS] [command] Comando ejecutado: ttaud {"user":"30837949124772@lid","command":"ttaud","args":["https://vm.tiktok.com/ZMAch43nM/"],"success":true,"result":null}
+[2025-11-17T18:08:11.692Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:08:15.240Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T18:08:18.078Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T18:08:44.250Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:09:00.266Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:09:28.568Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T18:09:28.757Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T18:09:36.762Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#aaaaaaaa","type":"received"}
+[2025-11-17T18:09:37.784Z] [SUCCESS] [command] Comando ejecutado: aaaaaaaa {"user":"120363160616746507@g.us","command":"aaaaaaaa","args":[],"success":true,"result":null}
+[2025-11-17T18:09:49.967Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#aaaaaaaaaaaaaaaaaa","type":"received"}
+[2025-11-17T18:09:50.950Z] [SUCCESS] [command] Comando ejecutado: aaaaaaaaaaaaaaaaaa {"user":"120363160616746507@g.us","command":"aaaaaaaaaaaaaaaaaa","args":[],"success":true,"result":null}
+[2025-11-17T18:09:59.875Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#okeeeeeeey","type":"received"}
+[2025-11-17T18:10:00.689Z] [SUCCESS] [command] Comando ejecutado: okeeeeeeey {"user":"120363160616746507@g.us","command":"okeeeeeeey","args":[],"success":true,"result":null}
+[2025-11-17T18:10:09.018Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ah vaina","type":"received"}
+[2025-11-17T18:10:17.008Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T18:10:17.634Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T18:10:31.395Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#smedia","type":"received"}
+[2025-11-17T18:10:32.019Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"120363160616746507@g.us","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-17T18:10:43.098Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nuevo fondo de pantalla","type":"received"}
+[2025-11-17T18:10:44.177Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"un mostro","type":"received"}
+[2025-11-17T18:10:45.161Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"🤼‍♂️","type":"received"}
+[2025-11-17T18:12:42.894Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:15:17.441Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:15:21.408Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-17T18:15:24.899Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-17T18:16:33.427Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:17:14.760Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:17:21.329Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"😭😭😭","type":"received"}
+[2025-11-17T18:17:27.834Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:17:32.055Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:17:39.698Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"KAKSKAKAKAKAAAKKAKA","type":"received"}
+[2025-11-17T18:17:42.989Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"KAKAKAKAKAKAKAKKAKAAKAKAKA","type":"received"}
+[2025-11-17T18:17:45.857Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"YA MEJOR MIERDA","type":"received"}
+[2025-11-17T18:17:50.691Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"ahorita viene anuel pues, pa hacer el trio con feid","type":"received"}
+[2025-11-17T18:17:52.058Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:17:55.295Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Claro","type":"received"}
+[2025-11-17T18:18:06.349Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:18:34.649Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"le robó el grammy a álbum del año y la mete al nuevo álbum","type":"received"}
+[2025-11-17T18:18:38.229Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:19:55.778Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Ya la cago","type":"received"}
+[2025-11-17T18:20:05.269Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"De pana","type":"received"}
+[2025-11-17T18:20:17.942Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Ya nada más por eso es una mrd","type":"received"}
+[2025-11-17T18:20:27.727Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:20:56.897Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"con el aire prendido todo el dia dañando la capa de ozuna","type":"received"}
+[2025-11-17T18:21:01.196Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"👎","type":"received"}
+[2025-11-17T18:21:07.176Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"lo único q salvaría el disco sería q el próximo tema sea con Brayan Fokin","type":"received"}
+[2025-11-17T18:21:07.767Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:21:09.542Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"si no nada","type":"received"}
+[2025-11-17T18:21:20.493Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:21:52.393Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:22:00.815Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Hp gato","type":"received"}
+[2025-11-17T18:22:02.671Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"No se fue","type":"received"}
+[2025-11-17T18:22:07.098Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:22:59.517Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:26:03.503Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"","type":"received"}
+[2025-11-17T18:26:06.771Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-17T18:26:23.675Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-17T18:27:41.885Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:27:53.156Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:28:16.042Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"DE MARIWANA ON TE TEIBOL","type":"received"}
+[2025-11-17T18:28:18.227Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:28:31.316Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Cucha esta @236347956666463","type":"received"}
+[2025-11-17T18:28:34.183Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ytmp4","type":"received"}
+[2025-11-17T18:28:35.552Z] [SUCCESS] [command] Comando ejecutado: ytmp4 {"user":"120363160616746507@g.us","command":"ytmp4","args":[],"success":true,"result":null}
+[2025-11-17T18:29:06.085Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ytaud cooking up neutro shorty jon Z","type":"received"}
+[2025-11-17T18:29:06.086Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ytaudio cooking up neutro shorty jon Z","type":"received"}
+[2025-11-17T18:29:20.988Z] [SUCCESS] [command] Comando ejecutado: ytaudio {"user":"120363160616746507@g.us","command":"ytaudio","args":["cooking","up","neutro","shorty","jon","Z"],"success":true,"result":{"type":"audio"}}
+[2025-11-17T18:29:20.989Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:29:20.990Z] [SUCCESS] [command] Comando ejecutado: ytaud {"user":"120363160616746507@g.us","command":"ytaud","args":["cooking","up","neutro","shorty","jon","Z"],"success":true,"result":null}
+[2025-11-17T18:29:45.531Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@236347956666463","type":"received"}
+[2025-11-17T18:29:49.637Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:30:16.975Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:30:18.629Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:30:29.664Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:31:16.220Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vt.tiktok.com/ZSfeaJQf8/","type":"received"}
+[2025-11-17T18:31:21.525Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:31:21.526Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vt.tiktok.com/ZSfeaJQf8/"],"success":true,"result":null}
+[2025-11-17T18:31:34.775Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"alagranputisima madre","type":"received"}
+[2025-11-17T18:31:39.184Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el trap no es lo mio","type":"received"}
+[2025-11-17T18:31:42.074Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"retumbó todo el pueblo","type":"received"}
+[2025-11-17T18:31:52.798Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Na","type":"received"}
+[2025-11-17T18:31:57.727Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Sonó normal","type":"received"}
+[2025-11-17T18:32:01.716Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:32:05.980Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Siempre suena igual","type":"received"}
+[2025-11-17T18:32:06.401Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"lo sentí aquí en el webo del culo","type":"received"}
+[2025-11-17T18:32:10.029Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Un trueno","type":"received"}
+[2025-11-17T18:32:15.675Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"hueco","type":"received"}
+[2025-11-17T18:32:21.209Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:32:42.289Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"A mi qué me importa que tengas un webo en el culo?","type":"received"}
+[2025-11-17T18:32:47.400Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:32:53.694Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Allá usted","type":"received"}
+[2025-11-17T18:33:00.983Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:33:05.764Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Aaa pero se gozaba 25/8 todo el día un 2021","type":"received"}
+[2025-11-17T18:33:06.339Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esto es lo mio","type":"received"}
+[2025-11-17T18:33:06.857Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:33:07.823Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:33:13.597Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"otro","type":"received"}
+[2025-11-17T18:33:15.252Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"alaputa","type":"received"}
+[2025-11-17T18:33:16.233Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"qjeso","type":"received"}
+[2025-11-17T18:33:21.345Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"se va a caer el cielo pues","type":"received"}
+[2025-11-17T18:33:29.626Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"ya viene","type":"received"}
+[2025-11-17T18:33:32.415Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"cristo viene","type":"received"}
+[2025-11-17T18:33:36.729Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:33:39.307Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:34:22.541Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"brrr manuel","type":"received"}
+[2025-11-17T18:34:26.786Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:34:36.828Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:35:57.229Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:36:32.316Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"gringos escuchando a badboni","type":"received"}
+[2025-11-17T18:37:28.614Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:37:33.669Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tremendas pistas","type":"received"}
+[2025-11-17T18:37:44.556Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:38:00.380Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:38:18.181Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:39:00.040Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"suena bien mmgvo","type":"received"}
+[2025-11-17T18:39:05.010Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"feo suena ok computer","type":"received"}
+[2025-11-17T18:40:16.116Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:40:27.187Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"el del clima","type":"received"}
+[2025-11-17T18:40:48.571Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T18:41:33.498Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T18:41:40.681Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T18:41:40.868Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T18:41:44.139Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T18:41:44.313Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T18:41:46.641Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T18:41:46.816Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T18:41:47.931Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Andan echando soldadura oq hp","type":"received"}
+[2025-11-17T18:41:49.356Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#rotete","type":"received"}
+[2025-11-17T18:41:50.357Z] [SUCCESS] [command] Comando ejecutado: rotete {"user":"30837949124772@lid","command":"rotete","args":[],"success":true,"result":null}
+[2025-11-17T18:41:51.921Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#rotatr","type":"received"}
+[2025-11-17T18:41:52.235Z] [SUCCESS] [command] Comando ejecutado: rotatr {"user":"30837949124772@lid","command":"rotatr","args":[],"success":true,"result":null}
+[2025-11-17T18:41:52.696Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"A cada rato un rayo","type":"received"}
+[2025-11-17T18:41:58.079Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#rotate","type":"received"}
+[2025-11-17T18:41:58.165Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T18:41:58.165Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T18:41:58.168Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1023636,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}
+[2025-11-17T18:41:58.168Z] [INFO] [logrotate] ✅ Rotación completada en 3ms {"duration":3,"report":{"totalFiles":43,"totalSize":1023636,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}}
+[2025-11-17T18:41:58.256Z] [SUCCESS] [command] Comando ejecutado: rotate {"user":"30837949124772@lid","command":"rotate","args":[],"success":true,"result":null}
+[2025-11-17T18:54:39.761Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T18:54:39.877Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T18:54:39.879Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T18:54:39.959Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T18:54:39.970Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T18:54:40.630Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:54:40.632Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:54:40.633Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T18:54:40.633Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T18:55:05.731Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://www.tiktok.com/@.guschmidt/video/7573500457067285816?_r=1&u_code=e86igh284g3f08&preview_...","type":"received"}
+[2025-11-17T18:55:09.760Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T18:55:09.761Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T18:55:09.765Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1026282,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}
+[2025-11-17T18:55:09.766Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":43,"totalSize":1026282,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}}
+[2025-11-17T18:55:11.569Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T18:55:11.889Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T18:55:15.989Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:55:15.991Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://www.tiktok.com/@.guschmidt/video/7573500457067285816?_r=1&u_code=e86igh284g3f08&preview_pb=0&sharer_language=es&_d=eem0d4abca4f68&share_item_id=7573500457067285816&source=h5_m&timestamp=1763405240&user_id=7238318756069573637&sec_user_id=MS4wLjABAAAA7ROekmn1s5bqqWHmXGqo8c614RvolXv1GwaN-ritt8Zy6KzaZESD80DNFZ0dVFB0&item_author_type=2&social_share_type=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7572909664393430796&share_link_id=705d183f-af3f-44b1-8233-6444f0b749c9&share_app_id=1233&ugbiz_name=MAIN&ug_btm=b2001&link_reflow_popup_iteration_sharer=%7B%22click_empty_to_play%22%3A1%2C%22dynamic_cover%22%3A1%2C%22follow_to_play_duration%22%3A-1.0%2C%22profile_clickable%22%3A1%7D&enable_checksum=1"],"success":true,"result":null}
+[2025-11-17T19:00:35.273Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"suave estar 🗣️","type":"received"}
+[2025-11-17T19:01:28.907Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:01:43.904Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:02:12.492Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:14:15.460Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T19:14:15.617Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T19:14:15.619Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T19:14:15.706Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T19:14:15.722Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T19:14:16.600Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:14:16.601Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T19:14:16.601Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T19:14:16.616Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:14:17.551Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"uff","type":"received"}
+[2025-11-17T19:14:45.466Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T19:14:45.466Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T19:14:45.471Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1031597,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}
+[2025-11-17T19:14:45.471Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":43,"totalSize":1031597,"totalSizeMB":"0.98","logFiles":43,"backupFiles":0}}
+[2025-11-17T19:14:50.247Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T19:14:53.527Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T19:15:16.848Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt","type":"received"}
+[2025-11-17T19:15:18.284Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":[],"success":true,"result":null}
+[2025-11-17T19:15:38.281Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcSaeGs/","type":"received"}
+[2025-11-17T19:15:39.621Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcSaeGs/","type":"received"}
+[2025-11-17T19:15:45.119Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:15:45.120Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcSaeGs/"],"success":true,"result":null}
+[2025-11-17T19:15:45.716Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:15:45.717Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcSaeGs/"],"success":true,"result":null}
+[2025-11-17T19:16:43.883Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T19:17:54.035Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T19:17:54.213Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T19:23:34.125Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T19:23:34.418Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T19:23:39.563Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcSNbDt/","type":"received"}
+[2025-11-17T19:23:54.019Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:23:54.020Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcSNbDt/"],"success":true,"result":null}
+[2025-11-17T19:23:58.415Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcSkVLk/","type":"received"}
+[2025-11-17T19:24:04.014Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:24:04.015Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcSkVLk/"],"success":true,"result":null}
+[2025-11-17T19:24:05.963Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T19:24:10.576Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@236347956666463","type":"received"}
+[2025-11-17T19:24:13.196Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:24:25.334Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ttaud https://vm.tiktok.com/ZMAcSkVLk/","type":"received"}
+[2025-11-17T19:24:28.715Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T19:24:30.780Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:24:30.781Z] [SUCCESS] [command] Comando ejecutado: ttaud {"user":"120363160616746507@g.us","command":"ttaud","args":["https://vm.tiktok.com/ZMAcSkVLk/"],"success":true,"result":null}
+[2025-11-17T19:24:40.577Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"JAJSKAKSKSK","type":"received"}
+[2025-11-17T19:24:40.593Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:24:44.142Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"muy bueno","type":"received"}
+[2025-11-17T19:37:23.523Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T19:37:23.638Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T19:37:23.640Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T19:37:23.728Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T19:37:23.739Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T19:37:24.647Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@236347956666463","type":"received"}
+[2025-11-17T19:37:24.648Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:37:24.711Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:37:24.712Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T19:37:24.712Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T19:37:53.537Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T19:37:53.538Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T19:37:53.544Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1040797,"totalSizeMB":"0.99","logFiles":43,"backupFiles":0}
+[2025-11-17T19:37:53.544Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":43,"totalSize":1040797,"totalSizeMB":"0.99","logFiles":43,"backupFiles":0}}
+[2025-11-17T19:43:20.569Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se apagó JAJAJAJ","type":"received"}
+[2025-11-17T19:43:39.061Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T19:48:10.647Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T19:48:15.234Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T19:48:40.515Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T19:48:41.456Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T19:49:19.752Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZNdoYxuuq/","type":"received"}
+[2025-11-17T19:49:25.604Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:49:25.605Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZNdoYxuuq/"],"success":true,"result":null}
+[2025-11-17T19:51:48.676Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T19:54:44.320Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"https://vm.tiktok.com/ZMAcAF65h/","type":"received"}
+[2025-11-17T19:54:54.122Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-17T19:55:12.659Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"@30837949124772","type":"received"}
+[2025-11-17T19:57:09.843Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAcAF65h/","type":"received"}
+[2025-11-17T19:57:49.068Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:57:49.069Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcAF65h/"],"success":true,"result":null}
+[2025-11-17T19:58:15.445Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Son fotos","type":"received"}
+[2025-11-17T19:58:20.391Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Tiene q entrar al tt","type":"received"}
+[2025-11-17T19:58:31.263Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"bueno mmgvo ahí tan las fotos","type":"received"}
+[2025-11-17T20:08:02.416Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T20:08:02.597Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T20:08:02.600Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T20:08:02.732Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T20:08:02.708Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T20:08:03.285Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:03.333Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:03.334Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T20:08:03.335Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T20:08:04.491Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Pero vaya a escuchar el audio q le puso","type":"received"}
+[2025-11-17T20:08:15.217Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"","type":"received"}
+[2025-11-17T20:08:15.390Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"","type":"received"}
+[2025-11-17T20:08:25.193Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T20:08:25.250Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T20:08:25.260Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T20:08:25.388Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T20:08:25.404Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T20:08:26.058Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:26.130Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:26.131Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T20:08:26.131Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T20:08:55.198Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T20:08:55.200Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T20:08:55.207Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1049210,"totalSizeMB":"1.00","logFiles":43,"backupFiles":0}
+[2025-11-17T20:08:55.208Z] [INFO] [logrotate] ✅ Rotación completada en 9ms {"duration":9,"report":{"totalFiles":43,"totalSize":1049210,"totalSizeMB":"1.00","logFiles":43,"backupFiles":0}}
+[2025-11-17T20:11:24.753Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T20:11:27.785Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T20:11:28.102Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T20:11:28.111Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T20:11:28.738Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T20:11:29.064Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T20:11:40.354Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#tt https://vm.tiktok.com/ZMAcAdsNK/","type":"received"}
+[2025-11-17T20:11:46.992Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T20:11:49.380Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:11:49.384Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363160616746507@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcAdsNK/"],"success":true,"result":null}
+[2025-11-17T20:30:29.635Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"🤤","type":"received"}
+[2025-11-17T20:34:07.080Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAcAsvbf/","type":"received"}
+[2025-11-17T20:34:17.886Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:34:17.887Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAcAsvbf/"],"success":true,"result":null}
+[2025-11-17T20:34:29.144Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"@39106298044576","type":"received"}
+[2025-11-17T20:46:38.581Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"JAJAKAKKAKAKA","type":"received"}
+[2025-11-17T20:55:33.040Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"grasa de las capitales","type":"received"}
+[2025-11-17T20:56:19.504Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sui generis es bueno","type":"received"}
+[2025-11-17T20:59:29.728Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"dos examenes <<< la pereza","type":"received"}
+[2025-11-17T20:59:36.201Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:00:01.065Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los paso relajao a nota minima pq soy un webo pelao 🤼‍♂️","type":"received"}
+[2025-11-17T21:00:24.717Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"o estudio saco un diez y me cojo a la hija del profesor","type":"received"}
+[2025-11-17T21:00:26.968Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"🤼‍♂️","type":"received"}
+[2025-11-17T21:00:29.740Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"copiarse>>>","type":"received"}
+[2025-11-17T21:00:32.413Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"epa verda","type":"received"}
+[2025-11-17T21:00:34.842Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"como son allá","type":"received"}
+[2025-11-17T21:00:37.227Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"soy lento pa esa mrd","type":"received"}
+[2025-11-17T21:00:38.424Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pa eso pues","type":"received"}
+[2025-11-17T21:00:43.692Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"soy un aweboniao","type":"received"}
+[2025-11-17T21:00:56.652Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"si eso si","type":"received"}
+[2025-11-17T21:00:58.371Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nunca he copiado... pq nunca lo he necesitado bro 🦸‍♂️","type":"received"}
+[2025-11-17T21:01:30.865Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"como en todo el mundo mmgv","type":"received"}
+[2025-11-17T21:01:36.252Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo llevo 2 exámenes de matemática este mes y los 2 puro gemini","type":"received"}
+[2025-11-17T21:01:40.192Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:02:06.285Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero si los profesores son aweboniados o q becerro","type":"received"}
+[2025-11-17T21:02:11.188Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo es q soy tan avispao q pienso q el prfesor es igual de avispao q yo y q me va a pillar ps","type":"received"}
+[2025-11-17T21:02:29.210Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"miti y miti","type":"received"}
+[2025-11-17T21:02:44.656Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"por ejemplo en latin siempre se copia todo el mundo","type":"received"}
+[2025-11-17T21:02:46.717Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hasta yo","type":"received"}
+[2025-11-17T21:03:06.874Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero en otras materias esos malditos profesores se caminan la clase","type":"received"}
+[2025-11-17T21:03:33.718Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"claro","type":"received"}
+[2025-11-17T21:03:46.285Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero eso igual se puede copiar bobo","type":"received"}
+[2025-11-17T21:03:57.901Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"apenas le den la espalda uste de una les mete 2 dedos en el culo y ya","type":"received"}
+[2025-11-17T21:04:03.364Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"caminan de patras bobo ud no ha visto","type":"received"}
+[2025-11-17T21:04:05.856Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:04:29.906Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jajajajajaja duro mas tiempo sacandome la chuleta del culo q copiando jajajajaj","type":"received"}
+[2025-11-17T21:04:42.331Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"me la quita el profesor y ta el papel lleno de mrd jajajjjajaja","type":"received"}
+[2025-11-17T21:04:51.801Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:05:31.673Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:16.075Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"\"mhmm no se lavo\" \"fuchi\"","type":"received"}
+[2025-11-17T21:06:28.042Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:46.669Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:57.252Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:57.460Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lo q me tengo q estudiar","type":"received"}
+[2025-11-17T21:06:57.642Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:57.845Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:06:58.037Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:07:07.133Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pa historia","type":"received"}
+[2025-11-17T21:07:56.884Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"geografia es a ultima hora","type":"received"}
+[2025-11-17T21:08:08.434Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"un repasito em el recreo y listo","type":"received"}
+[2025-11-17T21:08:17.381Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Croacia no quiere remontar","type":"received"}
+[2025-11-17T21:08:20.187Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"alaputa","type":"received"}
+[2025-11-17T21:08:20.376Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:08:37.207Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ahi ta maldito mmgv siga hablando","type":"received"}
+[2025-11-17T21:10:00.712Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eso horita modric hace hattrick","type":"received"}
+[2025-11-17T21:10:34.803Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"alaputa","type":"received"}
+[2025-11-17T21:10:45.820Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"montenegro debe tar jugando a pura fr","type":"received"}
+[2025-11-17T21:10:50.237Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:11:10.285Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esos bichos compiten con san marino","type":"received"}
+[2025-11-17T21:11:33.267Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q","type":"received"}
+[2025-11-17T21:11:44.823Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"🤼‍♂️","type":"received"}
+[2025-11-17T21:12:15.331Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajá y es q tiene q estudiarse el documento palabra por palabra o q","type":"received"}
+[2025-11-17T21:12:17.349Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sapegato","type":"received"}
+[2025-11-17T21:12:21.493Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q estudio es ese","type":"received"}
+[2025-11-17T21:12:24.058Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:12:55.686Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el examen es asi pille","type":"received"}
+[2025-11-17T21:15:16.497Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"1. 8 conceptos tipo test (3 puntos) \n2. comentario de texto [nos manda dos ejemplos y entra uno] (3 ...","type":"received"}
+[2025-11-17T21:16:01.845Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y cuantos exámenes lleva","type":"received"}
+[2025-11-17T21:16:14.751Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"en historia son 2 por lapso","type":"received"}
+[2025-11-17T21:16:18.037Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"este es el segundo","type":"received"}
+[2025-11-17T21:16:25.242Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nojoda","type":"received"}
+[2025-11-17T21:16:36.121Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"entonces no se puede dar el lujo de raspar uno","type":"received"}
+[2025-11-17T21:16:42.482Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:16:51.723Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lo arrecho esq raspé el primero","type":"received"}
+[2025-11-17T21:16:57.125Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:17:08.335Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"historia voy a llevarla arrastraita mejor","type":"received"}
+[2025-11-17T21:17:21.666Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eso en las reparaciones se saca hasta mas nota q el resto","type":"received"}
+[2025-11-17T21:17:25.545Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esa es la estrategia","type":"received"}
+[2025-11-17T21:17:37.126Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero ahí le meten todo el lapso mmgvo","type":"received"}
+[2025-11-17T21:17:41.335Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tiene q estudiar doble","type":"received"}
+[2025-11-17T21:17:58.023Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa","type":"received"}
+[2025-11-17T21:18:04.397Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tengo q estudiar lo mismo y las preguntas son mas faciles 🤼‍♂️","type":"received"}
+[2025-11-17T21:18:07.655Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo cuando fuí a reparar física pasé con 13","type":"received"}
+[2025-11-17T21:18:16.805Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y en el segundo lapso q no fuí a reparar la pasé con 11","type":"received"}
+[2025-11-17T21:18:21.166Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:18:34.762Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"nada mas historia","type":"received"}
+[2025-11-17T21:18:38.937Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el resto las llevo bien","type":"received"}
+[2025-11-17T21:18:58.742Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"bien es cuanto","type":"received"}
+[2025-11-17T21:19:08.369Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mínima 💆🏿‍♂️","type":"received"}
+[2025-11-17T21:19:09.772Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ingles puro 10","type":"received"}
+[2025-11-17T21:19:17.479Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lengua puro 7","type":"received"}
+[2025-11-17T21:19:21.325Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"latin 6","type":"received"}
+[2025-11-17T21:19:26.658Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"geografia  9","type":"received"}
+[2025-11-17T21:19:29.791Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"filosofia 8","type":"received"}
+[2025-11-17T21:19:35.918Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ta variado pero alto ps","type":"received"}
+[2025-11-17T21:19:44.555Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y cuanto es el mínimo","type":"received"}
+[2025-11-17T21:19:44.983Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"economia 3 😭","type":"received"}
+[2025-11-17T21:19:50.107Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"historia 3😭","type":"received"}
+[2025-11-17T21:19:56.198Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ps 5 mmgv","type":"received"}
+[2025-11-17T21:20:04.722Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:20:12.884Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"entonces 6 no es alto","type":"received"}
+[2025-11-17T21:20:27.853Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ps un 12 maldito q alto va a ser","type":"received"}
+[2025-11-17T21:20:42.895Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"dije alto por el 10 en ingle y el 9 en geogracia","type":"received"}
+[2025-11-17T21:21:26.400Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"le dan economía pa q salga listo pa el McDonald's de cajero","type":"received"}
+[2025-11-17T21:21:31.139Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:21:56.406Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"🧠","type":"received"}
+[2025-11-17T21:22:17.859Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y cuando sale","type":"received"}
+[2025-11-17T21:22:28.870Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"junio","type":"received"}
+[2025-11-17T21:22:35.759Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y ahorita","type":"received"}
+[2025-11-17T21:22:46.162Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"en diciembre son dos semanas y media","type":"received"}
+[2025-11-17T21:23:02.629Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"de 20dic a 9ene","type":"received"}
+[2025-11-17T21:23:11.349Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T21:23:12.736Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el día de mi cumpleaños","type":"received"}
+[2025-11-17T21:23:20.557Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"2 noticias buenas el mismo día pues","type":"received"}
+[2025-11-17T21:23:22.485Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no vale q pato este bicho","type":"received"}
+[2025-11-17T21:23:26.564Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:23:29.980Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"JAJAKAKAJAJAJAJAJAJAJA","type":"received"}
+[2025-11-17T21:23:33.672Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:23:34.902Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"JAKAKAJAJAJJAJAJAJAJAJJAJJAJA","type":"received"}
+[2025-11-17T21:23:46.103Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"JAJAJAJAJAJAJA","type":"received"}
+[2025-11-17T21:26:09.235Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pufff q calidad diciembre","type":"received"}
+[2025-11-17T21:26:15.342Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"semanitas libres abi","type":"received"}
+[2025-11-17T21:26:20.668Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:26:35.303Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pa ver peliculas acostado con mi novia la almohada","type":"received"}
+[2025-11-17T21:26:41.464Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:27:15.699Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jajajjjjajajajjjaja antier me deaperté y taba la almohada babeadisima jajajjajjajajajjjaja taba chor...","type":"received"}
+[2025-11-17T21:27:26.615Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sueño profundo con la geta abierta","type":"received"}
+[2025-11-17T21:27:32.269Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo todos los días","type":"received"}
+[2025-11-17T21:27:45.717Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"a mi me pasa q si una vez a la semana","type":"received"}
+[2025-11-17T21:27:50.629Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero antier era masivo","type":"received"}
+[2025-11-17T21:27:55.928Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo siempre pq no respiro bien por la nariz","type":"received"}
+[2025-11-17T21:27:57.591Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"llevaba q si 3 horaa babeando jajajajjajajajaj","type":"received"}
+[2025-11-17T21:28:33.270Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el vagabundo viniendose 10 veces en la boca","type":"received"}
+[2025-11-17T21:28:52.664Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo en la boca del vagabundo 🤼‍♂️","type":"received"}
+[2025-11-17T21:28:59.304Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jajajjjaja","type":"received"}
+[2025-11-17T21:29:29.242Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"acabarle en la boca a un vagabundo mientras duerme a las 7 de la mañana >>> tomar café","type":"received"}
+[2025-11-17T21:29:38.034Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:29:47.878Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"£¥#¥.¥{¥~JAKDKAKS  qe otei","type":"received"}
+[2025-11-17T21:29:52.518Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"antes tiene q tomar café","type":"received"}
+[2025-11-17T21:29:58.103Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"si no no sale ni baba","type":"received"}
+[2025-11-17T21:30:02.108Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:30:09.248Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no pq si no el semen no es de buena calidad","type":"received"}
+[2025-11-17T21:30:29.330Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"POLONIA DIOSMIO FALTAS TÚ","type":"received"}
+[2025-11-17T21:30:29.839Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ah bueno uste q lo degusta sabe pues","type":"received"}
+[2025-11-17T21:30:43.490Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"obvio","type":"received"}
+[2025-11-17T21:31:07.060Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el hijueputa diseñador de las banderas en el mismo proyecto de photoshop moviendo un poquito el rojo...","type":"received"}
+[2025-11-17T21:31:14.133Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T21:32:12.634Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el bicho volteó la de polonia le puso saturacion y le dibujo un webo a la izquierda","type":"received"}
+[2025-11-17T21:34:12.936Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"AKDKAKKSKAKSKAKS","type":"received"}
+[2025-11-17T21:34:38.632Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"alaputa, aterrizó el presidente de ucrania y metió gol","type":"received"}
+[2025-11-17T21:36:44.445Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"epa","type":"received"}
+[2025-11-17T21:36:49.866Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"digame una app","type":"received"}
+[2025-11-17T21:36:57.054Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pa q","type":"received"}
+[2025-11-17T21:36:57.961Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q yo le ponga texto y me lo lea","type":"received"}
+[2025-11-17T21:37:00.551Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"grindr","type":"received"}
+[2025-11-17T21:37:16.762Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"gemini hace eso mmgvo","type":"received"}
+[2025-11-17T21:37:25.771Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"con imágenes y todo","type":"received"}
+[2025-11-17T21:37:33.300Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"gracias a dios lo borre","type":"received"}
+[2025-11-17T21:37:35.422Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"y no lo vio","type":"received"}
+[2025-11-17T21:37:35.575Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-17T21:41:21.617Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"listo","type":"received"}
+[2025-11-17T21:47:06.953Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T21:47:06.998Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T21:47:07.000Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:47:07.083Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T21:47:07.096Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:47:08.393Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:08.393Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:47:08.394Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:47:08.598Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"si","type":"received"}
+[2025-11-17T21:47:08.598Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:15.534Z] [INFO] [message] Mensaje received {"user":"126186608939198@lid","message":"va vivir con la intriga","type":"received"}
+[2025-11-17T21:47:17.162Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lo he buscado en tt y nada","type":"received"}
+[2025-11-17T21:47:24.495Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T21:47:25.276Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"vea estos a ver si sale y sale el ep q es","type":"received"}
+[2025-11-17T21:47:26.659Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T21:47:36.110Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajá","type":"received"}
+[2025-11-17T21:47:36.953Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T21:47:36.954Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T21:47:36.958Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":43,"totalSize":1093572,"totalSizeMB":"1.04","logFiles":43,"backupFiles":0}
+[2025-11-17T21:47:36.958Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":43,"totalSize":1093572,"totalSizeMB":"1.04","logFiles":43,"backupFiles":0}}
+[2025-11-17T21:47:37.961Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra","type":"received"}
+[2025-11-17T21:47:39.360Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":[],"success":true,"result":null}
+[2025-11-17T21:47:45.603Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#lyrics","type":"received"}
+[2025-11-17T21:47:45.958Z] [SUCCESS] [command] Comando ejecutado: lyrics {"user":"120363160616746507@g.us","command":"lyrics","args":[],"success":true,"result":null}
+[2025-11-17T21:47:53.757Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#lyrics airbag radiohead","type":"received"}
+[2025-11-17T21:47:54.614Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:54.615Z] [SUCCESS] [command] Comando ejecutado: lyrics {"user":"120363160616746507@g.us","command":"lyrics","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T21:47:59.511Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mamalo","type":"received"}
+[2025-11-17T21:48:26.645Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#lyrics radiohead","type":"received"}
+[2025-11-17T21:48:27.191Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:48:27.193Z] [SUCCESS] [command] Comando ejecutado: lyrics {"user":"120363160616746507@g.us","command":"lyrics","args":["radiohead"],"success":true,"result":null}
+[2025-11-17T21:49:48.897Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T21:49:48.973Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T21:49:48.976Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:49:49.055Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T21:49:49.067Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:49:49.490Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:49:49.514Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:49:49.515Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:49:49.515Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:50:01.752Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T21:50:02.963Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T21:50:06.493Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra","type":"received"}
+[2025-11-17T21:50:06.609Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":[],"success":true,"result":null}
+[2025-11-17T21:50:14.347Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra radiohead airbag","type":"received"}
+[2025-11-17T21:50:14.692Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:50:14.693Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["radiohead","airbag"],"success":true,"result":null}
+[2025-11-17T21:50:18.896Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T21:50:18.897Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T21:50:18.903Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1099626,"totalSizeMB":"1.05","logFiles":45,"backupFiles":0}
+[2025-11-17T21:50:18.903Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":45,"totalSize":1099626,"totalSizeMB":"1.05","logFiles":45,"backupFiles":0}}
+[2025-11-17T21:50:41.068Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"PEGUERE","type":"received"}
+[2025-11-17T21:53:25.488Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T21:53:25.550Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T21:53:25.556Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:53:25.630Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T21:53:25.640Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:53:26.600Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:26.690Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:26.690Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:53:26.690Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:53:43.463Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T21:53:45.603Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T21:53:52.958Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T21:53:53.348Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:53.349Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T21:53:55.487Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T21:53:55.489Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T21:53:55.496Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1102983,"totalSizeMB":"1.05","logFiles":45,"backupFiles":0}
+[2025-11-17T21:53:55.497Z] [INFO] [logrotate] ✅ Rotación completada en 9ms {"duration":9,"report":{"totalFiles":45,"totalSize":1102983,"totalSizeMB":"1.05","logFiles":45,"backupFiles":0}}
+[2025-11-17T21:57:25.794Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra trouble coldplay","type":"received"}
+[2025-11-17T21:57:26.222Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:57:26.224Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["trouble","coldplay"],"success":true,"result":null}
+[2025-11-17T21:57:46.989Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ytaud trouble coldplay","type":"received"}
+[2025-11-17T21:57:46.991Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ytaudio trouble coldplay","type":"received"}
+[2025-11-17T21:58:03.213Z] [SUCCESS] [command] Comando ejecutado: ytaudio {"user":"120363160616746507@g.us","command":"ytaudio","args":["trouble","coldplay"],"success":true,"result":{"type":"audio"}}
+[2025-11-17T21:58:03.214Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:03.215Z] [SUCCESS] [command] Comando ejecutado: ytaud {"user":"120363160616746507@g.us","command":"ytaud","args":["trouble","coldplay"],"success":true,"result":null}
+[2025-11-17T21:58:23.812Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T21:58:23.878Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T21:58:23.881Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:58:23.960Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T21:58:23.969Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:58:24.352Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:24.422Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:24.422Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:58:24.422Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:58:39.187Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T21:58:40.509Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T21:58:45.925Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T21:58:46.651Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:46.652Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T21:58:53.816Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T21:58:53.817Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T21:58:53.826Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1108067,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}
+[2025-11-17T21:58:53.826Z] [INFO] [logrotate] ✅ Rotación completada en 10ms {"duration":10,"report":{"totalFiles":45,"totalSize":1108067,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}}
+[2025-11-17T22:02:16.529Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:02:16.582Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:02:16.584Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:02:16.668Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:02:16.678Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:02:17.834Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:02:17.947Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:02:17.947Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:02:17.948Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:02:40.053Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:02:40.096Z] [ERROR] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":false,"result":"Cannot find module '/home/runner/workspace/node_modules/lyrics-kit/build/module/service/lyricsProviderManager' imported from /home/runner/workspace/node_modules/lyrics-kit/build/module/index.js"}
+[2025-11-17T22:02:40.098Z] [ERROR] [command] Error ejecutando ping {"error":"Cannot find module '/home/runner/workspace/node_modules/lyrics-kit/build/module/service/lyricsProviderManager' imported from /home/runner/workspace/node_modules/lyrics-kit/build/module/index.js","user":"120363160616746507@g.us"}
+[2025-11-17T22:02:46.535Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:02:46.536Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:02:46.541Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1111676,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}
+[2025-11-17T22:02:46.542Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":45,"totalSize":1111676,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}}
+[2025-11-17T22:02:52.773Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pom","type":"received"}
+[2025-11-17T22:05:25.780Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:05:25.843Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:05:25.846Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:05:25.936Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:05:25.958Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:05:27.160Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:05:27.291Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:05:27.292Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:05:27.292Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:05:53.422Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:05:53.491Z] [ERROR] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":false,"result":"Named export 'findLyrics' not found. The requested module 'lyrics-searcher' is a CommonJS module, which may not support all module.exports as named exports.\nCommonJS modules can always be imported via the default export, for example using:\n\nimport pkg from 'lyrics-searcher';\nconst { findLyrics } = pkg;\n"}
+[2025-11-17T22:05:53.491Z] [ERROR] [command] Error ejecutando ping {"error":"Named export 'findLyrics' not found. The requested module 'lyrics-searcher' is a CommonJS module, which may not support all module.exports as named exports.\nCommonJS modules can always be imported via the default export, for example using:\n\nimport pkg from 'lyrics-searcher';\nconst { findLyrics } = pkg;\n","user":"120363160616746507@g.us"}
+[2025-11-17T22:05:55.781Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:05:55.784Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:05:55.790Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1115944,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}
+[2025-11-17T22:05:55.791Z] [INFO] [logrotate] ✅ Rotación completada en 9ms {"duration":9,"report":{"totalFiles":45,"totalSize":1115944,"totalSizeMB":"1.06","logFiles":45,"backupFiles":0}}
+[2025-11-17T22:06:05.613Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pom","type":"received"}
+[2025-11-17T22:06:13.185Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T22:06:53.500Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:06:53.571Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:06:53.579Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:06:53.670Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:06:53.689Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:06:54.618Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:06:54.714Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:06:54.715Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:06:54.716Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:07:23.514Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:07:23.515Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:07:23.519Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":45,"totalSize":1118351,"totalSizeMB":"1.07","logFiles":45,"backupFiles":0}
+[2025-11-17T22:07:23.520Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":45,"totalSize":1118351,"totalSizeMB":"1.07","logFiles":45,"backupFiles":0}}
+[2025-11-17T22:11:40.107Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:11:42.091Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T22:11:44.595Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:11:45.296Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T22:11:49.048Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra","type":"received"}
+[2025-11-17T22:11:49.309Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":[],"success":true,"result":null}
+[2025-11-17T22:11:54.163Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T22:11:54.448Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:11:54.449Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T22:13:53.644Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:13:53.698Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:13:53.700Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:13:53.775Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:13:53.784Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:13:54.957Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:13:55.057Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:13:55.057Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:13:55.057Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:14:00.250Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:14:03.499Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:14:03.642Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#pint","type":"received"}
+[2025-11-17T22:14:06.133Z] [SUCCESS] [command] Comando ejecutado: pint {"user":"120363160616746507@g.us","command":"pint","args":[],"success":true,"result":null}
+[2025-11-17T22:14:08.834Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:14:09.567Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T22:14:20.189Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T22:14:20.568Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:14:20.569Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T22:14:23.645Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:14:23.646Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:14:23.649Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1124300,"totalSizeMB":"1.07","logFiles":46,"backupFiles":0}
+[2025-11-17T22:14:23.650Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":46,"totalSize":1124300,"totalSizeMB":"1.07","logFiles":46,"backupFiles":0}}
+[2025-11-17T22:14:25.338Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:14:37.447Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:15:13.019Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:15:18.309Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:15:27.720Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"🙈","type":"received"}
+[2025-11-17T22:16:53.349Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:16:53.397Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:16:53.399Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:16:53.516Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:16:53.529Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:16:54.620Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:16:54.735Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:16:54.735Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:16:54.736Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:16:57.643Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:17:23.363Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:17:23.365Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:17:23.371Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1127389,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}
+[2025-11-17T22:17:23.372Z] [INFO] [logrotate] ✅ Rotación completada en 8ms {"duration":8,"report":{"totalFiles":46,"totalSize":1127389,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}}
+[2025-11-17T22:17:34.883Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:17:35.638Z] [ERROR] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":false,"result":"Setter must have exactly one formal parameter."}
+[2025-11-17T22:17:35.638Z] [ERROR] [command] Error ejecutando ping {"error":"Setter must have exactly one formal parameter.","user":"120363160616746507@g.us"}
+[2025-11-17T22:22:46.695Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:22:46.744Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:22:46.746Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:22:46.828Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:22:46.837Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:22:47.844Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:22:47.967Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:22:47.968Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:22:47.968Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:23:16.715Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:23:16.716Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:23:16.721Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1130408,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}
+[2025-11-17T22:23:16.722Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":46,"totalSize":1130408,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}}
+[2025-11-17T22:23:40.862Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:23:41.168Z] [ERROR] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":false,"result":"The requested module 'cheerio' does not provide an export named 'default'"}
+[2025-11-17T22:23:41.169Z] [ERROR] [command] Error ejecutando ping {"error":"The requested module 'cheerio' does not provide an export named 'default'","user":"120363160616746507@g.us"}
+[2025-11-17T22:26:40.890Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:26:54.263Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:34:45.385Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:34:45.680Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:34:45.682Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:34:46.166Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:34:46.257Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:34:47.509Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:34:47.676Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:34:47.677Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:34:47.677Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:35:04.864Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:35:04.921Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:35:04.924Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:35:05.013Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:35:05.023Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:35:06.024Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:35:06.155Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:35:06.155Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:35:06.155Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:35:34.862Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T22:35:34.864Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:35:34.865Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:35:35.619Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1135562,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}
+[2025-11-17T22:35:35.619Z] [INFO] [logrotate] ✅ Rotación completada en 755ms {"duration":755,"report":{"totalFiles":46,"totalSize":1135562,"totalSizeMB":"1.08","logFiles":46,"backupFiles":0}}
+[2025-11-17T22:35:36.722Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T22:35:45.494Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T22:35:45.999Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:35:46.000Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T22:36:01.875Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra radiohead airbag","type":"received"}
+[2025-11-17T22:36:02.362Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:36:02.363Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["radiohead","airbag"],"success":true,"result":null}
+[2025-11-17T22:36:05.353Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T22:37:31.195Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra Radiohead - Airbag","type":"received"}
+[2025-11-17T22:37:31.828Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:37:31.830Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["Radiohead","-","Airbag"],"success":true,"result":null}
+[2025-11-17T22:37:44.271Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-17T22:40:35.531Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra Nsqk - Cienciaficción","type":"received"}
+[2025-11-17T22:40:36.035Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:40:36.038Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["Nsqk","-","Cienciaficción"],"success":true,"result":null}
+[2025-11-17T22:52:26.383Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T22:52:26.433Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T22:52:26.436Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:52:26.525Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T22:52:26.535Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:52:27.653Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:52:27.792Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:52:27.792Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:52:27.792Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:52:56.404Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T22:52:56.405Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T22:52:56.409Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1141019,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}
+[2025-11-17T22:52:56.409Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":46,"totalSize":1141019,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}}
+[2025-11-17T22:55:10.631Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T22:55:12.527Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T22:55:24.515Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T22:55:25.498Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:55:25.499Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:01:00.327Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:01:00.389Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:01:00.391Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:01:00.483Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:01:00.492Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:01:03.559Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:01:03.794Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:01:03.796Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:01:03.796Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:01:30.347Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:01:30.348Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:01:30.352Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1144147,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}
+[2025-11-17T23:01:30.352Z] [INFO] [logrotate] ✅ Rotación completada en 4ms {"duration":4,"report":{"totalFiles":46,"totalSize":1144147,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:01:46.468Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:01:48.498Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:01:50.991Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:01:52.139Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:01:52.804Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:01:53.954Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:02:02.185Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:02:03.030Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:02:03.032Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:17:29.793Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:17:29.856Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:17:29.859Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:17:29.949Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:17:29.958Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:17:31.074Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:17:31.244Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:17:31.244Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:17:31.244Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:17:59.815Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:17:59.817Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:17:59.824Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1148105,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}
+[2025-11-17T23:17:59.825Z] [INFO] [logrotate] ✅ Rotación completada en 9ms {"duration":9,"report":{"totalFiles":46,"totalSize":1148105,"totalSizeMB":"1.09","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:18:25.932Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:18:28.027Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:18:35.593Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:18:36.187Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:18:36.188Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:20:22.232Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:20:22.279Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:20:22.281Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:20:22.362Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:20:22.373Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:20:23.002Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:23.065Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:23.066Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:20:23.066Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:20:39.920Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:20:41.228Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:20:52.236Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:20:52.237Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:20:52.242Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1151648,"totalSizeMB":"1.10","logFiles":46,"backupFiles":0}
+[2025-11-17T23:20:52.242Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":46,"totalSize":1151648,"totalSizeMB":"1.10","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:20:53.944Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:20:54.721Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:54.722Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:21:04.200Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra cienciaficción","type":"received"}
+[2025-11-17T23:21:04.626Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:21:04.627Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:21:17.541Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra Nsqk - Cienciaficción","type":"received"}
+[2025-11-17T23:21:18.054Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:21:18.055Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["Nsqk","-","Cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:24:48.825Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:24:48.903Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:24:48.906Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:24:48.991Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:24:49.002Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:24:49.829Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:24:50.140Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:24:50.141Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:24:50.141Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:25:11.967Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:25:13.861Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:25:18.828Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:25:18.829Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:25:18.834Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1156152,"totalSizeMB":"1.10","logFiles":46,"backupFiles":0}
+[2025-11-17T23:25:18.834Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":46,"totalSize":1156152,"totalSizeMB":"1.10","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:25:23.683Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:25:24.410Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:25:24.410Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:29:11.034Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:29:11.083Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:29:11.085Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:29:11.183Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:29:11.201Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:29:11.833Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:11.903Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:11.904Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:29:11.904Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:29:41.035Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:29:41.035Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:29:41.041Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1158865,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}
+[2025-11-17T23:29:41.041Z] [INFO] [logrotate] ✅ Rotación completada en 6ms {"duration":6,"report":{"totalFiles":46,"totalSize":1158865,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:29:42.208Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:29:43.514Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:29:51.595Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:29:52.000Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:52.002Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:31:32.886Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:31:32.943Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:31:32.944Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:31:33.016Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:31:33.025Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:31:33.458Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:31:33.525Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:31:33.526Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:31:33.526Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:32:02.901Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:32:02.902Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:32:02.906Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1161993,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}
+[2025-11-17T23:32:02.906Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":46,"totalSize":1161993,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:32:15.409Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:32:16.530Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:32:22.185Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk cienciaficción","type":"received"}
+[2025-11-17T23:32:22.518Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:32:22.519Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","cienciaficción"],"success":true,"result":null}
+[2025-11-17T23:33:16.204Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra airbag radiohead","type":"received"}
+[2025-11-17T23:33:16.680Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:16.681Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["airbag","radiohead"],"success":true,"result":null}
+[2025-11-17T23:33:28.110Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra radiohead airbag","type":"received"}
+[2025-11-17T23:33:28.510Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:28.511Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["radiohead","airbag"],"success":true,"result":null}
+[2025-11-17T23:33:37.869Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra los alpes nsqk","type":"received"}
+[2025-11-17T23:33:38.219Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:38.219Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["los","alpes","nsqk"],"success":true,"result":null}
+[2025-11-17T23:33:58.588Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra losalpes nsqk","type":"received"}
+[2025-11-17T23:33:58.842Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:58.843Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["losalpes","nsqk"],"success":true,"result":null}
+[2025-11-17T23:34:10.017Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk los alpes","type":"received"}
+[2025-11-17T23:34:10.352Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:34:10.353Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","los","alpes"],"success":true,"result":null}
+[2025-11-17T23:41:22.831Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:41:22.888Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:41:22.889Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:41:22.971Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:41:22.984Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:41:24.044Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:41:24.206Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:41:24.206Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:41:24.206Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:41:46.418Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:41:48.448Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:41:52.835Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:41:52.837Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:41:52.845Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1168906,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}
+[2025-11-17T23:41:52.845Z] [INFO] [logrotate] ✅ Rotación completada en 10ms {"duration":10,"report":{"totalFiles":46,"totalSize":1168906,"totalSizeMB":"1.11","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:41:55.213Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-17T23:41:56.388Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:42:02.453Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#letra nsqk los alpes","type":"received"}
+[2025-11-17T23:42:03.229Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:42:03.230Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"30837949124772@lid","command":"letra","args":["nsqk","los","alpes"],"success":true,"result":null}
+[2025-11-17T23:48:48.361Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#post","type":"received"}
+[2025-11-17T23:48:50.217Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363160616746507@g.us","command":"post","args":[],"success":true,"result":null}
+[2025-11-17T23:48:53.853Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#post https://www.instagram.com/p/DRFwO0OEiR6/?igsh=MmkwbDJucm1oOGI3","type":"received"}
+[2025-11-17T23:49:14.279Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363160616746507@g.us","command":"post","args":["https://www.instagram.com/p/DRFwO0OEiR6/?igsh=MmkwbDJucm1oOGI3"],"success":true,"result":null}
+[2025-11-17T23:49:25.590Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#post https://www.instagram.com/p/DRFwO0OEiR6/?igsh=MmkwbDJucm1oOGI3","type":"received"}
+[2025-11-17T23:49:42.380Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363160616746507@g.us","command":"post","args":["https://www.instagram.com/p/DRFwO0OEiR6/?igsh=MmkwbDJucm1oOGI3"],"success":true,"result":null}
+[2025-11-17T23:49:56.573Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-17T23:51:28.801Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-17T23:51:28.868Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:51:28.870Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:51:28.958Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:51:28.969Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:51:30.020Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:51:30.128Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:51:30.128Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:51:30.128Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:51:58.821Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-17T23:51:58.822Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-17T23:51:58.830Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":46,"totalSize":1174006,"totalSizeMB":"1.12","logFiles":46,"backupFiles":0}
+[2025-11-17T23:51:58.830Z] [INFO] [logrotate] ✅ Rotación completada en 8ms {"duration":8,"report":{"totalFiles":46,"totalSize":1174006,"totalSizeMB":"1.12","logFiles":46,"backupFiles":0}}
+[2025-11-17T23:52:04.446Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-17T23:52:06.476Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-17T23:52:41.393Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra nsqk tonos de azul","type":"received"}
+[2025-11-17T23:52:41.952Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:52:41.953Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["nsqk","tonos","de","azul"],"success":true,"result":null}
+[2025-11-17T23:56:29.526Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-17T23:56:29.527Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-17T23:56:29.527Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-17T23:56:34.533Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:56:34.532Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-17T23:56:34.580Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-17T23:56:34.594Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:56:35.428Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:56:35.566Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:56:35.566Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:56:35.566Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:59:46.266Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#letra radiohead true love waits","type":"received"}
+[2025-11-17T23:59:47.265Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:59:47.268Z] [SUCCESS] [command] Comando ejecutado: letra {"user":"120363160616746507@g.us","command":"letra","args":["radiohead","true","love","waits"],"success":true,"result":null}

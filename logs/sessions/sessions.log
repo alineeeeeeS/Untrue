@@ -1,0 +1,1383 @@
+[2025-11-10T19:23:11.945Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T19:23:12.028Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T19:23:12.973Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T19:23:13.768Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T19:23:13.769Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T19:23:13.769Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T19:31:26.451Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T19:31:26.563Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T19:31:26.973Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T19:31:26.977Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T19:31:26.977Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T19:31:26.977Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T20:13:27.719Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T20:13:27.806Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T20:13:28.256Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:13:28.343Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:13:28.343Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T20:13:28.344Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T20:33:08.369Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T20:33:08.461Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T20:33:09.072Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T20:33:09.071Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:33:09.072Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T20:33:09.120Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:33:43.836Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:33:58.892Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:41:49.581Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:41:49.788Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T20:42:13.201Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:07:43.747Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T21:07:43.848Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T21:07:44.264Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:07:44.619Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T21:07:44.618Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:07:44.619Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T21:10:59.059Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:12:15.465Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T21:12:15.612Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T21:12:16.117Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:12:16.222Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:12:16.223Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T21:12:16.224Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T21:32:49.886Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-10T21:32:49.887Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-10T21:32:49.887Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-10T21:32:54.891Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-10T21:32:54.942Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-10T21:32:55.369Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-10T21:32:55.370Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-10T21:32:55.370Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-10T21:32:55.373Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T20:52:39.687Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T20:52:39.792Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T20:52:40.609Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T20:52:40.609Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T20:52:40.609Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T20:52:47.762Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:03:31.177Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:28:26.352Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T21:28:26.438Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T21:28:27.656Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:28:27.657Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T21:28:27.657Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T21:28:27.821Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:30:53.201Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:35:06.910Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T21:35:07.003Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T21:35:07.543Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:35:07.544Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T21:35:07.539Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:35:07.544Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T21:36:05.544Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:48:04.961Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:53:32.468Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-11T21:53:32.468Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-11T21:53:32.468Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-11T21:53:37.469Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T21:53:37.530Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T21:53:37.913Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:53:37.956Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:53:37.957Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T21:53:37.958Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T21:54:52.653Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T21:54:52.747Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T21:54:54.023Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:54:54.314Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T21:54:54.313Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:54:54.315Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T21:55:34.452Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T21:56:09.607Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:03:43.654Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T22:03:43.765Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T22:03:44.254Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:03:44.254Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T22:03:44.255Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T22:03:44.267Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:05:31.545Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:07:54.750Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:08:38.216Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:12:49.709Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T22:12:49.810Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T22:12:50.749Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:12:50.891Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:12:50.891Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T22:12:50.892Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T22:15:14.213Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:19:31.676Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T22:19:31.761Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T22:19:32.378Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:19:32.512Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:19:32.513Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T22:19:32.513Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T22:20:54.669Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:32:58.507Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T22:32:58.593Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T22:32:59.531Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:32:59.679Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:32:59.680Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T22:32:59.680Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T22:33:52.454Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T22:34:27.205Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:06:19.833Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T23:06:19.935Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T23:06:20.776Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:06:20.867Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:06:20.868Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T23:06:20.868Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T23:07:11.735Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:07:18.997Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-11T23:07:18.999Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-11T23:07:18.998Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-11T23:07:24.007Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T23:07:24.055Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T23:07:24.691Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:07:24.781Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:07:24.782Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T23:07:24.783Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T23:07:36.275Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:12:51.866Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T23:12:51.958Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T23:12:52.469Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:12:52.551Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:12:52.551Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-11T23:12:52.552Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T23:13:48.999Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:14:16.534Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:15:16.864Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-11T23:15:16.970Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-11T23:15:17.857Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:15:17.917Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-11T23:15:17.916Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-11T23:15:17.917Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T00:16:27.294Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:17:24.715Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:17:53.377Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:18:34.245Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:21:33.868Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:23:55.114Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:43:35.322Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T00:43:35.711Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T05:15:08.301Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T05:15:08.428Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T05:15:08.806Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T05:15:09.271Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T05:15:09.271Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T05:15:09.272Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T06:35:53.512Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T15:20:44.529Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:44:27.306Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T16:44:27.403Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T16:44:27.785Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:44:28.336Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T16:44:28.337Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T16:44:28.336Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:52:56.524Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T16:52:56.641Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T16:52:57.720Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:52:57.840Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:52:57.841Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T16:52:57.841Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T16:57:26.474Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T16:57:26.558Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T16:57:27.565Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:57:27.735Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T16:57:27.734Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T16:57:27.735Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T16:58:35.476Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T17:02:21.005Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T17:02:21.085Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T17:02:22.091Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T17:02:22.267Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T17:02:22.268Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T17:02:22.268Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T17:36:12.605Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T18:49:40.743Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T18:51:12.041Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:01:34.510Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:17:04.094Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T19:17:04.179Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T19:17:04.636Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:17:04.687Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:17:04.688Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T19:17:04.688Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T19:18:06.118Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:23:25.478Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T19:23:25.567Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T19:23:26.192Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:23:26.217Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:23:26.217Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T19:23:26.217Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T19:24:02.287Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:45:01.231Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T19:45:01.329Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T19:45:01.796Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:45:01.875Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:45:01.876Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T19:45:01.876Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T19:46:21.846Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:52:02.411Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T19:52:02.526Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T19:52:03.563Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:52:03.691Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T19:52:03.692Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T19:52:03.692Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T19:52:42.862Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:00:34.740Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:00:34.888Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:00:35.920Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:00:36.101Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:00:36.101Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:00:36.102Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:01:05.752Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:16:30.184Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:16:30.264Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:16:30.634Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:16:30.721Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:16:30.722Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:16:30.722Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:19:25.279Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:19:25.352Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:19:26.244Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:19:26.527Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:19:26.528Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:19:26.528Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:33:34.714Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:33:34.812Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:33:35.198Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:33:35.262Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:33:35.262Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:33:35.263Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:36:26.428Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:36:26.524Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:36:26.877Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:36:26.959Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:36:26.960Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:36:26.960Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:40:03.781Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:40:03.872Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:40:04.751Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:40:04.869Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:40:04.870Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:40:04.870Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:43:00.962Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:43:01.054Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:43:01.426Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:43:01.510Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:43:01.510Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:43:01.511Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:45:58.621Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:45:58.720Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:45:59.203Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:45:59.282Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:45:59.281Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:45:59.282Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:47:32.724Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:47:32.820Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:47:33.449Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:47:33.470Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:47:33.470Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:47:33.470Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:48:37.874Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:48:37.973Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:48:38.387Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:48:38.446Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:48:38.447Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T20:48:38.447Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:51:56.837Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T20:51:56.934Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T20:51:57.532Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:51:57.599Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T20:51:57.600Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T20:51:57.600Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T21:44:43.054Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T21:44:43.147Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T21:44:44.411Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T21:44:44.528Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T21:44:44.528Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T21:44:44.528Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T21:45:14.507Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T22:07:10.254Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-12T22:07:10.254Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-12T22:07:10.254Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-12T22:07:15.255Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T22:07:15.299Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T22:07:16.277Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T22:07:16.455Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T22:07:16.454Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T22:07:16.455Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T22:35:29.676Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-12T22:35:29.676Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-12T22:35:29.676Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-12T22:35:34.680Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T22:35:34.732Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T22:35:35.169Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T22:35:35.225Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T22:35:35.225Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T22:35:35.225Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T23:35:22.114Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-12T23:35:22.115Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-12T23:35:22.115Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-12T23:35:27.119Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-12T23:35:27.171Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-12T23:35:27.537Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-12T23:35:27.630Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-12T23:35:27.630Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-12T23:35:27.629Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T00:11:42.641Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T01:44:35.849Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T01:44:35.933Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T01:44:37.163Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T01:44:37.167Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T01:44:37.167Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T01:44:37.166Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T03:45:07.507Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T03:45:07.618Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T03:45:08.159Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T03:45:08.206Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T03:45:08.207Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T03:45:08.207Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T04:26:58.052Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T04:30:58.359Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T05:00:32.837Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T05:18:48.622Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T05:24:19.031Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T10:21:16.722Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-13T10:21:16.723Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-13T10:21:16.723Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-13T10:21:21.728Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T10:21:21.781Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T10:21:22.234Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T10:21:22.248Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T10:21:22.250Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T10:21:22.249Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T14:56:46.981Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T14:59:42.314Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:01:08.391Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:01:38.814Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:04:08.596Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:30:25.951Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T15:30:26.028Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T15:30:26.859Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:30:27.502Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:30:27.502Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T15:30:27.502Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T15:43:57.696Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T15:43:57.813Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T15:43:58.250Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:43:58.300Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T15:43:58.301Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T15:43:58.301Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T16:02:55.890Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:03:27.658Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:03:48.095Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:04:01.652Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:04:15.853Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:32:50.109Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T16:32:50.222Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T16:32:51.566Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:32:51.569Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T16:32:51.570Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T16:32:51.569Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T16:32:58.637Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T17:08:51.556Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:35:30.634Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:36:00.303Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:36:43.817Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:37:15.497Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:37:45.279Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:37:49.464Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:39:01.505Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:40:17.514Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T18:42:25.728Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:49:42.544Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T19:49:42.643Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T19:49:43.209Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:49:43.237Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:49:43.239Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T19:49:43.237Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T19:53:50.769Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T19:53:50.905Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T19:53:51.248Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:53:51.325Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T19:53:51.324Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:53:51.325Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T19:56:59.399Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T19:56:59.524Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T19:56:59.936Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:56:59.943Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T19:56:59.944Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T19:56:59.944Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:06:48.794Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:06:48.917Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:06:49.831Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:06:50.128Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:06:50.129Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:06:50.129Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:13:37.680Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:13:37.764Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:13:38.122Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:13:38.197Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:13:38.198Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:13:38.198Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:22:45.743Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:24:40.783Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:24:40.890Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:24:41.804Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:24:41.926Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:24:41.927Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:24:41.927Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:39:18.358Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:39:18.482Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:39:19.561Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:39:19.689Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:39:19.690Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:39:19.690Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:43:38.144Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:43:38.234Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:43:38.593Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:43:38.630Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:43:38.629Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:43:38.630Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:51:48.613Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:51:48.730Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:51:49.102Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:51:49.138Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:51:49.139Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:51:49.139Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:55:43.933Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:55:44.026Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:55:44.943Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:55:45.214Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:55:45.215Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:55:45.215Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T20:58:48.530Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T20:58:48.623Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T20:58:49.134Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:58:49.138Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T20:58:49.139Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T20:58:49.139Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:13:33.854Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:13:33.940Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:13:34.314Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:13:34.439Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:13:34.440Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:13:34.440Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:19:35.960Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:19:36.039Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:19:36.401Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:19:36.482Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:19:36.483Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:19:36.483Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:25:05.831Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:25:05.929Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:25:06.443Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:25:06.447Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:25:06.446Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:25:06.447Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:29:03.475Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:29:03.573Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:29:04.656Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:29:04.765Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:29:04.766Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:29:04.766Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:35:10.457Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:35:10.558Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:35:10.956Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:35:11.029Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:35:11.029Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:35:11.029Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:35:56.167Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:36:25.289Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:37:54.252Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:39:57.185Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:43:42.638Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:43:42.775Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:43:43.691Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:43:43.802Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:43:43.802Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:43:43.803Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:48:24.777Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T21:48:24.882Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T21:48:25.418Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:48:25.502Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T21:48:25.502Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T21:48:25.502Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T21:51:31.497Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:02:39.869Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:04:14.552Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:23:25.277Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T22:23:25.360Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T22:23:26.159Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:23:26.281Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T22:23:26.280Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:23:26.282Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T22:25:52.885Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:37:05.530Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T22:37:05.629Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T22:37:05.978Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:37:05.995Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:37:05.995Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T22:37:05.995Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T22:40:41.655Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T22:40:41.746Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T22:40:42.627Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:40:42.787Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:40:42.788Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-13T22:40:42.788Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T22:43:05.847Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-13T22:43:05.847Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-13T22:43:05.847Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-13T22:43:10.852Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-13T22:43:10.903Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-13T22:43:11.950Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:43:12.087Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-13T22:43:12.088Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-13T22:43:12.087Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T00:19:10.634Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T00:19:10.737Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T00:19:11.121Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T00:19:11.163Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T00:19:11.163Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T00:19:11.163Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T00:25:22.596Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T00:25:22.716Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T00:25:23.668Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T00:25:23.669Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T00:25:23.680Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T00:25:23.669Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T00:51:58.254Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T01:14:43.987Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T01:14:44.089Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T01:14:44.597Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T01:14:44.686Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T01:14:44.688Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T01:14:44.687Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T02:54:34.398Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-14T02:54:34.398Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-14T02:54:34.398Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-14T02:54:39.403Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T02:54:39.451Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T02:54:39.839Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T02:54:39.861Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T02:54:39.861Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T02:54:39.861Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:13:10.257Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-14T03:13:10.257Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-14T03:13:10.257Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-14T03:13:15.263Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:13:15.309Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:13:15.719Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:13:15.790Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:13:15.789Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:13:15.790Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:22:44.256Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:22:44.355Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:22:45.102Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:22:45.206Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:22:45.206Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:22:45.206Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:28:04.523Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:28:04.615Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:28:05.120Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:28:05.187Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:28:05.188Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:28:05.188Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:30:42.357Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:30:42.456Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:30:42.878Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:30:42.879Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:30:42.879Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:30:42.899Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:34:13.370Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:34:13.498Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:34:14.558Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:34:14.705Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:34:14.706Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:34:14.707Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:38:26.405Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:38:26.517Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:38:27.021Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:38:27.076Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:38:27.076Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:38:27.076Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:41:48.377Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:41:48.484Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:41:48.901Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:41:48.965Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:41:48.966Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:41:48.966Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:46:39.529Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:46:39.628Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:46:40.592Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:46:40.723Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:46:40.723Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:46:40.724Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:48:26.833Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:48:26.938Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:48:27.851Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:48:27.998Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:48:27.998Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:48:27.999Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:52:34.075Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:52:34.218Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:52:34.708Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:52:34.740Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:52:34.740Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:52:34.740Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:56:32.341Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T03:56:32.436Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T03:56:32.888Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T03:56:32.908Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T03:56:32.908Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T03:56:32.907Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:00:10.657Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T04:00:10.739Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T04:00:11.285Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:00:11.328Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T04:00:11.328Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T04:00:11.328Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:08:40.002Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T04:08:40.092Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T04:08:40.700Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:08:40.814Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:08:40.814Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T04:08:40.815Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T04:11:35.933Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T04:11:36.049Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T04:11:36.987Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:11:37.106Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:11:37.108Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T04:11:37.109Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T04:25:09.761Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T04:25:09.843Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T04:25:10.312Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:25:10.327Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:25:10.327Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T04:25:10.327Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T04:33:45.263Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T04:33:45.382Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T04:33:46.321Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:33:46.425Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T04:33:46.426Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T04:33:46.426Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T04:44:19.998Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:13:31.130Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:13:31.247Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:13:31.682Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:13:31.713Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:13:31.714Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:13:31.714Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:15:01.827Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:15:01.925Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:15:02.792Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:15:02.885Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:15:02.885Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:15:02.885Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:17:38.788Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:17:38.886Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:17:39.526Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:17:39.593Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:17:39.594Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:17:39.594Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:19:31.633Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:19:31.714Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:19:32.659Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:19:32.777Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:19:32.778Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:19:32.778Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:22:13.274Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:22:13.380Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:22:14.459Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:22:14.562Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:22:14.562Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:22:14.562Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:25:37.675Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:25:37.790Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:25:38.198Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:25:38.230Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:25:38.231Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:25:38.231Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:28:35.148Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:28:35.234Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:28:35.713Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:28:35.728Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:28:35.729Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:28:35.729Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:31:16.223Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:31:16.311Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:31:17.238Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:31:17.345Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:31:17.346Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:31:17.346Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T05:41:45.025Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T05:41:45.125Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T05:41:46.023Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:41:46.142Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T05:41:46.144Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T05:41:46.144Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T06:02:50.218Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T06:02:50.301Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T06:02:50.718Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:02:50.754Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T06:02:50.755Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T06:02:50.753Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:08:35.558Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T06:08:35.642Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T06:08:36.731Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:08:36.904Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:08:36.905Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T06:08:36.905Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T06:09:33.047Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:09:59.762Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:19:13.165Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T06:21:25.809Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T15:39:34.102Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T15:39:34.217Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T15:39:35.469Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T15:39:35.470Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T15:39:35.470Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T15:39:35.589Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T15:45:29.342Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T17:21:57.355Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T17:21:57.450Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T17:21:58.190Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T17:21:58.193Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T17:21:58.193Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-14T17:21:58.193Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T20:34:46.050Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T23:21:10.103Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-14T23:21:10.204Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-14T23:21:10.714Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T23:21:11.131Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-14T23:21:11.131Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-14T23:21:11.131Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T02:26:03.094Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-15T02:26:03.095Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-15T02:26:03.095Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-15T02:26:08.100Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T02:26:08.151Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T02:26:09.255Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:26:09.328Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:26:09.328Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T02:26:09.328Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T02:45:55.661Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-15T02:45:55.661Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-15T02:45:55.661Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-15T02:46:00.666Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T02:46:00.712Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T02:46:01.173Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:46:01.216Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:46:01.216Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T02:46:01.216Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T05:10:06.152Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T11:46:27.412Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T11:46:27.497Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T11:46:28.068Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T11:46:28.748Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T11:46:28.748Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T11:46:28.748Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T13:56:25.305Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T14:29:43.473Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T16:43:40.677Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T16:43:40.769Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T16:43:41.280Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T16:43:41.301Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T16:43:41.301Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T16:43:41.302Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T23:32:36.832Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T23:32:36.929Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T23:32:37.354Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:32:37.354Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T23:32:37.354Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T23:33:03.985Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:36:51.170Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T23:36:51.273Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T23:36:51.787Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:36:51.835Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:36:51.835Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T23:36:51.835Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T08:03:42.944Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T08:03:43.092Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T08:03:44.065Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T08:03:44.219Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T08:03:44.220Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T08:03:44.219Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T15:45:52.341Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T16:40:44.125Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T21:58:13.293Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T21:58:13.398Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T21:58:14.528Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T21:58:14.692Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T21:58:14.693Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T21:58:14.692Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:09:42.083Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T22:09:42.184Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T22:09:42.666Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:09:42.796Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:09:42.806Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T22:09:42.807Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T22:18:28.741Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T22:18:28.827Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T22:18:29.759Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:18:29.965Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:18:29.966Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T22:18:29.965Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T22:19:07.788Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:22:14.369Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T22:22:14.457Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T22:22:15.384Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:22:15.568Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T22:22:15.568Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T22:22:15.569Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T22:23:22.131Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:05:31.761Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T23:05:31.850Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T23:05:32.246Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:05:32.302Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:05:32.302Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T23:05:32.302Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T23:06:25.259Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:22:07.977Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T23:22:08.061Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T23:22:08.587Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:22:08.589Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T23:22:08.589Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T23:22:08.647Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:23:15.236Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:31:08.538Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-16T23:31:08.631Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-16T23:31:09.824Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-16T23:31:09.891Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-16T23:31:09.891Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-16T23:31:09.890Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T01:13:38.104Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T02:21:45.135Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T02:24:56.146Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:55:10.677Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T03:55:10.756Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T03:55:11.332Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:55:11.335Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T03:55:11.335Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T03:55:11.335Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T03:56:53.039Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T04:31:04.611Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:18:10.466Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T16:18:10.555Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T16:18:11.117Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:18:11.170Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:18:11.170Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T16:18:11.170Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T16:26:03.354Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T16:26:03.456Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T16:26:03.953Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:26:03.973Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:26:03.973Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T16:26:03.974Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T16:31:26.050Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T16:31:59.910Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T17:02:02.729Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:02:47.185Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T18:02:47.293Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T18:02:47.737Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:02:47.751Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:02:47.752Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T18:02:47.751Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T18:04:14.083Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:07:00.183Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:07:30.522Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:29:20.989Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:31:21.525Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:54:39.879Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T18:54:39.970Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T18:54:40.630Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:54:40.632Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T18:54:40.633Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T18:54:40.633Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T18:55:15.989Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:14:15.619Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T19:14:15.722Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T19:14:16.600Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:14:16.601Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T19:14:16.601Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T19:14:16.616Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:15:45.119Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:15:45.716Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:23:54.019Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:24:04.014Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:24:30.780Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:37:23.640Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T19:37:23.739Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T19:37:24.648Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:37:24.712Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T19:37:24.712Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T19:37:24.711Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:49:25.604Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T19:57:49.068Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:02.600Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T20:08:02.732Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T20:08:03.285Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:03.333Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:03.334Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T20:08:03.335Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T20:08:25.260Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T20:08:25.404Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T20:08:26.058Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:26.130Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:08:26.131Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T20:08:26.131Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T20:11:49.380Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T20:34:17.886Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:07.000Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:47:07.096Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:47:08.393Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:08.393Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:47:08.394Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:47:08.598Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:47:54.614Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:48:27.191Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:49:48.976Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:49:49.067Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:49:49.490Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:49:49.514Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:49:49.515Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:49:49.515Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:50:14.692Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:25.556Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:53:25.640Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:53:26.600Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:26.690Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:53:26.690Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:53:26.690Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:53:53.348Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:57:26.222Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:03.214Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:23.881Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T21:58:23.969Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T21:58:24.352Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:24.422Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T21:58:24.422Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T21:58:24.422Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T21:58:46.651Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:02:16.584Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:02:16.678Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:02:17.834Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:02:17.947Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:02:17.947Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:02:17.948Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:05:25.846Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:05:25.958Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:05:27.160Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:05:27.291Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:05:27.292Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:05:27.292Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:06:53.579Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:06:53.689Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:06:54.618Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:06:54.715Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:06:54.716Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:06:54.714Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:11:54.448Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:13:53.700Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:13:53.784Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:13:54.957Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:13:55.057Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:13:55.057Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:13:55.057Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:14:20.568Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:16:53.399Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:16:53.529Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:16:54.620Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:16:54.735Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:16:54.735Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:16:54.736Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:22:46.746Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:22:46.837Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:22:47.844Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:22:47.967Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:22:47.968Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:22:47.968Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:34:45.682Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:34:46.257Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:34:47.509Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:34:47.676Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:34:47.677Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:34:47.677Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:35:04.924Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:35:05.023Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:35:06.024Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:35:06.155Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:35:06.155Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:35:06.155Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:35:45.999Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:36:02.362Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:37:31.828Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:40:36.035Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:52:26.436Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T22:52:26.535Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T22:52:27.653Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:52:27.792Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T22:52:27.792Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T22:52:27.792Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T22:55:25.498Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:01:00.391Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:01:00.492Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:01:03.559Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:01:03.796Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:01:03.796Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:01:03.794Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:02:03.030Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:17:29.859Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:17:29.958Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:17:31.074Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:17:31.244Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:17:31.244Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:17:31.244Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:18:36.187Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:22.281Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:20:22.373Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:20:23.002Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:23.066Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:20:23.065Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:20:23.066Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:20:54.721Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:21:04.626Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:21:18.054Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:24:48.906Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:24:49.002Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:24:49.829Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:24:50.141Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:24:50.141Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:24:50.140Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:25:24.410Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:11.085Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:29:11.201Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:29:11.833Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:11.904Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:29:11.903Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:29:11.904Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:29:52.000Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:31:32.944Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:31:33.025Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:31:33.458Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:31:33.526Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:31:33.525Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:31:33.526Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:32:22.518Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:16.680Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:28.510Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:38.219Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:33:58.842Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:34:10.352Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:41:22.889Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:41:22.984Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:41:24.044Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:41:24.206Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:41:24.206Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:41:24.206Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:42:03.229Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:51:28.870Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:51:28.969Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:51:30.020Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:51:30.128Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:51:30.128Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:51:30.128Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:52:41.952Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:56:29.527Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-17T23:56:29.526Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-17T23:56:29.527Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-17T23:56:34.533Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-17T23:56:34.594Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-17T23:56:35.428Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:56:35.566Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-17T23:56:35.566Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-17T23:56:35.566Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-17T23:59:47.265Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:04:51.898Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:04:52.012Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:04:52.654Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:04:52.700Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:04:52.701Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:04:52.701Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:05:53.272Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:06:30.645Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:07:07.922Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:07:20.883Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:15:16.069Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T00:15:16.070Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T00:15:16.070Z] [ERROR] [session] Conexión cerrada {"statusCode":503}
+[2025-11-18T00:15:21.074Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:15:21.138Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:15:21.629Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:15:21.658Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:15:21.659Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:15:21.659Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:16:17.865Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:16:17.957Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:16:18.403Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:16:18.470Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:16:18.471Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:16:18.471Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:17:39.989Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:20:53.706Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:20:53.804Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:20:54.785Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:20:54.881Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:20:54.881Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:20:54.881Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:22:25.698Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:24:09.171Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:24:09.278Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:24:10.181Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:24:10.337Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:24:10.338Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:24:10.338Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:25:02.436Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:25:18.611Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:25:37.526Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:25:53.840Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:26:29.601Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:27:49.309Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:28:04.265Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:28:26.520Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:28:36.426Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:29:03.667Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:29:40.094Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:30:39.386Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:31:06.620Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:33:26.633Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:50:06.206Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:50:06.314Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:50:06.739Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:50:06.773Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:50:06.772Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:50:06.773Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T00:54:51.219Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T00:54:51.313Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T00:54:51.753Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:54:51.786Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T00:54:51.786Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T00:54:51.786Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T01:03:04.498Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T01:03:04.597Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T01:03:05.752Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:03:05.926Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:03:05.926Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T01:03:05.927Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T01:08:07.174Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:08:27.417Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:10:09.523Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:10:32.675Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:10:50.716Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:11:33.886Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:24:39.421Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:28:26.923Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:28:39.772Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:48:11.698Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:58:48.358Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T01:59:43.053Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T13:43:53.773Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T13:43:53.885Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T13:43:54.234Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T13:43:54.235Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T13:43:54.235Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T13:43:54.337Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T13:52:49.205Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T14:00:21.493Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T14:09:43.397Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T16:10:55.306Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T16:10:55.306Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T16:10:55.306Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-18T16:11:00.311Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T16:11:00.362Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T16:11:00.905Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T16:11:00.956Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T16:11:00.957Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T16:11:00.957Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T17:28:21.148Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T17:28:21.235Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T17:28:22.314Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T17:28:22.601Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T17:28:22.601Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T17:28:22.601Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T17:29:18.486Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:28:49.777Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T18:28:49.678Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T18:28:50.252Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:28:50.257Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:28:50.258Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T18:28:50.259Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T18:40:00.441Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T18:40:00.544Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T18:40:00.905Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:40:00.950Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:40:00.950Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T18:40:00.950Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T18:41:00.658Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:45:37.205Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T18:45:37.393Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T18:45:37.684Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:45:37.710Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T18:45:37.711Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T18:45:37.711Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T18:46:12.766Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:26:26.663Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T19:26:26.777Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T19:26:27.223Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:26:27.225Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T19:26:27.226Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T19:26:27.313Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:27:52.549Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:28:39.028Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:30:13.256Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:39:51.840Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:57:41.533Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T19:57:41.628Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T19:57:42.044Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:57:42.114Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T19:57:42.128Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T19:57:42.128Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T20:16:06.113Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:16:06.211Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:16:06.783Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:16:06.872Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:16:06.872Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T20:16:06.873Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T20:18:52.333Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:18:52.465Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:18:52.980Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:18:53.045Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T20:18:53.046Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T20:18:53.045Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:27:16.497Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:27:16.623Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:27:17.460Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:27:17.620Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:27:17.621Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-18T20:27:17.621Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-18T20:43:50.647Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-18T20:47:28.379Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:47:28.480Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:47:30.834Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:47:30.835Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:47:30.835Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:47:35.837Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:47:35.885Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:47:37.352Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:47:37.352Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:47:37.352Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:47:42.354Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:47:42.400Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:47:44.454Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:47:44.454Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:47:44.454Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:47:49.456Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:47:49.502Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:47:53.079Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:47:53.079Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:47:53.079Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:47:58.086Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:47:58.137Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:48:03.630Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:48:03.736Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:48:08.971Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:48:08.972Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:48:08.972Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:48:13.975Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:48:14.023Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:48:21.096Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-18T20:48:21.204Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:48:23.539Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:48:23.539Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:48:23.539Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:48:39.982Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:48:40.200Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:48:42.175Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:48:42.175Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:48:42.175Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:49:16.197Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:49:16.595Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:49:19.211Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:49:19.212Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:49:19.212Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:49:24.213Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:49:24.294Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:49:26.088Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:49:26.089Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:49:26.089Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:49:31.091Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:49:31.144Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:49:35.179Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:49:35.180Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:49:35.179Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:49:40.185Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:49:40.245Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:49:42.222Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:49:42.222Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:49:42.222Z] [ERROR] [session] Conexión cerrada {"statusCode":405}
+[2025-11-18T20:49:47.225Z] [INFO] [session] Sesiones anteriores eliminadas (no había sesión activa) 
+[2025-11-18T20:49:47.278Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:52:52.176Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:52:55.044Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:52:55.045Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:52:55.045Z] [ERROR] [session] Conexión cerrada {"statusCode":405,"error":"Connection Failure"}
+[2025-11-18T20:53:00.046Z] [INFO] [session] No hay sesiones previas 
+[2025-11-18T20:53:00.100Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-18T20:53:02.319Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-18T20:53:02.320Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-18T20:53:02.319Z] [ERROR] [session] Conexión cerrada {"statusCode":405,"error":"Connection Failure"}
+[2025-11-19T00:45:42.822Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":1}
+[2025-11-19T00:45:43.407Z] [INFO] [session] QR code generado para autenticación 
+[2025-11-19T00:45:43.379Z] [INFO] [session] Estado: undefined {"qr":true,"attempt":1}
+[2025-11-19T00:46:05.913Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":1}
+[2025-11-19T00:46:06.349Z] [INFO] [session] Estado: close {"status":"close","qr":false,"attempt":1}
+[2025-11-19T00:46:06.350Z] [INFO] [session] Reconectando en 2944.363758665077ms... (intento 2) 
+[2025-11-19T00:46:06.349Z] [ERROR] [session] Conexión cerrada {"statusCode":515,"error":"Stream Errored (restart required)","attempt":1}
+[2025-11-19T00:46:09.351Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":2}
+[2025-11-19T00:46:10.424Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":2}
+[2025-11-19T00:46:10.424Z] [INFO] [session] Estado: open {"status":"open","qr":false,"attempt":2}
+[2025-11-19T00:46:10.424Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:33@s.whatsapp.net"}
+[2025-11-19T00:46:10.467Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":0}
+[2025-11-19T00:47:11.863Z] [INFO] [session] Estado: close {"status":"close","qr":false,"attempt":0}
+[2025-11-19T00:47:11.863Z] [ERROR] [session] Conexión cerrada {"statusCode":401,"error":"Stream Errored (conflict)","attempt":0}
+[2025-11-19T00:47:11.870Z] [INFO] [session] Sesión eliminada por error crítico 
+[2025-11-19T00:47:11.870Z] [INFO] [session] Reconectando en 1856.5660799787206ms... (intento 1) 
+[2025-11-19T00:47:13.783Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":1}
+[2025-11-19T00:47:14.051Z] [INFO] [session] Estado: undefined {"qr":true,"attempt":1}
+[2025-11-19T00:47:14.076Z] [INFO] [session] QR code generado para autenticación 
+[2025-11-19T00:47:29.355Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":1}
+[2025-11-19T00:47:30.015Z] [INFO] [session] Estado: undefined {"qr":true,"attempt":1}
+[2025-11-19T00:47:30.048Z] [INFO] [session] QR code generado para autenticación 
+[2025-11-19T00:47:43.069Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":1}
+[2025-11-19T00:47:43.671Z] [INFO] [session] Estado: close {"status":"close","qr":false,"attempt":1}
+[2025-11-19T00:47:43.672Z] [INFO] [session] Reconectando en 2535.050752527552ms... (intento 2) 
+[2025-11-19T00:47:43.671Z] [ERROR] [session] Conexión cerrada {"statusCode":515,"error":"Stream Errored (restart required)","attempt":1}
+[2025-11-19T00:47:46.255Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":2}
+[2025-11-19T00:47:48.526Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":2}
+[2025-11-19T00:47:48.526Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:34@s.whatsapp.net"}
+[2025-11-19T00:47:48.526Z] [INFO] [session] Estado: open {"status":"open","qr":false,"attempt":2}
+[2025-11-19T00:47:48.653Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":0}
+[2025-11-19T00:48:49.883Z] [INFO] [session] Estado: close {"status":"close","qr":false,"attempt":0}
+[2025-11-19T00:48:49.883Z] [ERROR] [session] Conexión cerrada {"statusCode":401,"error":"Stream Errored (conflict)","attempt":0}
+[2025-11-19T00:48:49.888Z] [INFO] [session] Reconectando en 1848.6388759664737ms... (intento 1) 
+[2025-11-19T00:48:49.888Z] [INFO] [session] Sesión eliminada por error crítico 
+[2025-11-19T00:48:51.797Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":1}
+[2025-11-19T00:48:52.434Z] [INFO] [session] Estado: undefined {"qr":true,"attempt":1}
+[2025-11-19T00:48:52.459Z] [INFO] [session] QR code generado para autenticación 
+[2025-11-19T00:53:33.031Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":1}
+[2025-11-19T00:53:33.603Z] [INFO] [session] Estado: undefined {"qr":true,"attempt":1}
+[2025-11-19T00:53:33.639Z] [INFO] [session] QR code generado para autenticación 
+[2025-11-19T00:53:46.958Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":1}
+[2025-11-19T00:53:47.372Z] [INFO] [session] Reconectando en 2047.0410825835042ms... (intento 2) 
+[2025-11-19T00:53:47.369Z] [INFO] [session] Estado: close {"status":"close","qr":false,"attempt":1}
+[2025-11-19T00:53:47.370Z] [ERROR] [session] Conexión cerrada {"statusCode":515,"error":"Stream Errored (restart required)","attempt":1}
+[2025-11-19T00:53:49.493Z] [INFO] [session] Estado: connecting {"status":"connecting","qr":false,"attempt":2}
+[2025-11-19T00:53:51.676Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":2}
+[2025-11-19T00:53:51.677Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:35@s.whatsapp.net"}
+[2025-11-19T00:53:51.676Z] [INFO] [session] Estado: open {"status":"open","qr":false,"attempt":2}
+[2025-11-19T00:53:51.781Z] [INFO] [session] Estado: undefined {"qr":false,"attempt":0}
+[2025-11-19T00:55:31.531Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-19T00:55:31.630Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-19T00:55:35.302Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-19T00:55:35.302Z] [ERROR] [session] Error crítico, necesita reautenticación 
+[2025-11-19T00:55:35.302Z] [ERROR] [session] Conexión cerrada {"statusCode":401}

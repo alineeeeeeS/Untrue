@@ -1,0 +1,703 @@
+[2025-11-15T00:00:11.016Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T00:01:40.559Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T00:14:49.199Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:15:30.246Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"maldito pq no avisó temprano entonces","type":"received"}
+[2025-11-15T00:15:31.281Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"basura","type":"received"}
+[2025-11-15T00:15:45.771Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T00:15:45.970Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T00:20:20.041Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"habla","type":"received"}
+[2025-11-15T00:20:29.151Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"parasito","type":"received"}
+[2025-11-15T00:20:32.856Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajá","type":"received"}
+[2025-11-15T00:20:33.859Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ya va","type":"received"}
+[2025-11-15T00:20:59.259Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:25:00.982Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"toy comiendo","type":"received"}
+[2025-11-15T00:35:24.703Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"habla","type":"received"}
+[2025-11-15T00:35:40.533Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T00:35:50.640Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"habla","type":"received"}
+[2025-11-15T00:35:58.280Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"avisa","type":"received"}
+[2025-11-15T00:36:02.391Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T00:36:03.646Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"voy","type":"received"}
+[2025-11-15T00:36:19.380Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:36:21.453Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:37:17.951Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:37:33.815Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:37:51.670Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:38:08.185Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"le tengo 4 a este","type":"received"}
+[2025-11-15T00:38:15.035Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"igual","type":"received"}
+[2025-11-15T00:38:35.929Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:39:14.951Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:39:23.352Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:40:13.380Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"?","type":"received"}
+[2025-11-15T00:40:19.191Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:40:19.552Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es q vinculó soundcloud con airbuds o q","type":"received"}
+[2025-11-15T00:40:24.463Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"claro","type":"received"}
+[2025-11-15T00:40:47.172Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero se puede tener spotify y soundcloud?","type":"received"}
+[2025-11-15T00:41:05.651Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"spotify como principal y el resto nada mas las cuenta","type":"received"}
+[2025-11-15T00:41:08.284Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"creo","type":"received"}
+[2025-11-15T00:41:21.975Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"o bueno no","type":"received"}
+[2025-11-15T00:41:29.012Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pq si no no saliese","type":"received"}
+[2025-11-15T00:41:41.382Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:41:48.354Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q arrecha esta mrd","type":"received"}
+[2025-11-15T00:41:51.421Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"las percs","type":"received"}
+[2025-11-15T00:42:05.803Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"experimental","type":"received"}
+[2025-11-15T00:42:22.896Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"a mi me salen","type":"received"}
+[2025-11-15T00:43:23.889Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:43:27.313Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:43:40.001Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo digo en el feed","type":"received"}
+[2025-11-15T00:43:51.308Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"también me alaio","type":"received"}
+[2025-11-15T00:43:52.618Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"slaio","type":"received"}
+[2025-11-15T00:43:54.925Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"salió","type":"received"}
+[2025-11-15T00:43:55.618Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aaaa","type":"received"}
+[2025-11-15T00:44:24.548Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"entonces pq esa mrd pone y q pa elegir a una como principal si todas la toma por igual","type":"received"}
+[2025-11-15T00:44:26.136Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sapegato","type":"received"}
+[2025-11-15T00:45:17.031Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"quien sabe bro","type":"received"}
+[2025-11-15T00:45:19.736Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo no sé la verdad","type":"received"}
+[2025-11-15T00:45:26.991Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tienen q añadir samsung music 🦸‍♂️","type":"received"}
+[2025-11-15T00:45:33.538Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"china","type":"received"}
+[2025-11-15T00:45:33.813Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:45:36.885Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lark player","type":"received"}
+[2025-11-15T00:45:49.678Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:46:25.091Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"toy viendo el top 100 de rym of all time y cada vez nos quedan menos","type":"received"}
+[2025-11-15T00:46:53.861Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"cuantos","type":"received"}
+[2025-11-15T00:47:02.966Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"voy a hacer la cuenta","type":"received"}
+[2025-11-15T00:47:57.161Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:48:22.421Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"48/100","type":"received"}
+[2025-11-15T00:48:45.575Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero yo he escuchado vainas q ud no y viceversa","type":"received"}
+[2025-11-15T00:48:53.176Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"por eso","type":"received"}
+[2025-11-15T00:48:54.896Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tpab","type":"received"}
+[2025-11-15T00:48:57.908Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo conté las mías","type":"received"}
+[2025-11-15T00:49:13.352Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"uste debe llevar q si 2 más y ya","type":"received"}
+[2025-11-15T00:49:15.133Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"o 3","type":"received"}
+[2025-11-15T00:49:47.309Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"book","type":"received"}
+[2025-11-15T00:50:52.121Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"49/100","type":"received"}
+[2025-11-15T00:50:59.687Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ve","type":"received"}
+[2025-11-15T00:51:36.238Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:51:40.928Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hay q meterle a los de my bloody valentine","type":"received"}
+[2025-11-15T00:51:49.137Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los más gays","type":"received"}
+[2025-11-15T00:51:55.647Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los beatles son menos gay q eso","type":"received"}
+[2025-11-15T00:52:00.347Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"david bowie","type":"received"}
+[2025-11-15T00:52:16.756Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el de starman es un discazo","type":"received"}
+[2025-11-15T00:52:23.862Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"del top ya le metí a revolver","type":"received"}
+[2025-11-15T00:52:30.996Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"me acuerdo q me gustó cuando empecé a meterle a albumes","type":"received"}
+[2025-11-15T00:52:39.098Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"exiles","type":"received"}
+[2025-11-15T00:52:39.414Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"exiles","type":"received"}
+[2025-11-15T00:52:42.178Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la mejor","type":"received"}
+[2025-11-15T00:52:50.362Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esta y easy money","type":"received"}
+[2025-11-15T00:52:51.661Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ah. no","type":"received"}
+[2025-11-15T00:52:54.237Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es easy money","type":"received"}
+[2025-11-15T00:53:06.066Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T00:53:22.385Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"La gente votando, ya sabes es fácil ingresa a premios potencia 2025 le das click, se abre la pestaña...","type":"received"}
+[2025-11-15T00:53:26.830Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"easy money con los sonidos","type":"received"}
+[2025-11-15T00:53:27.140Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es el más hablado","type":"received"}
+[2025-11-15T00:53:33.992Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"La gente votando, ya sabes es fácil ingresa a premios potencia 2025 le das click, se abre la pestaña...","type":"received"}
+[2025-11-15T00:53:34.167Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"empaquetando algo y riendose","type":"received"}
+[2025-11-15T00:53:51.922Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T00:54:16.955Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:54:38.858Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:54:44.760Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"maldita sea","type":"received"}
+[2025-11-15T00:54:53.758Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajuro le voy a subir la nota","type":"received"}
+[2025-11-15T00:54:58.777Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"al mismo nivel q islands","type":"received"}
+[2025-11-15T00:55:01.409Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:55:09.525Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"na","type":"received"}
+[2025-11-15T00:55:23.112Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"island es más movidito","type":"received"}
+[2025-11-15T00:55:34.698Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"island es mas romantico","type":"received"}
+[2025-11-15T00:55:54.973Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"vease el video de 20 mins sobre king crimson que mande haxe como dos meses","type":"received"}
+[2025-11-15T00:56:02.970Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:56:06.172Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T00:56:38.729Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es de gino saico","type":"received"}
+[2025-11-15T00:56:44.180Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pa q lo busque en yt ps","type":"received"}
+[2025-11-15T00:57:51.024Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mierda","type":"received"}
+[2025-11-15T00:57:56.461Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eno tiene un disco de art rock","type":"received"}
+[2025-11-15T00:58:30.839Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ese bicho es instrumentista","type":"received"}
+[2025-11-15T00:58:32.717Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y ta alto","type":"received"}
+[2025-11-15T00:58:41.106Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"si tiene hasta vainqs postpunk","type":"received"}
+[2025-11-15T00:58:41.508Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"4.01","type":"received"}
+[2025-11-15T01:00:02.685Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"temazo","type":"received"}
+[2025-11-15T01:00:05.270Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa","type":"received"}
+[2025-11-15T01:00:09.128Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se viene","type":"received"}
+[2025-11-15T01:00:17.605Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:00:19.539Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"easy money","type":"received"}
+[2025-11-15T01:00:46.356Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la campana","type":"received"}
+[2025-11-15T01:01:55.240Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:02:04.149Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:02:10.731Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los drums","type":"received"}
+[2025-11-15T01:02:13.393Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"full swing","type":"received"}
+[2025-11-15T01:02:16.355Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:02:39.176Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:02:47.390Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aqui","type":"received"}
+[2025-11-15T01:03:10.570Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:03:14.102Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:04:24.529Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"las portadas de estos bichos tmb van de acorde a los discos","type":"received"}
+[2025-11-15T01:05:05.723Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:05:08.266Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pq","type":"received"}
+[2025-11-15T01:05:18.667Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mmgv igual q radiohead","type":"received"}
+[2025-11-15T01:05:27.823Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q el disco suena a la portada","type":"received"}
+[2025-11-15T01:05:36.378Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no vale","type":"received"}
+[2025-11-15T01:05:44.084Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:05:45.717Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"este disco no suena a un maldito sol así","type":"received"}
+[2025-11-15T01:06:02.890Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"claro q si maldito mmgv","type":"received"}
+[2025-11-15T01:06:08.552Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la experimentacion","type":"received"}
+[2025-11-15T01:06:10.331Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"las percs","type":"received"}
+[2025-11-15T01:06:15.107Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:16.481Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:21.810Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:24.369Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:27.182Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:41.732Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:06:44.420Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:07:14.040Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:07:14.377Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"después de este otro o q","type":"received"}
+[2025-11-15T01:07:17.606Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:07:27.352Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"cual","type":"received"}
+[2025-11-15T01:07:34.994Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no sé","type":"received"}
+[2025-11-15T01:07:46.708Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:08:00.450Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"🦸‍♂️","type":"received"}
+[2025-11-15T01:08:05.679Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"voy a ver en el top 100","type":"received"}
+[2025-11-15T01:08:07.352Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:08:12.893Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo veo","type":"received"}
+[2025-11-15T01:08:19.169Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"dejame a mi","type":"received"}
+[2025-11-15T01:08:21.838Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo porfa dejame","type":"received"}
+[2025-11-15T01:08:31.329Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el de bowie digo yo","type":"received"}
+[2025-11-15T01:08:39.349Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:08:58.352Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#smedia","type":"received"}
+[2025-11-15T01:08:58.547Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"120363160616746507@g.us","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T01:09:06.979Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-15T01:09:08.741Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T01:09:32.632Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:09:38.151Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no habia tambor","type":"received"}
+[2025-11-15T01:09:59.964Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Cañi y yo siempre colocándonos la 10","type":"received"}
+[2025-11-15T01:10:02.395Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"discovery de daft punk o q","type":"received"}
+[2025-11-15T01:10:08.503Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"cuanto dura","type":"received"}
+[2025-11-15T01:10:17.224Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"1h","type":"received"}
+[2025-11-15T01:10:18.247Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Desparramando billete","type":"received"}
+[2025-11-15T01:10:26.901Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"bofff no se","type":"received"}
+[2025-11-15T01:10:29.658Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:10:42.897Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"👨🏽‍🌾","type":"received"}
+[2025-11-15T01:10:58.492Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"temprano","type":"received"}
+[2025-11-15T01:11:03.842Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"un disco corto","type":"received"}
+[2025-11-15T01:11:16.892Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mmgv el lunes voy a tar como un enfermo","type":"received"}
+[2025-11-15T01:11:21.442Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aparte es semana de examenes","type":"received"}
+[2025-11-15T01:11:22.775Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"abbey road","type":"received"}
+[2025-11-15T01:11:29.382Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no nada","type":"received"}
+[2025-11-15T01:11:29.947Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"cuanto","type":"received"}
+[2025-11-15T01:11:42.246Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ese es largo tmb","type":"received"}
+[2025-11-15T01:12:03.172Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"47","type":"received"}
+[2025-11-15T01:12:08.963Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aaa","type":"received"}
+[2025-11-15T01:12:15.674Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero pille esto","type":"received"}
+[2025-11-15T01:12:18.526Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"a ver si quiere","type":"received"}
+[2025-11-15T01:12:22.113Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q","type":"received"}
+[2025-11-15T01:12:26.307Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:12:31.101Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:12:40.520Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:12:43.293Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"37","type":"received"}
+[2025-11-15T01:13:00.100Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ese taba viendo","type":"received"}
+[2025-11-15T01:13:04.640Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero a q suena esa mierda","type":"received"}
+[2025-11-15T01:13:07.524Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"baroque pop","type":"received"}
+[2025-11-15T01:13:18.048Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los beatles super exagerado","type":"received"}
+[2025-11-15T01:13:37.869Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"si es baroque es pq es maximalista ps","type":"received"}
+[2025-11-15T01:13:57.612Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ese pues","type":"received"}
+[2025-11-15T01:14:02.229Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T01:14:54.002Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:14:55.361Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:15:40.778Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"part two","type":"received"}
+[2025-11-15T01:15:45.483Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T01:16:37.293Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:20:32.797Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:20:47.415Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:21:03.311Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:21:59.418Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ya lo descargué","type":"received"}
+[2025-11-15T01:22:10.012Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"igual","type":"received"}
+[2025-11-15T01:22:57.048Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T01:23:01.932Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"parla","type":"received"}
+[2025-11-15T01:23:42.164Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:23:43.688Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:23:50.454Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ya va","type":"received"}
+[2025-11-15T01:25:10.297Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ajá","type":"received"}
+[2025-11-15T01:25:16.264Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:25:27.556Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T01:25:35.653Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"avisa","type":"received"}
+[2025-11-15T01:25:39.296Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aja","type":"received"}
+[2025-11-15T01:25:40.563Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"voy","type":"received"}
+[2025-11-15T01:25:43.726Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el hit","type":"received"}
+[2025-11-15T01:26:05.644Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:26:28.237Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:26:39.928Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"este suena en mi peque ño angelito","type":"received"}
+[2025-11-15T01:27:28.855Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:27:34.466Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:27:41.056Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:28:16.564Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"you","type":"received"}
+[2025-11-15T01:28:31.899Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:28:50.627Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:30:40.635Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"coño no ta mal","type":"received"}
+[2025-11-15T01:30:50.981Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lo q pasa es q acabamos de escuchar crimson ps","type":"received"}
+[2025-11-15T01:30:53.708Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"muy gay ese","type":"received"}
+[2025-11-15T01:31:00.915Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"también","type":"received"}
+[2025-11-15T01:31:15.956Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ta la vara muy alta ps como un webo paraisimo ps","type":"received"}
+[2025-11-15T01:31:29.089Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no la vara alta","type":"received"}
+[2025-11-15T01:31:34.886Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"si no q el oído queda en otro tema","type":"received"}
+[2025-11-15T01:31:50.988Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el oido espera una mrd arrechisima ps","type":"received"}
+[2025-11-15T01:32:04.239Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esta mrd es muy tipica","type":"received"}
+[2025-11-15T01:32:16.363Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es la musica que ponen en las peliculas ps","type":"received"}
+[2025-11-15T01:32:23.701Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"claro","type":"received"}
+[2025-11-15T01:32:45.447Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"son corticas aparte","type":"received"}
+[2025-11-15T01:32:50.093Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no van pa ningún lado","type":"received"}
+[2025-11-15T01:33:31.190Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#reel https://www.instagram.com/reel/DPkIZWUkeb_/?igsh=MTM0djgwODdkZ3o0NA==","type":"received"}
+[2025-11-15T01:33:31.865Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los bichos sabian como iba a ser el futuro con tiktok bro","type":"received"}
+[2025-11-15T01:33:42.121Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"30837949124772@lid","command":"reel","args":["https://www.instagram.com/reel/DPkIZWUkeb_/?igsh=MTM0djgwODdkZ3o0NA=="],"success":true,"result":null}
+[2025-11-15T01:34:00.924Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:34:16.837Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los bichos sabían q adam sandler iba a producir cine","type":"received"}
+[2025-11-15T01:34:25.834Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#s","type":"received"}
+[2025-11-15T01:34:27.764Z] [SUCCESS] [command] Comando ejecutado: s {"user":"30837949124772@lid","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T01:35:09.857Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"claro","type":"received"}
+[2025-11-15T01:36:50.020Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q cagada","type":"received"}
+[2025-11-15T01:36:57.154Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"es demasiado gay","type":"received"}
+[2025-11-15T01:37:08.510Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"asi es la primera etapa de los beatles","type":"received"}
+[2025-11-15T01:37:31.208Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"dsps de revolver es otro peo","type":"received"}
+[2025-11-15T01:37:49.061Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"na muy gay","type":"received"}
+[2025-11-15T01:37:52.359Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se puso","type":"received"}
+[2025-11-15T01:37:58.511Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tuvieron bien las 3 primeras","type":"received"}
+[2025-11-15T01:40:45.579Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ta buena","type":"received"}
+[2025-11-15T01:40:53.587Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pura navida esa mierda","type":"received"}
+[2025-11-15T01:41:00.757Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa","type":"received"}
+[2025-11-15T01:41:20.103Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la mejor hasta ahora","type":"received"}
+[2025-11-15T01:41:28.897Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"que no vuelvan a cantar esos malditos","type":"received"}
+[2025-11-15T01:41:37.616Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:41:40.602Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"los coritos","type":"received"}
+[2025-11-15T01:41:43.119Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"puro hey","type":"received"}
+[2025-11-15T01:41:45.526Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hey!","type":"received"}
+[2025-11-15T01:42:07.633Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:43:27.582Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no vale","type":"received"}
+[2025-11-15T01:43:31.225Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q mariquería","type":"received"}
+[2025-11-15T01:44:25.405Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:44:27.957Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:44:44.731Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-15T01:44:44.987Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T01:45:06.464Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"god only","type":"received"}
+[2025-11-15T01:45:15.425Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"este ta remasterizado","type":"received"}
+[2025-11-15T01:45:28.038Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el único","type":"received"}
+[2025-11-15T01:46:16.120Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:46:41.989Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:46:51.894Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:47:02.326Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T01:47:56.769Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:48:11.312Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:48:30.219Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q se acabe ya q no aguanto","type":"received"}
+[2025-11-15T01:48:46.330Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"prefiero q me pongan bohemian rhapsody todo un día","type":"received"}
+[2025-11-15T01:49:08.136Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"magnificoo\noooo\noooo\nooo\nooooo","type":"received"}
+[2025-11-15T01:49:09.972Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"galileo","type":"received"}
+[2025-11-15T01:49:15.289Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"GALILEO 🗣️","type":"received"}
+[2025-11-15T01:49:26.479Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"OOH MAMA MIA MAMA MIA","type":"received"}
+[2025-11-15T01:49:29.174Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sapegato","type":"received"}
+[2025-11-15T01:49:37.566Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"mama mia let me go","type":"received"}
+[2025-11-15T01:49:40.502Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jqjajajjaja","type":"received"}
+[2025-11-15T01:49:41.761Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"epa verda","type":"received"}
+[2025-11-15T01:49:53.939Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"en el top 100 de rym no hay ni un disco de queen","type":"received"}
+[2025-11-15T01:50:02.404Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tio karol ponia los hits de queen a todo volumen cuando le pocaba el culo","type":"received"}
+[2025-11-15T01:50:12.907Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"obvio mmgv","type":"received"}
+[2025-11-15T01:50:20.482Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esos bichos puro hit de radio","type":"received"}
+[2025-11-15T01:50:31.940Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"singlecito ahí","type":"received"}
+[2025-11-15T01:50:48.514Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"discos con dos canciones buenas","type":"received"}
+[2025-11-15T01:51:17.946Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"como journey o aerosmith","type":"received"}
+[2025-11-15T01:51:20.341Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"bandas asi ps","type":"received"}
+[2025-11-15T01:51:32.240Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aerosmith","type":"received"}
+[2025-11-15T01:51:34.951Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"q hit tienen esos","type":"received"}
+[2025-11-15T01:51:45.207Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"crazy","type":"received"}
+[2025-11-15T01:51:53.839Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"como dice ese","type":"received"}
+[2025-11-15T01:52:12.114Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"creise cteise creise\nai go creise","type":"received"}
+[2025-11-15T01:52:23.376Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y la famosisima","type":"received"}
+[2025-11-15T01:52:28.985Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:52:29.372Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no me acuerdo el nombre","type":"received"}
+[2025-11-15T01:52:51.625Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"https://open.spotify.com/track/1xsYj84j7hUDDnTTerGWlH?si=JTWGE3LkQlWXLXF6NPggSg","type":"received"}
+[2025-11-15T01:52:54.038Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"esta","type":"received"}
+[2025-11-15T01:53:04.621Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"y la otra es la q sale en armagedon","type":"received"}
+[2025-11-15T01:53:12.306Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"DONT WANNA CLOSE MY EYES🗣️","type":"received"}
+[2025-11-15T01:53:13.993Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ahh","type":"received"}
+[2025-11-15T01:54:24.148Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"todos los temas pop de esa época puro low end","type":"received"}
+[2025-11-15T01:54:29.784Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"20 segundos de low end","type":"received"}
+[2025-11-15T01:54:31.260Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"✨","type":"received"}
+[2025-11-15T01:54:43.222Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"era lo nuevo bro 🦸‍♂️","type":"received"}
+[2025-11-15T01:55:15.983Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"me duele la cabeza ya","type":"received"}
+[2025-11-15T01:55:17.534Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T01:55:25.339Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"jajajjaja","type":"received"}
+[2025-11-15T01:55:44.831Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"aaa","type":"received"}
+[2025-11-15T01:55:51.767Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pero no le duele cuando mama cuca","type":"received"}
+[2025-11-15T01:55:54.248Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"maldito hetero","type":"received"}
+[2025-11-15T01:56:13.722Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:00:46.822Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"3.5","type":"received"}
+[2025-11-15T02:01:07.496Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"2.5","type":"received"}
+[2025-11-15T02:01:39.726Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:01:53.434Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:02:19.046Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"eso de muse sera de la banda","type":"received"}
+[2025-11-15T02:02:27.981Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hay q meterle al disvo bueno de ellos","type":"received"}
+[2025-11-15T02:02:33.268Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el segundo es","type":"received"}
+[2025-11-15T02:02:43.352Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:02:55.445Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:03:04.692Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se acaboúm","type":"received"}
+[2025-11-15T02:03:05.245Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"se acaboum","type":"received"}
+[2025-11-15T02:03:16.810Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T02:26:03.094Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-15T02:26:03.095Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-15T02:26:03.095Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-15T02:26:08.100Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T02:26:08.100Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T02:26:08.149Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T02:26:08.151Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T02:26:09.255Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:26:09.328Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:26:09.328Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T02:26:09.328Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T02:45:55.661Z] [INFO] [session] Estado de conexión: close {"status":"close","qr":false}
+[2025-11-15T02:45:55.661Z] [ERROR] [session] Conexión cerrada {"statusCode":428}
+[2025-11-15T02:45:55.661Z] [INFO] [session] Reconectando en 5 segundos... 
+[2025-11-15T02:46:00.666Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T02:46:00.666Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T02:46:00.708Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T02:46:00.712Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T02:46:01.173Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:46:01.216Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T02:46:01.216Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T02:46:01.216Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T02:50:54.307Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T02:50:54.433Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"¡Vamos Todas y Todos Barinas!","type":"received"}
+[2025-11-15T03:10:02.175Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T03:15:05.273Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#reel https://www.instagram.com/reel/DQIZmQqj-zR/?igsh=MWtycnIwamM5aDF0Mw==","type":"received"}
+[2025-11-15T03:15:18.536Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"30837949124772@lid","command":"reel","args":["https://www.instagram.com/reel/DQIZmQqj-zR/?igsh=MWtycnIwamM5aDF0Mw=="],"success":true,"result":null}
+[2025-11-15T03:15:25.888Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#reel https://www.instagram.com/reel/DQIZmQqj-zR/?igsh=MWtycnIwamM5aDF0Mw==","type":"received"}
+[2025-11-15T03:15:33.626Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"120363387470929207@g.us","command":"reel","args":["https://www.instagram.com/reel/DQIZmQqj-zR/?igsh=MWtycnIwamM5aDF0Mw=="],"success":true,"result":null}
+[2025-11-15T03:16:26.947Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Ta jugando mucho la selección","type":"received"}
+[2025-11-15T03:16:28.166Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Diosmio","type":"received"}
+[2025-11-15T03:16:34.929Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Se están sacando la verga contra Australia","type":"received"}
+[2025-11-15T03:16:37.885Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Y van ganando 1-0","type":"received"}
+[2025-11-15T03:16:41.788Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"😭😭😭😭","type":"received"}
+[2025-11-15T03:20:45.100Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Epa","type":"received"}
+[2025-11-15T03:20:48.390Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"@30837949124772","type":"received"}
+[2025-11-15T03:21:06.996Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Sabe quien tenga una play qué la venda","type":"received"}
+[2025-11-15T03:21:10.811Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T03:21:29.350Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Así de una","type":"received"}
+[2025-11-15T03:21:34.447Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Tengo la plata","type":"received"}
+[2025-11-15T03:21:35.071Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Tengo la plata","type":"received"}
+[2025-11-15T03:21:35.311Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Así de una","type":"received"}
+[2025-11-15T03:23:00.115Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"play q","type":"received"}
+[2025-11-15T03:23:34.757Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"?","type":"received"}
+[2025-11-15T03:28:43.210Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post https://www.instagram.com/p/DQ-wcsSkfRR/?igsh=Ym81eGFrazZkYWJl","type":"received"}
+[2025-11-15T03:28:53.022Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["https://www.instagram.com/p/DQ-wcsSkfRR/?igsh=Ym81eGFrazZkYWJl"],"success":true,"result":null}
+[2025-11-15T03:28:58.312Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"yo","type":"received"}
+[2025-11-15T03:29:12.782Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 1 https://www.instagram.com/p/DQ-wcsSkfRR/?igsh=Ym81eGFrazZkYWJl","type":"received"}
+[2025-11-15T03:29:18.288Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"3 slim","type":"received"}
+[2025-11-15T03:29:19.670Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["1","https://www.instagram.com/p/DQ-wcsSkfRR/?igsh=Ym81eGFrazZkYWJl"],"success":true,"result":null}
+[2025-11-15T03:29:21.937Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"O super slim","type":"received"}
+[2025-11-15T03:29:31.618Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"nojoda","type":"received"}
+[2025-11-15T03:29:37.472Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"yo pensaba q 4","type":"received"}
+[2025-11-15T03:29:37.969Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Es pa jugar el god of war","type":"received"}
+[2025-11-15T03:29:46.257Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Después me paso pa esa","type":"received"}
+[2025-11-15T03:29:53.023Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"na ya no quiero ir a jugar entonces","type":"received"}
+[2025-11-15T03:29:59.651Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Un amigo la tiene","type":"received"}
+[2025-11-15T03:30:00.596Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T03:30:05.677Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Me la deja en 200","type":"received"}
+[2025-11-15T03:30:15.282Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Con el rd2","type":"received"}
+[2025-11-15T03:30:22.779Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Pero hable","type":"received"}
+[2025-11-15T03:30:25.768Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"pero busque en mercado libre mmgvo","type":"received"}
+[2025-11-15T03:30:30.532Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Na","type":"received"}
+[2025-11-15T03:30:31.452Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"en mercado libre hay ofertas","type":"received"}
+[2025-11-15T03:30:34.888Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Esa mrd","type":"received"}
+[2025-11-15T03:30:37.672Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"q","type":"received"}
+[2025-11-15T03:31:02.575Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T03:31:45.775Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"yo por una franela q pedí me cobraron 1$ en mrw","type":"received"}
+[2025-11-15T03:32:04.201Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"tampoco es tanto","type":"received"}
+[2025-11-15T03:32:26.516Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"y eso de q lo roben pues es q tampoco va a comprarle a un bicho con 2 reseñas y las 2 q sean malas","type":"received"}
+[2025-11-15T04:25:34.037Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"SE DIO NOJODAAA","type":"received"}
+[2025-11-15T04:25:46.994Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T04:34:20.131Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"no fueron capaces de hacer más de un gol los bichos","type":"received"}
+[2025-11-15T04:34:27.535Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"PEGUE PTRO","type":"received"}
+[2025-11-15T04:34:28.722Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"JODA","type":"received"}
+[2025-11-15T04:34:40.416Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T04:34:41.831Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"CHAO","type":"received"}
+[2025-11-15T04:35:43.167Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"eso son como 4 dolaritos","type":"received"}
+[2025-11-15T04:35:47.040Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T04:35:52.849Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Y?","type":"received"}
+[2025-11-15T04:35:57.005Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"4 perros de dolar","type":"received"}
+[2025-11-15T04:36:00.581Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"no vale","type":"received"}
+[2025-11-15T04:36:07.991Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"me hubiese dicho y yo se los regalo","type":"received"}
+[2025-11-15T04:36:14.424Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T04:36:17.015Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"JAJSKAKS","type":"received"}
+[2025-11-15T04:45:34.721Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T05:08:30.837Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt","type":"received"}
+[2025-11-15T05:08:33.950Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":[],"success":true,"result":null}
+[2025-11-15T05:10:01.887Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAvkSmRc/","type":"received"}
+[2025-11-15T05:10:06.152Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T05:10:06.153Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAvkSmRc/"],"success":true,"result":null}
+[2025-11-15T05:10:09.664Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Yo después de pegar dos fijas","type":"received"}
+[2025-11-15T05:10:32.696Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T05:13:51.532Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T05:13:54.375Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T05:29:50.562Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 9 https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=8&igsh=MXhoNmx0MmhyZmY5Yw==","type":"received"}
+[2025-11-15T05:30:10.788Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["9","https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=8&igsh=MXhoNmx0MmhyZmY5Yw=="],"success":true,"result":null}
+[2025-11-15T05:30:29.689Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 10  https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=9&igsh=MXhoNmx0MmhyZmY5Yw==","type":"received"}
+[2025-11-15T05:30:30.694Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["10","","https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=9&igsh=MXhoNmx0MmhyZmY5Yw=="],"success":true,"result":null}
+[2025-11-15T05:30:46.696Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"!post 10 https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=9&igsh=MXhoNmx0MmhyZmY5Yw==","type":"received"}
+[2025-11-15T05:31:15.479Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 9 https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=8&igsh=MXhoNmx0MmhyZmY5Yw==","type":"received"}
+[2025-11-15T05:31:26.317Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["9","https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=8&igsh=MXhoNmx0MmhyZmY5Yw=="],"success":true,"result":null}
+[2025-11-15T05:31:34.164Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 10 https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=9&igsh=MXhoNmx0MmhyZmY5Yw==","type":"received"}
+[2025-11-15T05:31:39.572Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"@243297515737326 @30837949124772","type":"received"}
+[2025-11-15T05:31:44.907Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["10","https://www.instagram.com/p/DQcYTJ9j9JY/?img_index=9&igsh=MXhoNmx0MmhyZmY5Yw=="],"success":true,"result":null}
+[2025-11-15T05:32:03.883Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T05:54:53.516Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"✨✨✨","type":"received"}
+[2025-11-15T06:33:16.467Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T06:33:16.586Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T11:15:29.405Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T11:36:20.617Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T11:36:20.743Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T11:46:27.289Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-15T11:46:27.412Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T11:46:27.410Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T11:46:27.485Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T11:46:27.497Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T11:46:28.068Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T11:46:28.748Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T11:46:28.748Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T11:46:28.748Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T11:46:57.310Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-15T11:46:57.311Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-15T11:46:57.316Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":36,"totalSize":836781,"totalSizeMB":"0.80","logFiles":36,"backupFiles":0}
+[2025-11-15T11:46:57.316Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":36,"totalSize":836781,"totalSizeMB":"0.80","logFiles":36,"backupFiles":0}}
+[2025-11-15T11:48:26.746Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#post https://www.instagram.com/p/DRDeTBhkqja/?igsh=MXJxYTAwcHg5aHN2bw==","type":"received"}
+[2025-11-15T11:48:39.679Z] [SUCCESS] [command] Comando ejecutado: post {"user":"30837949124772@lid","command":"post","args":["https://www.instagram.com/p/DRDeTBhkqja/?igsh=MXJxYTAwcHg5aHN2bw=="],"success":true,"result":null}
+[2025-11-15T11:49:08.908Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#post https://www.instagram.com/p/DQevt7Sks7C/?igsh=NmpiazZobzF5Z2oy","type":"received"}
+[2025-11-15T11:49:23.230Z] [SUCCESS] [command] Comando ejecutado: post {"user":"30837949124772@lid","command":"post","args":["https://www.instagram.com/p/DQevt7Sks7C/?igsh=NmpiazZobzF5Z2oy"],"success":true,"result":null}
+[2025-11-15T11:50:45.259Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#reel https://www.instagram.com/reel/DQ1P_nEDbYz/?igsh=cThoOXM0Ynh3ZnZ1","type":"received"}
+[2025-11-15T11:50:58.813Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"120363387470929207@g.us","command":"reel","args":["https://www.instagram.com/reel/DQ1P_nEDbYz/?igsh=cThoOXM0Ynh3ZnZ1"],"success":true,"result":null}
+[2025-11-15T11:51:17.163Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T11:52:42.686Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T11:53:06.849Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T11:53:08.828Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Jjkkbjkjlbkj","type":"received"}
+[2025-11-15T12:04:08.411Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T12:14:13.227Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T12:31:10.906Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#s","type":"received"}
+[2025-11-15T12:31:11.180Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363387470929207@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T12:31:23.424Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#s","type":"received"}
+[2025-11-15T12:31:24.905Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363387470929207@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T12:37:11.945Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#s","type":"received"}
+[2025-11-15T12:37:13.684Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363160616746507@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T13:56:19.738Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAvyECgD/","type":"received"}
+[2025-11-15T13:56:25.305Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T13:56:25.307Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAvyECgD/"],"success":true,"result":null}
+[2025-11-15T13:57:11.453Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T13:57:16.851Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T13:57:59.218Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post https://www.instagram.com/p/DQe_3F4iXCR/?igsh=dmw5ZHFmMmNkeWcy","type":"received"}
+[2025-11-15T13:58:16.321Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["https://www.instagram.com/p/DQe_3F4iXCR/?igsh=dmw5ZHFmMmNkeWcy"],"success":true,"result":null}
+[2025-11-15T13:58:20.653Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#s","type":"received"}
+[2025-11-15T13:58:21.779Z] [SUCCESS] [command] Comando ejecutado: s {"user":"120363387470929207@g.us","command":"s","args":[],"success":true,"result":null}
+[2025-11-15T14:06:27.843Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T14:10:44.348Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post https://www.instagram.com/p/DQXBrSCDu4r/?igsh=MWp0Z2lmazY4dGxoNg==","type":"received"}
+[2025-11-15T14:11:04.671Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["https://www.instagram.com/p/DQXBrSCDu4r/?igsh=MWp0Z2lmazY4dGxoNg=="],"success":true,"result":null}
+[2025-11-15T14:11:13.825Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#post 1 https://www.instagram.com/p/DQXBrSCDu4r/?igsh=MWp0Z2lmazY4dGxoNg==","type":"received"}
+[2025-11-15T14:11:25.437Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T14:11:25.639Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:11:28.132Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T14:11:28.352Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:11:30.238Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#rotate","type":"received"}
+[2025-11-15T14:11:30.343Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-15T14:11:30.343Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-15T14:11:30.346Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":36,"totalSize":846263,"totalSizeMB":"0.81","logFiles":36,"backupFiles":0}
+[2025-11-15T14:11:30.346Z] [INFO] [logrotate] ✅ Rotación completada en 3ms {"duration":3,"report":{"totalFiles":36,"totalSize":846263,"totalSizeMB":"0.81","logFiles":36,"backupFiles":0}}
+[2025-11-15T14:11:30.464Z] [SUCCESS] [command] Comando ejecutado: rotate {"user":"30837949124772@lid","command":"rotate","args":[],"success":true,"result":null}
+[2025-11-15T14:11:33.053Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#stats","type":"received"}
+[2025-11-15T14:11:33.175Z] [SUCCESS] [command] Comando ejecutado: stats {"user":"30837949124772@lid","command":"stats","args":[],"success":true,"result":null}
+[2025-11-15T14:11:33.176Z] [SUCCESS] [command] Comando ejecutado: stats {"user":"30837949124772@lid","command":"stats","args":[],"success":true,"result":null}
+[2025-11-15T14:11:35.002Z] [SUCCESS] [command] Comando ejecutado: post {"user":"120363387470929207@g.us","command":"post","args":["1","https://www.instagram.com/p/DQXBrSCDu4r/?igsh=MWp0Z2lmazY4dGxoNg=="],"success":true,"result":null}
+[2025-11-15T14:13:11.364Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#post https://www.instagram.com/p/DQjnH0qjOCk/?igsh=eW1rY2FucXF2eWE0","type":"received"}
+[2025-11-15T14:13:31.662Z] [SUCCESS] [command] Comando ejecutado: post {"user":"30837949124772@lid","command":"post","args":["https://www.instagram.com/p/DQjnH0qjOCk/?igsh=eW1rY2FucXF2eWE0"],"success":true,"result":null}
+[2025-11-15T14:17:55.960Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T14:17:56.279Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:19:12.067Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T14:19:13.260Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T14:29:32.506Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T14:29:39.199Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T14:29:39.743Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#tt https://vm.tiktok.com/ZMAvfQTWR/","type":"received"}
+[2025-11-15T14:29:43.473Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T14:29:43.474Z] [SUCCESS] [command] Comando ejecutado: tt {"user":"120363387470929207@g.us","command":"tt","args":["https://vm.tiktok.com/ZMAvfQTWR/"],"success":true,"result":null}
+[2025-11-15T14:32:08.547Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"#ping","type":"received"}
+[2025-11-15T14:32:08.774Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363387470929207@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:37:35.132Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T14:41:19.367Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T14:41:19.698Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:43:06.504Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"","type":"received"}
+[2025-11-15T14:43:11.577Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-15T14:43:11.740Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T14:43:18.734Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-15T14:43:19.436Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T14:43:32.174Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"","type":"received"}
+[2025-11-15T14:43:33.951Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-15T14:43:35.452Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T14:44:04.806Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T14:44:22.097Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"","type":"received"}
+[2025-11-15T14:44:28.829Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#smedia","type":"received"}
+[2025-11-15T14:44:35.512Z] [SUCCESS] [command] Comando ejecutado: smedia {"user":"30837949124772@lid","command":"smedia","args":[],"success":true,"result":null}
+[2025-11-15T14:44:58.548Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T14:44:58.872Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:45:19.358Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"lo q es no tener ocupaciones","type":"received"}
+[2025-11-15T14:45:23.354Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T14:45:34.041Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-15T14:45:34.559Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T14:58:21.692Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ESE CORTE DE PELO 😭😭😭","type":"received"}
+[2025-11-15T14:58:23.585Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"JAJDKAKSKAKSKSK","type":"received"}
+[2025-11-15T15:00:26.317Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"ta arrecho","type":"received"}
+[2025-11-15T15:00:49.955Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"la iguana ya pasó de moda bro","type":"received"}
+[2025-11-15T15:01:04.600Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"el paisa es algo del pasado","type":"received"}
+[2025-11-15T15:02:12.808Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sisa","type":"received"}
+[2025-11-15T15:02:14.568Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"pura tijera","type":"received"}
+[2025-11-15T15:02:28.774Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"tengo desde marzo el año q no me paso una maquina","type":"received"}
+[2025-11-15T15:02:39.165Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T15:05:25.111Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T15:13:47.094Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T15:13:47.367Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T15:36:59.657Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T15:36:59.929Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T15:37:06.348Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T15:37:06.613Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T16:16:47.762Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T16:16:48.061Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T16:16:52.569Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#post https://www.instagram.com/p/DQYDlb0Dklw/?igsh=cW9yaXd0amw1djQy","type":"received"}
+[2025-11-15T16:16:53.844Z] [SUCCESS] [command] Comando ejecutado: post {"user":"30837949124772@lid","command":"post","args":["https://www.instagram.com/p/DQYDlb0Dklw/?igsh=cW9yaXd0amw1djQy"],"success":true,"result":null}
+[2025-11-15T16:17:02.115Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#post 1 https://www.instagram.com/p/DQYDlb0Dklw/?igsh=cW9yaXd0amw1djQy","type":"received"}
+[2025-11-15T16:17:03.065Z] [SUCCESS] [command] Comando ejecutado: post {"user":"30837949124772@lid","command":"post","args":["1","https://www.instagram.com/p/DQYDlb0Dklw/?igsh=cW9yaXd0amw1djQy"],"success":true,"result":null}
+[2025-11-15T16:26:00.250Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T16:43:40.601Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-15T16:43:40.675Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T16:43:40.677Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T16:43:40.758Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T16:43:40.769Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T16:43:41.280Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T16:43:41.301Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T16:43:41.301Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T16:43:41.302Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T16:44:10.612Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-15T16:44:10.613Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-15T16:44:10.616Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":36,"totalSize":862270,"totalSizeMB":"0.82","logFiles":36,"backupFiles":0}
+[2025-11-15T16:44:10.617Z] [INFO] [logrotate] ✅ Rotación completada en 5ms {"duration":5,"report":{"totalFiles":36,"totalSize":862270,"totalSizeMB":"0.82","logFiles":36,"backupFiles":0}}
+[2025-11-15T16:59:14.205Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:06:32.439Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:06:32.684Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"Tiktok pagó","type":"received"}
+[2025-11-15T17:06:32.870Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:07:08.677Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:07:20.870Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"cuál se va a comprar?","type":"received"}
+[2025-11-15T17:07:26.138Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"tundra 2025 o fortuner?","type":"received"}
+[2025-11-15T17:07:29.779Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:07:37.546Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"JAJSKAKSKA","type":"received"}
+[2025-11-15T17:07:45.665Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"De puro tap tap","type":"received"}
+[2025-11-15T17:08:25.858Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:08:28.903Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:08:33.781Z] [INFO] [message] Mensaje received {"user":"120363387470929207@g.us","message":"","type":"received"}
+[2025-11-15T17:19:25.522Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T17:22:38.192Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T17:28:28.678Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Vendo 20$","type":"received"}
+[2025-11-15T17:28:40.088Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Sacó polvo 2","type":"received"}
+[2025-11-15T17:28:55.467Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:30:49.948Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:31:07.525Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:31:11.212Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:31:41.318Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:32:56.667Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"memes q le dan risa nada mas a mi novia y a mi pq estamos enamorados","type":"received"}
+[2025-11-15T17:33:09.609Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Ahh esq mi jeva sacó álbum","type":"received"}
+[2025-11-15T17:33:39.571Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:33:42.064Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:33:42.874Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:33:47.230Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:33:49.733Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:34:24.109Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Ta bueno el peo","type":"received"}
+[2025-11-15T17:34:32.476Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Y esa","type":"received"}
+[2025-11-15T17:34:36.853Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Como se dice nariz en inglés ?","type":"received"}
+[2025-11-15T17:34:49.018Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"no lo seo","type":"received"}
+[2025-11-15T17:34:50.076Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:34:55.951Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:35:03.854Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:35:08.616Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:35:16.570Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-15T17:35:16.998Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T17:36:07.783Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Por los momentos se me está dando el parley","type":"received"}
+[2025-11-15T17:36:11.643Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Necesito q galés gane","type":"received"}
+[2025-11-15T17:36:17.342Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Dinamarca gané","type":"received"}
+[2025-11-15T17:36:31.885Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Aunque todavía me falta \n\nColombia vs Nueva Zelanda \nColombia G \n\nMexico vs Uruguay \n0.75\n\nEstados U...","type":"received"}
+[2025-11-15T17:36:32.405Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:36:46.688Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:37:01.334Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"075 q","type":"received"}
+[2025-11-15T17:37:16.354Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"0.75 significa 1 o 2 goles","type":"received"}
+[2025-11-15T17:37:19.199Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:37:24.448Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Osea q si hacen 1 gol esta bien","type":"received"}
+[2025-11-15T17:37:29.091Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Pero si hacen 2 me sube la cuota","type":"received"}
+[2025-11-15T17:37:31.300Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:37:39.654Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"gales empata","type":"received"}
+[2025-11-15T17:37:48.328Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"1 a 1","type":"received"}
+[2025-11-15T17:37:53.643Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hace rato me dijeron","type":"received"}
+[2025-11-15T17:37:59.787Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:38:06.049Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Futbol12","type":"received"}
+[2025-11-15T17:38:25.153Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"O como era","type":"received"}
+[2025-11-15T17:38:27.851Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Analista12","type":"received"}
+[2025-11-15T17:38:29.947Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Anal12","type":"received"}
+[2025-11-15T17:38:33.179Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Pene 12","type":"received"}
+[2025-11-15T17:38:33.445Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:38:36.706Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"camiseta","type":"received"}
+[2025-11-15T17:38:56.704Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"A escuchar el álbum de la mujer mía","type":"received"}
+[2025-11-15T17:39:02.076Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Tiene 4 colabs","type":"received"}
+[2025-11-15T17:39:27.321Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Omar \nEladio \nYan block \nMora","type":"received"}
+[2025-11-15T17:39:30.202Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:41:56.254Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T17:42:08.497Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"samplealo @236347956666463","type":"received"}
+[2025-11-15T17:53:58.499Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"sapegato","type":"received"}
+[2025-11-15T18:19:49.960Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T18:36:01.735Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T18:36:01.962Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T18:47:20.919Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T18:47:51.483Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#reel https://www.instagram.com/reel/DQ-F6OZEcy3/?igsh=MWtibm1ubjJwcjQ3Nw==","type":"received"}
+[2025-11-15T18:48:07.738Z] [SUCCESS] [command] Comando ejecutado: reel {"user":"30837949124772@lid","command":"reel","args":["https://www.instagram.com/reel/DQ-F6OZEcy3/?igsh=MWtibm1ubjJwcjQ3Nw=="],"success":true,"result":null}
+[2025-11-15T18:51:00.118Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"","type":"received"}
+[2025-11-15T19:08:11.402Z] [INFO] [message] Mensaje received {"user":"status@broadcast","message":"Seguimos en Formación permanente ⚖️✨\n\nUNELLEZ BARINAS","type":"received"}
+[2025-11-15T23:32:36.731Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-15T23:32:36.830Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T23:32:36.832Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T23:32:36.915Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T23:32:36.929Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T23:32:37.354Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:32:37.354Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T23:32:37.354Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T23:33:03.985Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:33:06.734Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-15T23:33:06.734Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-15T23:33:06.743Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":36,"totalSize":880908,"totalSizeMB":"0.84","logFiles":36,"backupFiles":0}
+[2025-11-15T23:33:06.744Z] [INFO] [logrotate] ✅ Rotación completada en 10ms {"duration":10,"report":{"totalFiles":36,"totalSize":880908,"totalSizeMB":"0.84","logFiles":36,"backupFiles":0}}
+[2025-11-15T23:33:37.645Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"music radar dice que ese ta bien valorado pq es una mezcla de elementos los discos anteriores ps... ...","type":"received"}
+[2025-11-15T23:33:54.311Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T23:34:05.714Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"hay q ver qlq el debut","type":"received"}
+[2025-11-15T23:34:10.383Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"suena menos electrónico","type":"received"}
+[2025-11-15T23:34:47.818Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#ping","type":"received"}
+[2025-11-15T23:34:48.820Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"120363160616746507@g.us","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T23:36:51.070Z] [INFO] [system] Rotación de logs programada cada 24 horas 
+[2025-11-15T23:36:51.168Z] [INFO] [system] Iniciando bot de WhatsApp... 
+[2025-11-15T23:36:51.170Z] [INFO] [session] Sesión activa encontrada, manteniendo... 
+[2025-11-15T23:36:51.258Z] [INFO] [system] Usando Baileys version: 2.3000.1027934701 
+[2025-11-15T23:36:51.273Z] [INFO] [session] Estado de conexión: connecting {"status":"connecting","qr":false}
+[2025-11-15T23:36:51.787Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:36:51.835Z] [INFO] [session] Estado de conexión: connecting... {"qr":false}
+[2025-11-15T23:36:51.835Z] [SUCCESS] [session] Conexión exitosa a WhatsApp {"user":"Untrue","id":"584120614314:32@s.whatsapp.net"}
+[2025-11-15T23:36:51.835Z] [INFO] [session] Estado de conexión: open {"status":"open","qr":false}
+[2025-11-15T23:36:52.720Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"un tema de 10 minutos al final pa q sea así mejor no poner nada","type":"received"}
+[2025-11-15T23:37:06.645Z] [INFO] [message] Mensaje received {"user":"30837949124772@lid","message":"#ping","type":"received"}
+[2025-11-15T23:37:07.026Z] [SUCCESS] [command] Comando ejecutado: ping {"user":"30837949124772@lid","command":"ping","args":[],"success":true,"result":null}
+[2025-11-15T23:37:21.074Z] [INFO] [logrotate] 🚀 Iniciando rotación automática de logs... 
+[2025-11-15T23:37:21.074Z] [DEBUG] [logrotate] Rotación: No se encontraron archivos para eliminar 
+[2025-11-15T23:37:21.076Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"@30837949124772","type":"received"}
+[2025-11-15T23:37:21.081Z] [INFO] [logrotate] Reporte de almacenamiento {"totalFiles":36,"totalSize":885379,"totalSizeMB":"0.84","logFiles":36,"backupFiles":0}
+[2025-11-15T23:37:21.081Z] [INFO] [logrotate] ✅ Rotación completada en 7ms {"duration":7,"report":{"totalFiles":36,"totalSize":885379,"totalSizeMB":"0.84","logFiles":36,"backupFiles":0}}
+[2025-11-15T23:37:23.708Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Le tengo un artista","type":"received"}
+[2025-11-15T23:37:30.815Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Que quiere trabajar con usted","type":"received"}
+[2025-11-15T23:37:36.937Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T23:37:40.263Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Quiere q le hagas los Beats y el máster","type":"received"}
+[2025-11-15T23:37:43.346Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T23:37:46.207Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Te va a pagar","type":"received"}
+[2025-11-15T23:37:55.616Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Pílelo","type":"received"}
+[2025-11-15T23:37:58.656Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"Pillelo","type":"received"}
+[2025-11-15T23:37:59.775Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"2001:\n1. Amnesiac\n2. Vespertine\n3. Drukqs\n4. The Glow\n5. Toxicity\n6. Lateralus\n7. Leaves Turn Inside...","type":"received"}
+[2025-11-15T23:38:03.848Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"https://www.instagram.com/reel/DQrx5tLD2tw/?igsh=MXVtdDdhamhpeThxaA==","type":"received"}
+[2025-11-15T23:38:06.306Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T23:38:15.633Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"","type":"received"}
+[2025-11-15T23:39:18.428Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"yo igual, nada más q the glow arriba d drukqs y toxicity debajo de lateralus","type":"received"}

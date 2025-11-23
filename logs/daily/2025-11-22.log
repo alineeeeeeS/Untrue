@@ -1,0 +1,9 @@
+[2025-11-22T00:21:30.942Z] [INFO] [bcv] Consultando precio del dólar para Santiago. fecha: 21/11/2025 {"jid":"30837949124772@lid"}
+[2025-11-22T00:21:31.099Z] [SUCCESS] [bcv] Precio del dólar enviado a Santiago. {"price":"241.5780 Bs","date":"21/11/2025","historical":true,"jid":"30837949124772@lid"}
+[2025-11-22T00:56:44.550Z] [INFO] [pinterest] Iniciando descarga para Sosa Bautista {"url":"https://pin.it/3NoKpA0i4","jid":"120363160616746507@g.us"}
+[2025-11-22T00:56:46.038Z] [SUCCESS] [pinterest] Descarga completada para Sosa Bautista {"url":"https://pin.it/3NoKpA0i4","type":"image","fileSize":4816,"jid":"120363160616746507@g.us"}
+[2025-11-22T14:50:06.285Z] [SUCCESS] [command] Comando ejecutado: stats {"user":"30837949124772@lid","command":"stats","args":[],"success":true,"result":null}
+[2025-11-22T17:15:05.497Z] [INFO] [bcv] Consultando precio del dólar para Jorge sosa {"jid":"120363387470929207@g.us"}
+[2025-11-22T17:15:06.373Z] [SUCCESS] [bcv] Precio del dólar enviado a Jorge sosa {"price":"243.1105 Bs","date":"25/11/2025","historical":false,"jid":"120363387470929207@g.us"}
+[2025-11-22T19:32:46.516Z] [INFO] [message] Mensaje received {"user":"120363160616746507@g.us","message":"#yt https://youtu.be/MCSz4rZ5Lgo?si=GD2GC_iPr0LJ_bnM","type":"received"}
+[2025-11-22T19:33:15.570Z] [SUCCESS] [command] Comando ejecutado: yt {"user":"120363160616746507@g.us","command":"yt","args":["https://youtu.be/MCSz4rZ5Lgo?si=GD2GC_iPr0LJ_bnM"],"success":true,"result":{"type":"video"}}
