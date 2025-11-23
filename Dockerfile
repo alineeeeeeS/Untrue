@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Instalar dependencias del sistema
 RUN apk update && apk add --no-cache \
