@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@bochilteam/scraper": "^5.0.1",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
