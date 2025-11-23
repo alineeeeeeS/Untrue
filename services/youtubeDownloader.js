@@ -10,11 +10,20 @@ const execPromise = promisify(exec);
 const ytDlpCommand = '/home/runner/workspace/.pythonlibs/bin/yt-dlp';
 const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
 
+// Opciones anti-bloqueo para YouTube
+const YT_DLP_OPTIONS = [
+    '--no-playlist',
+    '--no-warnings',
+    '--force-ipv4',
+    '--throttled-rate 100K',
+    '--extractor-args youtube:player-client=android,web'
+].join(' ');
+
 /**
  * Obtiene la información del video de YouTube
  */
 export async function getYouTubeVideoInfo(queryOrUrl) {
-    const infoCommand = `"${ytDlpCommand}" --dump-json --no-playlist --no-warnings "${queryOrUrl}"`;
+    const infoCommand = `"${ytDlpCommand}" --dump-json ${YT_DLP_OPTIONS} "${queryOrUrl}"`;
 
     try {
         const { stdout } = await execPromise(infoCommand);
@@ -73,8 +82,8 @@ export async function downloadYoutubeVideo(args) {
         console.error("Error obteniendo información:", error);
     }
 
-    // Formato optimizado para WhatsApp
-    const command = `"${ytDlpCommand}" -f "best[height<=720]" --no-warnings --output "${tempFilePath}" "${queryOrUrl}"`;
+    // Formato optimizado para WhatsApp con opciones anti-bloqueo
+    const command = `"${ytDlpCommand}" -f "best[height<=720]" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`;
 
     try {
         await execPromise(command);
@@ -123,8 +132,8 @@ export async function downloadYoutubeAudio(args) {
     const tempFileName = `youtube-audio-${Date.now()}.m4a`;
     const tempFilePath = join(tmpdir(), tempFileName);
 
-    // COMANDO CORREGIDO - Especificar ubicación de FFmpeg y usar formato que no requiera conversión
-    const command = `"${ytDlpCommand}" -f "bestaudio[ext=m4a]" --ffmpeg-location "${ffmpegCommand}" --no-warnings --output "${tempFilePath}" "${queryOrUrl}"`;
+    // COMANDO CORREGIDO - Con opciones anti-bloqueo
+    const command = `"${ytDlpCommand}" -f "bestaudio[ext=m4a]" ${YT_DLP_OPTIONS} --ffmpeg-location "${ffmpegCommand}" --output "${tempFilePath}" "${queryOrUrl}"`;
 
     try {
         await execPromise(command);
@@ -161,7 +170,7 @@ async function downloadYoutubeAudioAlternative(args, tempFilePath, videoInfo) {
     const queryOrUrl = isSearch ? `ytsearch1:${args.join(' ')}` : args[0];
 
     // Intentar descargar formato de audio nativo sin conversión
-    const command = `"${ytDlpCommand}" -f "bestaudio" --no-warnings --output "${tempFilePath}" "${queryOrUrl}"`;
+    const command = `"${ytDlpCommand}" -f "bestaudio" ${YT_DLP_OPTIONS} --output "${tempFilePath}" "${queryOrUrl}"`;
 
     try {
         await execPromise(command);
