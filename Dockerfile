@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-# Instalar dependencias del sistema CRÍTICAS para tu bot
-RUN apk add --no-cache \
+# Instalar dependencias del sistema
+RUN apk update && apk add --no-cache \
     ffmpeg \
     python3 \
     make \
@@ -11,18 +11,23 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     giflib-dev \
     librsvg \
-    && rm -rf /var/cache/apk/*
+    ghostscript \
+    imagemagick \
+    libreoffice \
+    tesseract-ocr \
+    tesseract-ocr-data-spa \
+    tesseract-ocr-data-eng
 
 WORKDIR /app
 
 # Copiar package.json primero para mejor cache
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
 # Copiar todo el código
 COPY . .
 
-# Crear carpetas necesarias para el bot
+# Crear carpetas necesarias
 RUN mkdir -p sessions temp logs assets
 
 EXPOSE 3000
