@@ -1,9 +1,10 @@
 FROM node:20-alpine
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema CRÍTICAS para tu bot
 RUN apk update && apk add --no-cache \
     ffmpeg \
     python3 \
+    py3-pip \
     make \
     g++ \
     cairo-dev \
@@ -18,6 +19,9 @@ RUN apk update && apk add --no-cache \
     tesseract-ocr-data-spa \
     tesseract-ocr-data-eng
 
+# Instalar yt-dlp para descargas de videos
+RUN pip3 install yt-dlp
+
 WORKDIR /app
 
 # Copiar package.json primero para mejor cache
@@ -27,7 +31,7 @@ RUN npm install
 # Copiar todo el código
 COPY . .
 
-# Crear carpetas necesarias
+# Crear carpetas necesarias para el bot
 RUN mkdir -p sessions temp logs assets
 
 EXPOSE 3000
