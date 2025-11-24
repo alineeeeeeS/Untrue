@@ -101,7 +101,7 @@ export async function connectToWhatsApp() {
 
         currentSocket = sock;
 
-        sock.ev.on('connection.update', (update) => {
+        sock.ev.on('connection.update', async (update) => { // AGREGADO async AQUÍ
             const { connection, qr, lastDisconnect } = update;
 
             console.log('📡 Estado de conexión:', connection);
