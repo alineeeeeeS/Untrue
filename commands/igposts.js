@@ -1,16 +1,263 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import { readFileSync, unlinkSync, existsSync, readdirSync } from 'fs';
+import axios from 'axios';
 
-const execPromise = promisify(exec);
-const ytDlpCommand = '/usr/local/bin/yt-dlp';
+class InstagramPostsService {
+    constructor() {
+        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+        this.apis = [
+            {
+                name: 'siputzx',
+                url: 'https://api.siputzx.my.id/api/d/igdl',
+                method: 'get'
+            },
+            {
+                name: 'betabotz', 
+                url: 'https://api.betabotz.org/api/download/igdowloader',
+                method: 'get',
+                params: { apikey: 'bot-secx3' }
+            },
+            {
+                name: 'lolhuman',
+                url: 'https://api.lolhuman.xyz/api/instagram',
+                method: 'get',
+                params: { apikey: 'Gata_Dios' }
+            }
+        ];
+    }
 
-export async function igpostsCommand(sock, m, args) {
-    let tempDir = null;
-    let tempFilePath = null;
-    
+    isValidInstagramUrl(url) {
+        const regex = /https?:\/\/(www\.)?instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/;
+        return regex.test(url);
+    }
+
+    extractPostCode(url) {
+        const match = url.match(/instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/);
+        return match ? match[2] : null;
+    }
+
+    async downloadPost(postUrl) {
+        console.log('🔗 Procesando post:', postUrl);
+
+        if (!this.isValidInstagramUrl(postUrl)) {
+            throw new Error('URL de Instagram no válida');
+        }
+
+        for (const api of this.apis) {
+            try {
+                console.log(`🔄 Probando API: ${api.name}`);
+                const result = await this.tryAPI(api, postUrl);
+                if (result && result.mediaItems && result.mediaItems.length > 0) {
+                    console.log(`✅ Éxito con ${api.name} - ${result.mediaItems.length} medios encontrados`);
+                    return result;
+                }
+            } catch (error) {
+                console.log(`❌ ${api.name} falló:`, error.message);
+                if (api !== this.apis[this.apis.length - 1]) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+                continue;
+            }
+        }
+
+        throw new Error('No se pudo descargar el post. Intenta más tarde.');
+    }
+
+    async tryAPI(api, postUrl) {
+        try {
+            let response;
+            const fullUrl = this.buildAPIUrl(api, postUrl);
+
+            console.log(`📡 Llamando a: ${api.name}`);
+
+            const timeout = 25000;
+
+            if (api.method === 'get') {
+                response = await axios.get(fullUrl, {
+                    headers: { 'User-Agent': this.userAgent },
+                    timeout: timeout
+                });
+            }
+
+            return this.processAPIResponse(api.name, response.data);
+
+        } catch (error) {
+            if (error.code === 'ECONNABORTED') {
+                throw new Error(`API ${api.name}: Timeout después de 25s`);
+            } else if (error.response?.status === 429) {
+                throw new Error(`API ${api.name}: Límite de tasa alcanzado`);
+            } else {
+                throw new Error(`API ${api.name}: ${error.message}`);
+            }
+        }
+    }
+
+    buildAPIUrl(api, postUrl) {
+        const url = new URL(api.url);
+
+        if (api.name === 'siputzx' || api.name === 'betabotz' || api.name === 'lolhuman') {
+            url.searchParams.append('url', postUrl);
+        }
+
+        if (api.params) {
+            Object.entries(api.params).forEach(([key, value]) => {
+                url.searchParams.append(key, value);
+            });
+        }
+
+        return url.toString();
+    }
+
+    processAPIResponse(apiName, data) {
+        try {
+            switch (apiName) {
+                case 'siputzx':
+                    if (data.data && Array.isArray(data.data)) {
+                        console.log(`📸 siputzx - ${data.data.length} items encontrados`);
+
+                        const mediaItems = data.data
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${type} - ${url.substring(0, 50)}...`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'betabotz':
+                    if (data.message && Array.isArray(data.message)) {
+                        console.log(`📸 betabotz - ${data.message.length} items encontrados`);
+
+                        const mediaItems = data.message
+                            .filter(item => item && item._url)
+                            .map((item, index) => {
+                                const url = item._url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${type} - ${url.substring(0, 50)}...`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'lolhuman':
+                    if (data.result) {
+                        console.log(`📸 lolhuman - 1 item encontrado`);
+                        
+                        let url = data.result;
+                        if (Array.isArray(data.result) && data.result[0] && data.result[0].url) {
+                            url = data.result[0].url;
+                        }
+                        
+                        const type = this.determineMediaType(url);
+                        console.log(`📦 Item 1: ${type} - ${url.substring(0, 50)}...`);
+                        
+                        return { 
+                            mediaItems: [{ 
+                                url, 
+                                type,
+                                index: 1 
+                            }], 
+                            type: 'single',
+                            totalItems: 1
+                        };
+                    }
+                    break;
+            }
+        } catch (error) {
+            console.error(`❌ Error procesando ${apiName}:`, error);
+        }
+        return null;
+    }
+
+    determineMediaType(url) {
+        if (!url) return 'unknown';
+
+        if (url.includes('.mp4') || url.includes('.mov') || url.includes('.avi')) {
+            return 'video';
+        } else if (url.includes('.jpg') || url.includes('.jpeg') || url.includes('.png') || url.includes('.webp')) {
+            return 'image';
+        } else {
+            return 'video';
+        }
+    }
+
+    async downloadMedia(mediaUrl) {
+        try {
+            console.log('📥 Descargando media:', mediaUrl.substring(0, 80) + '...');
+
+            if (!mediaUrl || !mediaUrl.startsWith('http')) {
+                throw new Error('URL de media no válida');
+            }
+
+            const response = await axios({
+                method: 'GET',
+                url: mediaUrl,
+                responseType: 'arraybuffer',
+                timeout: 45000,
+                maxContentLength: 100 * 1024 * 1024,
+                headers: {
+                    'User-Agent': this.userAgent,
+                    'Accept': 'video/mp4,video/*,image/*,*/*;q=0.8',
+                    'Referer': 'https://www.instagram.com/'
+                }
+            });
+
+            if (!response.data || response.data.length === 0) {
+                throw new Error('El contenido descargado está vacío');
+            }
+
+            const fileSizeMB = (response.data.length / 1024 / 1024).toFixed(2);
+            console.log(`✅ Media descargado - Tamaño: ${fileSizeMB} MB`);
+
+            return {
+                buffer: Buffer.from(response.data),
+                contentType: response.headers['content-type'],
+                size: response.data.length
+            };
+
+        } catch (error) {
+            console.error('❌ Error descargando media:', error.message);
+            throw new Error(`Error descargando media: ${error.message}`);
+        }
+    }
+
+    validateMediaBuffer(buffer, expectedType) {
+        if (!buffer || buffer.length === 0) {
+            throw new Error('Buffer de media vacío');
+        }
+
+        const minSize = expectedType === 'video' ? 50000 : 10000;
+        if (buffer.length < minSize) {
+            throw new Error(`Media demasiado pequeño (${buffer.length} bytes), probablemente corrupto`);
+        }
+
+        return true;
+    }
+}
+
+const instagramPostsService = new InstagramPostsService();
+
+export async function igpostsCommand(sock, m, args) {    
     try {
         let postUrl = args[0];
         let selectedIndex = null;
@@ -30,7 +277,7 @@ export async function igpostsCommand(sock, m, args) {
                 const urlMatch = quotedText.match(/https?:\/\/[^\s]+/g);
                 if (urlMatch) {
                     for (const url of urlMatch) {
-                        if (isValidInstagramUrl(url)) {
+                        if (instagramPostsService.isValidInstagramUrl(url)) {
                             postUrl = url;
                             break;
                         }
@@ -56,183 +303,135 @@ export async function igpostsCommand(sock, m, args) {
             return;
         }
 
-        if (!isValidInstagramUrl(postUrl)) {
+        if (!instagramPostsService.isValidInstagramUrl(postUrl)) {
             await sock.sendMessage(m.key.remoteJid, { 
                 text: '❌ URL de Instagram no válida. Debe ser un Post o Reel público.' 
             }, { quoted: m });
             return;
         }
 
-        // Enviar mensaje de procesamiento
-        const processingMsg = await sock.sendMessage(m.key.remoteJid, { 
-            text: '🔄 *Descargando contenido de Instagram...*\n⏳ Esto puede tomar unos segundos.' 
-        }, { quoted: m });
+        console.log('🚀 Iniciando descarga de post...');
 
-        // Crear directorio temporal
-        tempDir = join(tmpdir(), `instagram_${Date.now()}`);
-        tempFilePath = join(tempDir, '%(title)s.%(ext)s');
+        // Obtener información del post
+        const postInfo = await instagramPostsService.downloadPost(postUrl);
 
-        console.log(`📥 Descargando Instagram post: ${postUrl}`);
+        if (!postInfo || !postInfo.mediaItems || postInfo.mediaItems.length === 0) {
+            throw new Error('No se encontraron medios en el post');
+        }
 
-        // COMANDO YT-DLP PARA POSTS (puede tener múltiples medios)
-        const command = `"${ytDlpCommand}" --no-playlist --write-info-json --skip-download -o "${tempFilePath}" "${postUrl}"`;
+        console.log(`📦 Procesando ${postInfo.mediaItems.length} medios`);
 
-        try {
-            // Primero obtener información del post
-            await execPromise(command, { timeout: 30000 });
-            
-            // Buscar archivo de información
-            const files = readdirSync(tempDir);
-            const infoFile = files.find(f => f.endsWith('.info.json'));
-            
-            if (!infoFile) {
-                throw new Error('No se pudo obtener información del post');
-            }
-
-            const infoPath = join(tempDir, infoFile);
-            const info = JSON.parse(readFileSync(infoPath, 'utf8'));
-            
-            console.log(`📊 Post info: ${info.title}, Entries: ${info.entries ? info.entries.length : 1}`);
-
-            // Determinar si es carrusel (múltiples entradas)
-            const isCarousel = info.entries && info.entries.length > 1;
-            const totalItems = isCarousel ? info.entries.length : 1;
-
-            // Si el usuario seleccionó un carrusel específico
-            if (selectedIndex !== null) {
-                if (selectedIndex < 1 || selectedIndex > totalItems) {
-                    await sock.sendMessage(m.key.remoteJid, { 
-                        text: `❌ *Número de carrusel inválido*\n\nEste post tiene ${totalItems} elementos.\nUsa un número entre 1 y ${totalItems}.` 
-                    }, { quoted: m });
-                    return;
-                }
-
-                // Descargar solo el carrusel seleccionado
-                const selectedUrl = isCarousel ? info.entries[selectedIndex - 1].url : postUrl;
-                await downloadAndSendMedia(sock, m, processingMsg, selectedUrl, `Carrusel ${selectedIndex}/${totalItems}`);
+        // Validar selección de carrusel si se especificó
+        if (selectedIndex !== null) {
+            if (selectedIndex < 1 || selectedIndex > postInfo.mediaItems.length) {
+                await sock.sendMessage(m.key.remoteJid, { 
+                    text: `❌ *Número de carrusel inválido*\n\nEste post tiene ${postInfo.mediaItems.length} elementos.\nUsa un número entre 1 y ${postInfo.mediaItems.length}.` 
+                }, { quoted: m });
                 return;
             }
 
-            // Descargar todo el post
-            if (isCarousel) {
-                // Enviar mensaje informativo para carrusel
-                await sock.sendMessage(m.key.remoteJid, { 
-                    text: `📦 *Post con ${totalItems} elementos*\n\n💡 *Tip:* Puedes descargar un carrusel específico usando:\n#post <número> <url>\n*Ejemplo:* #post 3 ${postUrl}` 
-                }, { quoted: m });
+            // Descargar solo el carrusel seleccionado
+            const selectedMedia = postInfo.mediaItems[selectedIndex - 1];
+            console.log(`🎯 Descargando carrusel ${selectedIndex}`);
 
-                // Descargar cada elemento del carrusel
-                for (let i = 0; i < totalItems; i++) {
-                    const itemUrl = info.entries[i].url;
-                    const caption = i === 0 ? `✅ Post descargado! (${i + 1}/${totalItems})` : `(${i + 1}/${totalItems})`;
-                    
-                    await downloadAndSendMedia(sock, m, i === 0 ? processingMsg : null, itemUrl, caption);
-                    
-                    if (i < totalItems - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                    }
-                }
+            const mediaData = await instagramPostsService.downloadMedia(selectedMedia.url);
+            instagramPostsService.validateMediaBuffer(mediaData.buffer, selectedMedia.type);
+
+            const caption = `Post descargado! (${selectedIndex}/${postInfo.mediaItems.length})`;
+
+            if (selectedMedia.type === 'image') {
+                await sock.sendMessage(m.key.remoteJid, {
+                    image: mediaData.buffer,
+                    caption: caption
+                }, { quoted: m });
             } else {
-                // Post simple (un solo medio)
-                await downloadAndSendMedia(sock, m, processingMsg, postUrl, '✅ Post descargado!');
+                await sock.sendMessage(m.key.remoteJid, {
+                    video: mediaData.buffer,
+                    caption: caption,
+                    fileName: `instagram_carrusel_${selectedIndex}.mp4`
+                }, { quoted: m });
             }
 
-        } catch (error) {
-            console.error('Error en yt-dlp:', error);
-            
-            // FALLBACK: Descargar directamente como video
-            console.log('🔄 Intentando descarga directa...');
-            await downloadAndSendMedia(sock, m, processingMsg, postUrl, '✅ Post descargado!');
+            console.log(`✅ Carrusel ${selectedIndex} enviado correctamente`);
+            return;
         }
+
+        // Descargar todo el post
+        if (postInfo.mediaItems.length === 1) {
+            // POST SIMPLE - 1 medio
+            const mediaItem = postInfo.mediaItems[0];
+            const mediaData = await instagramPostsService.downloadMedia(mediaItem.url);
+            instagramPostsService.validateMediaBuffer(mediaData.buffer, mediaItem.type);
+
+            await sock.sendMessage(m.key.remoteJid, {
+                [mediaItem.type === 'image' ? 'image' : 'video']: mediaData.buffer,
+                caption: 'Post descargado!',
+                ...(mediaItem.type === 'video' && { fileName: 'instagram_post.mp4' })
+            }, { quoted: m });
+
+            console.log('✅ Post único enviado correctamente');
+        } else {
+            // CARRUSEL COMPLETO - Múltiples medios
+            console.log(`📤 Enviando carrusel completo: ${postInfo.mediaItems.length} medios`);
+
+            for (let i = 0; i < postInfo.mediaItems.length; i++) {
+                const mediaItem = postInfo.mediaItems[i];
+                console.log(`📤 Enviando medio ${i + 1}/${postInfo.mediaItems.length}`);
+
+                try {
+                    const mediaData = await instagramPostsService.downloadMedia(mediaItem.url);
+                    instagramPostsService.validateMediaBuffer(mediaData.buffer, mediaItem.type);
+
+                    // Solo el primer medio lleva caption
+                    const caption = i === 0 ? 'Carrusel descargado!' : undefined;
+
+                    await sock.sendMessage(m.key.remoteJid, {
+                        [mediaItem.type === 'image' ? 'image' : 'video']: mediaData.buffer,
+                        caption: caption,
+                        ...(mediaItem.type === 'video' && { fileName: `instagram_post_${i + 1}.mp4` })
+                    }, i === 0 ? { quoted: m } : undefined);
+
+                    console.log(`✅ Medio ${i + 1} enviado`);
+
+                    // Pequeña pausa entre envíos
+                    if (i < postInfo.mediaItems.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                    }
+
+                } catch (mediaError) {
+                    console.error(`❌ Error enviando medio ${i + 1}:`, mediaError.message);
+                    continue;
+                }
+            }
+        }
+
+        console.log('🎉 Post procesado correctamente');
 
     } catch (error) {
         console.error('Error general:', error);
 
         let errorMessage = '❌ *Error al descargar el post*\n\n';
 
-        if (error.message.includes('Private') || error.message.includes('privado')) {
-            errorMessage += '🔒 *Contenido privado*\n';
-            errorMessage += 'Solo funciona con contenido público de Instagram.';
-        } else if (error.message.includes('Unsupported') || error.message.includes('No se pudo')) {
-            errorMessage += '📱 *URL no soportada o inválida*\n';
-            errorMessage += 'Asegúrate de que sea un Post o Reel público.';
+        if (error.message.includes('No se pudo descargar')) {
+            errorMessage += '🔧 *Servicios temporalmente no disponibles*\n\n';
+            errorMessage += '💡 *Sugerencias:*\n';
+            errorMessage += '• Intenta en 5-10 minutos\n';
+            errorMessage += '• Prueba con otro post\n';
+            errorMessage += '• Usa #reel para Reels (más confiable)';
+        } else if (error.message.includes('vacío') || error.message.includes('corrupto')) {
+            errorMessage += '📱 *El contenido descargado está corrupto*\n';
+            errorMessage += '🔄 Intenta con otro post.';
+        } else if (error.message.includes('Timeout')) {
+            errorMessage += '⏰ *Tiempo de espera agotado*\n';
+            errorMessage += 'Los servicios están lentos. Intenta más tarde.';
+        } else if (error.message.includes('Límite de tasa')) {
+            errorMessage += '🚫 *Límite de uso alcanzado*\n';
+            errorMessage += 'Espera unos minutos antes de intentar nuevamente.';
         } else {
             errorMessage += `⚠️ *Error:* ${error.message}\n`;
             errorMessage += '🔄 Intenta con otro enlace.';
         }
 
         await sock.sendMessage(m.key.remoteJid, { text: errorMessage }, { quoted: m });
-    } finally {
-        // Limpieza
-        if (tempDir && existsSync(tempDir)) {
-            try {
-                readdirSync(tempDir).forEach(file => {
-                    unlinkSync(join(tempDir, file));
-                });
-                // No eliminar el directorio mismo para evitar errores
-            } catch (cleanError) {
-                console.warn('Error en limpieza:', cleanError.message);
-            }
-        }
     }
-}
-
-// Función auxiliar para descargar y enviar medios
-async function downloadAndSendMedia(sock, m, processingMsg, url, caption) {
-    let tempFilePath = null;
-    
-    try {
-        tempFilePath = join(tmpdir(), `instagram_media_${Date.now()}.mp4`);
-
-        // Descargar el medio
-        const command = `"${ytDlpCommand}" -f "best[height<=720]" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${url}"`;
-        await execPromise(command, { timeout: 60000 });
-
-        if (!existsSync(tempFilePath)) {
-            throw new Error('No se pudo generar el archivo');
-        }
-
-        const mediaBuffer = readFileSync(tempFilePath);
-        const fileSizeMB = (mediaBuffer.length / 1024 / 1024).toFixed(2);
-        console.log(`📊 Medio descargado: ${fileSizeMB} MB`);
-
-        // Eliminar mensaje de procesamiento solo si es el primero
-        if (processingMsg) {
-            try {
-                await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
-            } catch (e) {}
-        }
-
-        // Determinar si es video o imagen y enviar
-        const isVideo = fileSizeMB > 0.5; // Heurística simple
-        
-        if (isVideo) {
-            await sock.sendMessage(m.key.remoteJid, {
-                video: mediaBuffer,
-                caption: caption,
-                fileName: 'instagram_media.mp4'
-            }, processingMsg ? { quoted: m } : undefined);
-        } else {
-            await sock.sendMessage(m.key.remoteJid, {
-                image: mediaBuffer,
-                caption: caption
-            }, processingMsg ? { quoted: m } : undefined);
-        }
-
-        console.log('✅ Medio enviado correctamente');
-
-    } catch (error) {
-        console.error('Error descargando medio:', error);
-        throw error;
-    } finally {
-        if (tempFilePath && existsSync(tempFilePath)) {
-            try {
-                unlinkSync(tempFilePath);
-            } catch (e) {}
-        }
-    }
-}
-
-function isValidInstagramUrl(url) {
-    const regex = /https?:\/\/(www\.)?instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/;
-    return regex.test(url);
 }
