@@ -5,21 +5,52 @@ class InstagramService {
         this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         this.apis = [
             {
-                name: 'siputzx',
-                url: 'https://api.siputzx.my.id/api/d/igdl',
-                method: 'get'
+                name: 'yudamods',
+                url: 'https://api.yudamods.my.id/api/download/instagram',
+                method: 'get',
+                params: { url: '' }
             },
             {
-                name: 'betabotz', 
-                url: 'https://api.betabotz.org/api/download/igdowloader',
+                name: 'skizoapi', 
+                url: 'https://skizo.tech/api/instagram',
                 method: 'get',
-                params: { apikey: 'bot-secx3' }
+                params: { url: '', apikey: 'skizo-2qj8H' }
             },
             {
-                name: 'lolhuman',
-                url: 'https://api.lolhuman.xyz/api/instagram',
+                name: 'shizoco',
+                url: 'https://shizoco.cyclic.app/download/ig',
                 method: 'get',
-                params: { apikey: 'Gata_Dios' }
+                params: { url: '' }
+            },
+            {
+                name: 'api-sip',
+                url: 'https://api-sip.cyclic.app/api/ig',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-single',
+                url: 'https://shizoco.cyclic.app/ig',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-dl',
+                url: 'https://shizoco.cyclic.app/igdl',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-api1',
+                url: 'https://shizoco.cyclic.app/api/igdl',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-api2', 
+                url: 'https://shizoco.cyclic.app/api/download/ig',
+                method: 'get',
+                params: { url: '' }
             }
         ];
     }
@@ -42,7 +73,7 @@ class InstagramService {
                 console.log(`🔄 Probando API: ${api.name}`);
                 const result = await this.tryAPI(api, reelUrl);
                 if (result) {
-                    console.log(`✅ Éxito con ${api.name}`);
+                    console.log(`🎯 ${api.name} FUNCIONÓ - Tipo: ${result.type}`);
                     return result;
                 }
             } catch (error) {
@@ -58,6 +89,8 @@ class InstagramService {
         try {
             let response;
             const fullUrl = this.buildAPIUrl(api, reelUrl);
+
+            console.log(`📡 Llamando a: ${api.name}`);
 
             if (api.method === 'get') {
                 response = await axios.get(fullUrl, {
@@ -75,14 +108,15 @@ class InstagramService {
 
     buildAPIUrl(api, reelUrl) {
         const url = new URL(api.url);
-
-        if (api.name === 'siputzx' || api.name === 'betabotz' || api.name === 'lolhuman') {
-            url.searchParams.append('url', reelUrl);
-        }
+        
+        // Todas las nuevas APIs usan parámetro 'url'
+        url.searchParams.append('url', reelUrl);
 
         if (api.params) {
             Object.entries(api.params).forEach(([key, value]) => {
-                url.searchParams.append(key, value);
+                if (value !== '') { // Solo agregar si no está vacío
+                    url.searchParams.append(key, value);
+                }
             });
         }
 
@@ -91,39 +125,86 @@ class InstagramService {
 
     processAPIResponse(apiName, data) {
         try {
+            console.log(`🔍 Procesando respuesta de ${apiName}:`, JSON.stringify(data).substring(0, 200) + '...');
+
             switch (apiName) {
-                case 'siputzx':
-                    if (data.data && data.data[0] && data.data[0].url) {
+                case 'yudamods':
+                    if (data.result && Array.isArray(data.result) && data.result[0] && data.result[0].url) {
+                        return {
+                            url: data.result[0].url,
+                            type: this.determineMediaType(data.result[0].url)
+                        };
+                    }
+                    break;
+
+                case 'skizoapi':
+                    if (data.media && Array.isArray(data.media) && data.media[0] && data.media[0].url) {
+                        return {
+                            url: data.media[0].url,
+                            type: this.determineMediaType(data.media[0].url)
+                        };
+                    }
+                    // Estructura alternativa de Skizo
+                    if (data.result && data.result.url) {
+                        return {
+                            url: data.result.url,
+                            type: this.determineMediaType(data.result.url)
+                        };
+                    }
+                    break;
+
+                case 'shizoco':
+                case 'shizoco-single':
+                case 'shizoco-dl':
+                case 'shizoco-api1':
+                case 'shizoco-api2':
+                    // Shizoco tiene múltiples endpoints con estructura similar
+                    if (data.data && Array.isArray(data.data) && data.data[0] && data.data[0].url) {
                         return {
                             url: data.data[0].url,
-                            type: data.data[0].url.includes('.webp') ? 'image' : 'video'
+                            type: this.determineMediaType(data.data[0].url)
+                        };
+                    }
+                    // Alternativa para algunos endpoints de Shizoco
+                    if (data.result && Array.isArray(data.result) && data.result[0] && data.result[0].url) {
+                        return {
+                            url: data.result[0].url,
+                            type: this.determineMediaType(data.result[0].url)
+                        };
+                    }
+                    // Estructura simple de Shizoco
+                    if (data.data && data.data.url) {
+                        return {
+                            url: data.data.url,
+                            type: this.determineMediaType(data.data.url)
                         };
                     }
                     break;
 
-                case 'betabotz':
-                    if (data.message && data.message[0] && data.message[0]._url) {
+                case 'api-sip':
+                    if (data.data && data.data.url) {
                         return {
-                            url: data.message[0]._url,
-                            type: 'video'
+                            url: data.data.url,
+                            type: this.determineMediaType(data.data.url)
                         };
                     }
-                    break;
-
-                case 'lolhuman':
-                    if (data.result) {
+                    if (data.data && Array.isArray(data.data) && data.data[0] && data.data[0].url) {
                         return {
-                            url: data.result,
-                            type: 'video'
+                            url: data.data[0].url,
+                            type: this.determineMediaType(data.data[0].url)
                         };
                     }
                     break;
             }
         } catch (error) {
-            throw new Error(`Error procesando respuesta de ${apiName}`);
+            console.error(`❌ Error procesando ${apiName}:`, error);
         }
-
         return null;
+    }
+
+    determineMediaType(url) {
+        if (!url) return 'video';
+        return url.includes('.mp4') ? 'video' : 'image';
     }
 
     async downloadMedia(mediaUrl) {
@@ -177,7 +258,7 @@ export async function igreelsCommand(sock, m, args) {
 
         if (!reelUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ *Uso:* !reel <url_instagram>\n*Ejemplo:* !reel https://instagram.com/reel/ABC123...' 
+                text: '❌ *Uso:* #reel <url_instagram>\n*Ejemplo:* #reel https://instagram.com/reel/ABC123...' 
             }, { quoted: m });
             return;
         }
