@@ -1,44 +1,24 @@
 import { makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion } from '@whiskeysockets/baileys';
 import qrcode from 'qrcode-terminal';
-import fs from 'fs/promises';
-import { existsSync } from 'fs';
-
-// ==========================================
-// 🎯 CONFIGURACIÓN SIMPLIFICADA PARA RAILWAY
-// ==========================================
-
-// Directorio simple sin volumes complejos
-const SESSION_DIR = './whatsapp_session';
 
 let isConnected = false;
 let currentSocket = null;
 
-console.log('🚀 Iniciando bot de WhatsApp...');
-console.log('📁 Directorio de sesión:', SESSION_DIR);
-
 // ==========================================
-// 🎯 INICIALIZACIÓN SIMPLE
+// 🎯 CONEXIÓN SIMPLE Y EFICIENTE
 // ==========================================
 
-async function initializeBot() {
+export async function connectToWhatsApp() {
     try {
-        console.log('🔧 Inicializando WhatsApp...');
-        
-        // Crear directorio de sesión si no existe
-        if (!existsSync(SESSION_DIR)) {
-            await fs.mkdir(SESSION_DIR, { recursive: true });
-            console.log('✅ Directorio de sesión creado');
-        }
+        console.log('🔧 Iniciando conexión WhatsApp...');
 
-        const { state, saveCreds } = await useMultiFileAuthState(SESSION_DIR);
+        const { state, saveCreds } = await useMultiFileAuthState('./sessions');
         const { version } = await fetchLatestBaileysVersion();
-
-        console.log('🔐 Estado de sesión:', state.creds?.registered ? 'GUARDADA ✅' : 'NUEVA ❌');
 
         const sock = makeWASocket({
             version,
             auth: { creds: state.creds, keys: state.keys },
-            browser: ["Ubuntu", "Chrome", "120.0.0.0"],
+            browser: ["Chrome", "Windows", "10.0.0"],
             printQRInTerminal: true,
             markOnlineOnConnect: false,
             syncFullHistory: false,
@@ -47,14 +27,10 @@ async function initializeBot() {
 
         currentSocket = sock;
 
-        // ==========================================
-        // 🎯 MANEJADORES DE EVENTOS
-        // ==========================================
-
         sock.ev.on('connection.update', (update) => {
             const { connection, qr, lastDisconnect } = update;
-            
-            console.log('📡 Estado de conexión:', connection);
+
+            console.log('📡 Estado:', connection);
 
             if (qr) {
                 console.log('\n' + '='.repeat(40));
@@ -65,78 +41,80 @@ async function initializeBot() {
             }
 
             if (connection === 'open') {
-                console.log('🎉 ¡CONECTADO A WHATSAPP!');
-                console.log('🤖 Bot listo para recibir mensajes');
+                console.log('🎉 ¡CONECTADO! Bot listo');
                 isConnected = true;
             }
 
             if (connection === 'close') {
                 console.log('❌ Conexión cerrada, reconectando...');
                 isConnected = false;
-                setTimeout(initializeBot, 5000);
+                setTimeout(connectToWhatsApp, 5000);
             }
         });
 
         sock.ev.on('creds.update', saveCreds);
+
+        // ==========================================
+        // 🎯 MANEJADOR DE MENSAJES OPTIMIZADO
+        // ==========================================
 
         sock.ev.on('messages.upsert', async (m) => {
             try {
                 const message = m.messages[0];
                 if (!message || message.key.fromMe) return;
 
-                console.log('📩 Mensaje recibido');
+                const user = message.key.remoteJid;
+                console.log(`📩 Mensaje de: ${user}`);
 
+                // Extraer texto del mensaje
                 let text = '';
                 if (message.message?.conversation) {
                     text = message.message.conversation;
                 } else if (message.message?.extendedTextMessage?.text) {
                     text = message.message.extendedTextMessage.text;
+                } else if (message.message?.imageMessage?.caption) {
+                    text = message.message.imageMessage.caption;
+                } else if (message.message?.videoMessage?.caption) {
+                    text = message.message.videoMessage.caption;
                 }
 
+                console.log(`🔍 Texto: ${text}`);
+
+                // Procesar solo comandos que empiezan con #
                 if (text.startsWith('#')) {
                     const args = text.trim().split(' ');
                     const commandName = args[0].toLowerCase().replace('#', '');
 
-                    console.log(`⚡ Comando: ${commandName}`);
+                    console.log(`⚡ Comando: ${commandName}`, args.slice(1));
 
                     try {
                         const { handleCommand } = await import('./commands/commandHandler.js');
                         await handleCommand(sock, message, commandName, args.slice(1));
                     } catch (error) {
-                        console.error(`❌ Error en comando:`, error);
-                        await sock.sendMessage(message.key.remoteJid, {
-                            text: `❌ Error: ${error.message}`
-                        });
+                        console.error(`❌ Error en ${commandName}:`, error.message);
+                        
+                        await sock.sendMessage(user, {
+                            text: `❌ Error en #${commandName}:\n${error.message}`
+                        }, { quoted: message });
                     }
                 }
+
             } catch (error) {
-                console.error('💥 Error procesando mensaje:', error);
+                console.error('💥 Error procesando mensaje:', error.message);
             }
         });
 
-        console.log('✅ Bot inicializado correctamente');
         return sock;
 
     } catch (error) {
-        console.error('💥 Error crítico en inicialización:', error);
+        console.error('💥 Error en conexión:', error.message);
         console.log('🔄 Reintentando en 10 segundos...');
-        setTimeout(initializeBot, 10000);
+        setTimeout(connectToWhatsApp, 10000);
     }
 }
 
 // ==========================================
-// 🎯 INICIAR BOT INMEDIATAMENTE
-// ==========================================
-
-// Iniciar el bot tan pronto como el script cargue
-initializeBot().then(sock => {
-    console.log('🚀 Bot de WhatsApp iniciado correctamente');
-}).catch(error => {
-    console.error('💥 Error al iniciar bot:', error);
-});
-
-// ==========================================
-// 🎯 MANEJO DE SEÑALES SIMPLIFICADO
+// 🎯 MANEJO DE SEÑALES
 // ==========================================
 
 process.on('SIGINT', () => {
@@ -145,9 +123,14 @@ process.on('SIGINT', () => {
 });
 
 process.on('SIGTERM', () => {
-    console.log('\n📡 Señal de terminación recibida...');
+    console.log('\n📡 Señal de terminación...');
     process.exit(0);
 });
 
-// Exportar para otros módulos
-export { initializeBot as connectToWhatsApp };
+process.on('uncaughtException', (error) => {
+    console.error('❌ Error no capturado:', error.message);
+});
+
+process.on('unhandledRejection', (reason) => {
+    console.error('❌ Promise rechazada:', reason);
+});
