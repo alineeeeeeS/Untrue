@@ -44,82 +44,52 @@ export async function igreelsCommand(sock, m, args) {
             return;
         }
 
-        // Enviar mensaje de procesamiento
-        const processingMsg = await sock.sendMessage(m.key.remoteJid, { 
-            text: '🔄 *Descargando contenido de Instagram...*\n⏳ Esto puede tomar unos segundos.' 
-        }, { quoted: m });
+        console.log(`📥 Descargando Instagram reel: ${reelUrl}`);
 
         // Crear archivo temporal
-        tempFilePath = join(tmpdir(), `instagram_${Date.now()}.mp4`);
+        tempFilePath = join(tmpdir(), `instagram_reel_${Date.now()}.mp4`);
 
-        console.log(`📥 Descargando Instagram: ${reelUrl}`);
-
-        // COMANDO YT-DLP OPTIMIZADO PARA INSTAGRAM
-        const command = `"${ytDlpCommand}" -f "best[height<=720]" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
-
+        // ESTRATEGIA DE DESCARGA
         try {
+            // PRIMER INTENTO: Calidad 1080p
+            console.log('🎯 Intentando descarga en calidad 1080p...');
+            const command = `"${ytDlpCommand}" -f "best[height<=1080]" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
             await execPromise(command, { timeout: 60000 });
-            console.log('✅ Descarga completada con yt-dlp');
 
             if (!existsSync(tempFilePath)) {
                 throw new Error('No se pudo generar el archivo de video');
             }
 
-            // Leer el archivo descargado
-            const videoBuffer = readFileSync(tempFilePath);
-            const fileSizeMB = (videoBuffer.length / 1024 / 1024).toFixed(2);
+            console.log('✅ Descarga completada con calidad 1080p');
 
-            console.log(`📊 Tamaño del video: ${fileSizeMB} MB`);
-
-            // Eliminar mensaje de procesamiento
-            try {
-                await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
-            } catch (e) {}
-
-            // Enviar video
-            await sock.sendMessage(m.key.remoteJid, {
-                video: videoBuffer,
-                caption: '✅ *Instagram Reel descargado!*',
-                fileName: 'instagram_reel.mp4'
-            }, { quoted: m });
-
-            console.log('✅ Reel enviado correctamente');
-
-        } catch (downloadError) {
-            console.error('Error en yt-dlp:', downloadError);
+        } catch (firstError) {
+            console.log('🔄 Calidad 1080p no disponible, intentando cualquier calidad...');
             
-            // INTENTO CON FALLBACK - Formato alternativo
-            console.log('🔄 Intentando con formato alternativo...');
+            // SEGUNDO INTENTO: Cualquier calidad disponible
+            const fallbackCommand = `"${ytDlpCommand}" -f "best" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
+            await execPromise(fallbackCommand, { timeout: 60000 });
             
-            const fallbackCommand = `"${ytDlpCommand}" -f "best" --no-playlist -o "${tempFilePath}" "${reelUrl}"`;
-            
-            try {
-                await execPromise(fallbackCommand, { timeout: 60000 });
-                
-                if (existsSync(tempFilePath)) {
-                    const videoBuffer = readFileSync(tempFilePath);
-                    
-                    // Eliminar mensaje de procesamiento
-                    try {
-                        await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
-                    } catch (e) {}
-
-                    await sock.sendMessage(m.key.remoteJid, {
-                        video: videoBuffer,
-                        caption: '✅ *Instagram Reel descargado!*',
-                        fileName: 'instagram_reel.mp4'
-                    }, { quoted: m });
-                    
-                    console.log('✅ Reel enviado con fallback');
-                    return;
-                }
-            } catch (fallbackError) {
-                console.error('Fallback también falló:', fallbackError);
-                throw new Error('No se pudo descargar el contenido de Instagram');
+            if (!existsSync(tempFilePath)) {
+                throw new Error('No se pudo descargar el reel en ninguna calidad');
             }
-
-            throw downloadError;
+            
+            console.log('✅ Descarga completada con calidad disponible');
         }
+
+        // Leer el archivo descargado
+        const videoBuffer = readFileSync(tempFilePath);
+        const fileSizeMB = (videoBuffer.length / 1024 / 1024).toFixed(2);
+
+        console.log(`📊 Tamaño del video: ${fileSizeMB} MB`);
+
+        // Enviar video directamente con caption simple
+        await sock.sendMessage(m.key.remoteJid, {
+            video: videoBuffer,
+            caption: 'Reel descargado!',
+            fileName: 'instagram_reel.mp4'
+        }, { quoted: m });
+
+        console.log('✅ Reel enviado correctamente');
 
     } catch (error) {
         console.error('Error general:', error);
@@ -131,10 +101,13 @@ export async function igreelsCommand(sock, m, args) {
             errorMessage += 'Solo funciona con contenido público de Instagram.';
         } else if (error.message.includes('Unsupported') || error.message.includes('No se pudo')) {
             errorMessage += '📱 *URL no soportada o inválida*\n';
-            errorMessage += 'Asegúrate de que sea un Reel, Post o Story pública.';
+            errorMessage += 'Asegúrate de que sea un Reel público.';
         } else if (error.message.includes('Sign in')) {
             errorMessage += '🔐 *Instagram requiere verificación*\n';
             errorMessage += 'Intenta con otro contenido.';
+        } else if (error.message.includes('format is not available')) {
+            errorMessage += '🎬 *Formato no disponible*\n';
+            errorMessage += 'El reel no está disponible en las calidades soportadas.';
         } else {
             errorMessage += `⚠️ *Error:* ${error.message}\n`;
             errorMessage += '🔄 Intenta con otro enlace.';
