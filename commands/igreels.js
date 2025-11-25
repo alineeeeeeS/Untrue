@@ -5,52 +5,74 @@ class InstagramService {
         this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         this.apis = [
             {
-                name: 'yudamods',
-                url: 'https://api.yudamods.my.id/api/download/instagram',
-                method: 'get',
-                params: { url: '' }
+                name: 'cobalt',
+                url: 'https://co.wuk.sh/api/json',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                data: {
+                    url: '',
+                    aFormat: 'mp4',
+                    vQuality: 'max',
+                    isAudioOnly: false,
+                    isNoTTWatermark: true,
+                    dubLang: false
+                }
             },
             {
-                name: 'skizoapi', 
-                url: 'https://skizo.tech/api/instagram',
-                method: 'get',
-                params: { url: '', apikey: 'skizo-2qj8H' }
+                name: 'snapinsta',
+                url: 'https://snapinsta.app/action.php',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://snapinsta.app',
+                    'Referer': 'https://snapinsta.app/'
+                },
+                data: {
+                    url: '',
+                    action: 'post'
+                }
             },
             {
-                name: 'shizoco',
-                url: 'https://shizoco.cyclic.app/download/ig',
-                method: 'get',
-                params: { url: '' }
+                name: 'igram',
+                url: 'https://www.igram.io/api/ajaxSearch',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://www.igram.io',
+                    'Referer': 'https://www.igram.io/'
+                },
+                data: {
+                    q: '',
+                    t: 'media',
+                    lang: 'en'
+                }
             },
             {
-                name: 'api-sip',
-                url: 'https://api-sip.cyclic.app/api/ig',
-                method: 'get',
-                params: { url: '' }
+                name: 'instasupersave',
+                url: 'https://instasupersave.com/api/convert',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://instasupersave.com',
+                    'Referer': 'https://instasupersave.com/'
+                },
+                data: {
+                    url: ''
+                }
             },
             {
-                name: 'shizoco-single',
-                url: 'https://shizoco.cyclic.app/ig',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-dl',
-                url: 'https://shizoco.cyclic.app/igdl',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-api1',
-                url: 'https://shizoco.cyclic.app/api/igdl',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-api2', 
-                url: 'https://shizoco.cyclic.app/api/download/ig',
-                method: 'get',
-                params: { url: '' }
+                name: 'savefrom',
+                url: 'https://api.savefrom.net/api/convert',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    url: ''
+                }
             }
         ];
     }
@@ -87,16 +109,43 @@ class InstagramService {
 
     async tryAPI(api, reelUrl) {
         try {
-            let response;
-            const fullUrl = this.buildAPIUrl(api, reelUrl);
-
             console.log(`📡 Llamando a: ${api.name}`);
 
-            if (api.method === 'get') {
-                response = await axios.get(fullUrl, {
-                    headers: { 'User-Agent': this.userAgent },
-                    timeout: 15000
-                });
+            let response;
+            const config = {
+                timeout: 30000,
+                headers: {
+                    'User-Agent': this.userAgent,
+                    ...api.headers
+                }
+            };
+
+            if (api.method === 'post') {
+                const data = { ...api.data };
+                
+                // Preparar datos según la API
+                if (api.name === 'cobalt') {
+                    data.url = reelUrl;
+                } else if (api.name === 'snapinsta' || api.name === 'instasupersave' || api.name === 'savefrom') {
+                    data.url = reelUrl;
+                } else if (api.name === 'igram') {
+                    data.q = reelUrl;
+                }
+
+                if (api.headers['Content-Type'] === 'application/json') {
+                    config.data = data;
+                    response = await axios.post(api.url, data, config);
+                } else {
+                    // Form data
+                    const formData = new URLSearchParams();
+                    for (const [key, value] of Object.entries(data)) {
+                        formData.append(key, value);
+                    }
+                    config.data = formData;
+                    response = await axios.post(api.url, formData, config);
+                }
+            } else {
+                response = await axios.get(api.url, config);
             }
 
             return this.processAPIResponse(api.name, response.data);
@@ -106,92 +155,70 @@ class InstagramService {
         }
     }
 
-    buildAPIUrl(api, reelUrl) {
-        const url = new URL(api.url);
-        
-        // Todas las nuevas APIs usan parámetro 'url'
-        url.searchParams.append('url', reelUrl);
-
-        if (api.params) {
-            Object.entries(api.params).forEach(([key, value]) => {
-                if (value !== '') { // Solo agregar si no está vacío
-                    url.searchParams.append(key, value);
-                }
-            });
-        }
-
-        return url.toString();
-    }
-
     processAPIResponse(apiName, data) {
         try {
-            console.log(`🔍 Procesando respuesta de ${apiName}:`, JSON.stringify(data).substring(0, 200) + '...');
+            console.log(`🔍 Procesando respuesta de ${apiName}`);
 
             switch (apiName) {
-                case 'yudamods':
-                    if (data.result && Array.isArray(data.result) && data.result[0] && data.result[0].url) {
+                case 'cobalt':
+                    if (data.status === 'stream' && data.url) {
                         return {
-                            url: data.result[0].url,
-                            type: this.determineMediaType(data.result[0].url)
+                            url: data.url,
+                            type: 'video'
                         };
                     }
                     break;
 
-                case 'skizoapi':
-                    if (data.media && Array.isArray(data.media) && data.media[0] && data.media[0].url) {
+                case 'snapinsta':
+                    if (data.data && data.data[0] && data.data[0].url) {
                         return {
-                            url: data.media[0].url,
-                            type: this.determineMediaType(data.media[0].url)
+                            url: data.data[0].url,
+                            type: 'video'
                         };
                     }
-                    // Estructura alternativa de Skizo
+                    if (data.url) {
+                        return {
+                            url: data.url,
+                            type: 'video'
+                        };
+                    }
+                    break;
+
+                case 'igram':
+                    if (data.data && data.data[0] && data.data[0].src) {
+                        return {
+                            url: data.data[0].src,
+                            type: this.determineMediaType(data.data[0].src)
+                        };
+                    }
+                    break;
+
+                case 'instasupersave':
+                    if (data.url) {
+                        return {
+                            url: data.url,
+                            type: 'video'
+                        };
+                    }
+                    if (data.medias && data.medias[0] && data.medias[0].url) {
+                        return {
+                            url: data.medias[0].url,
+                            type: 'video'
+                        };
+                    }
+                    break;
+
+                case 'savefrom':
+                    if (data.url) {
+                        return {
+                            url: data.url,
+                            type: 'video'
+                        };
+                    }
                     if (data.result && data.result.url) {
                         return {
                             url: data.result.url,
-                            type: this.determineMediaType(data.result.url)
-                        };
-                    }
-                    break;
-
-                case 'shizoco':
-                case 'shizoco-single':
-                case 'shizoco-dl':
-                case 'shizoco-api1':
-                case 'shizoco-api2':
-                    // Shizoco tiene múltiples endpoints con estructura similar
-                    if (data.data && Array.isArray(data.data) && data.data[0] && data.data[0].url) {
-                        return {
-                            url: data.data[0].url,
-                            type: this.determineMediaType(data.data[0].url)
-                        };
-                    }
-                    // Alternativa para algunos endpoints de Shizoco
-                    if (data.result && Array.isArray(data.result) && data.result[0] && data.result[0].url) {
-                        return {
-                            url: data.result[0].url,
-                            type: this.determineMediaType(data.result[0].url)
-                        };
-                    }
-                    // Estructura simple de Shizoco
-                    if (data.data && data.data.url) {
-                        return {
-                            url: data.data.url,
-                            type: this.determineMediaType(data.data.url)
-                        };
-                    }
-                    break;
-
-                case 'api-sip':
-                    if (data.data && data.data.url) {
-                        return {
-                            url: data.data.url,
-                            type: this.determineMediaType(data.data.url)
-                        };
-                    }
-                    if (data.data && Array.isArray(data.data) && data.data[0] && data.data[0].url) {
-                        return {
-                            url: data.data[0].url,
-                            type: this.determineMediaType(data.data[0].url)
+                            type: 'video'
                         };
                     }
                     break;
@@ -215,12 +242,15 @@ class InstagramService {
                 method: 'GET',
                 url: mediaUrl,
                 responseType: 'arraybuffer',
-                timeout: 30000,
+                timeout: 45000,
                 headers: {
                     'User-Agent': this.userAgent,
-                    'Accept': 'video/mp4,image/*,*/*;q=0.8'
+                    'Accept': 'video/mp4,image/*,*/*;q=0.8',
+                    'Referer': 'https://www.instagram.com/'
                 }
             });
+
+            console.log(`✅ Media descargado - Tamaño: ${(response.data.length / 1024 / 1024).toFixed(2)} MB`);
 
             return {
                 buffer: Buffer.from(response.data),
@@ -270,7 +300,10 @@ export async function igreelsCommand(sock, m, args) {
             return;
         }
 
-        // NO enviar mensajes de proceso - solo procesar en silencio
+        // Enviar mensaje de procesamiento
+        const processingMsg = await sock.sendMessage(m.key.remoteJid, { 
+            text: '🔄 *Descargando reel...*\n⏳ Esto puede tomar unos segundos.' 
+        }, { quoted: m });
 
         try {
             // Obtener información del media
@@ -279,16 +312,21 @@ export async function igreelsCommand(sock, m, args) {
             // Descargar el media
             const mediaData = await instagramService.downloadMedia(mediaInfo.url);
 
-            // Enviar según el tipo con caption minimalista
+            // Eliminar mensaje de procesamiento
+            try {
+                await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
+            } catch (e) {}
+
+            // Enviar según el tipo
             if (mediaInfo.type === 'image') {
                 await sock.sendMessage(m.key.remoteJid, {
                     image: mediaData.buffer,
-                    caption: '✅ *Reel descargado!*'
+                    caption: '✅ *Instagram Reel descargado!*'
                 }, { quoted: m });
             } else {
                 await sock.sendMessage(m.key.remoteJid, {
                     video: mediaData.buffer,
-                    caption: '✅ *Reel descargado!*',
+                    caption: '✅ *Instagram Reel descargado!*',
                     fileName: 'instagram_reel.mp4'
                 }, { quoted: m });
             }
@@ -298,11 +336,16 @@ export async function igreelsCommand(sock, m, args) {
         } catch (error) {
             console.error('Error al descargar:', error);
 
-            let errorMessage = '❌ *Error al descargar el contenido*\n\n';
+            // Eliminar mensaje de procesamiento
+            try {
+                await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
+            } catch (e) {}
+
+            let errorMessage = '❌ *Error al descargar el reel*\n\n';
 
             if (error.message.includes('APIs fallaron')) {
-                errorMessage += '🔧 *Todas las APIs están temporalmente no disponibles*\n\n';
-                errorMessage += '🔄 Intenta en 5-10 minutos o con otro contenido.';
+                errorMessage += '🔧 *Servicios temporalmente no disponibles*\n\n';
+                errorMessage += '🔄 Intenta en 5-10 minutos.';
             } else if (error.message.includes('no válida')) {
                 errorMessage += '📱 *URL no válida o contenido privado*\n';
                 errorMessage += 'Solo funciona con contenido público.';
