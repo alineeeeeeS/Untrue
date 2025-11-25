@@ -5,52 +5,57 @@ class InstagramPostsService {
         this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         this.apis = [
             {
-                name: 'yudamods',
-                url: 'https://api.yudamods.my.id/api/download/instagram',
-                method: 'get',
-                params: { url: '' }
+                name: 'snapinsta',
+                url: 'https://snapinsta.app/action.php',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://snapinsta.app',
+                    'Referer': 'https://snapinsta.app/'
+                },
+                data: {
+                    url: '',
+                    action: 'post'
+                }
             },
             {
-                name: 'skizoapi', 
-                url: 'https://skizo.tech/api/instagram',
-                method: 'get',
-                params: { url: '', apikey: 'skizo-2qj8H' }
+                name: 'igram',
+                url: 'https://www.igram.io/api/ajaxSearch',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://www.igram.io',
+                    'Referer': 'https://www.igram.io/'
+                },
+                data: {
+                    q: '',
+                    t: 'media',
+                    lang: 'en'
+                }
             },
             {
-                name: 'shizoco',
-                url: 'https://shizoco.cyclic.app/download/ig',
-                method: 'get',
-                params: { url: '' }
+                name: 'instasupersave',
+                url: 'https://instasupersave.com/api/convert',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': 'https://instasupersave.com',
+                    'Referer': 'https://instasupersave.com/'
+                },
+                data: {
+                    url: ''
+                }
             },
             {
-                name: 'api-sip',
-                url: 'https://api-sip.cyclic.app/api/ig',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-single',
-                url: 'https://shizoco.cyclic.app/ig',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-dl',
-                url: 'https://shizoco.cyclic.app/igdl',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-api1',
-                url: 'https://shizoco.cyclic.app/api/igdl',
-                method: 'get',
-                params: { url: '' }
-            },
-            {
-                name: 'shizoco-api2', 
-                url: 'https://shizoco.cyclic.app/api/download/ig',
-                method: 'get',
-                params: { url: '' }
+                name: 'savefrom',
+                url: 'https://api.savefrom.net/api/convert',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    url: ''
+                }
             }
         ];
     }
@@ -58,11 +63,6 @@ class InstagramPostsService {
     isValidInstagramUrl(url) {
         const regex = /https?:\/\/(www\.)?instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/;
         return regex.test(url);
-    }
-
-    extractPostCode(url) {
-        const match = url.match(/instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/);
-        return match ? match[2] : null;
     }
 
     async downloadPost(postUrl) {
@@ -92,13 +92,36 @@ class InstagramPostsService {
 
     async tryAPI(api, postUrl) {
         try {
-            const fullUrl = this.buildAPIUrl(api, postUrl);
             console.log(`📡 Llamando a: ${api.name}`);
 
-            const response = await axios.get(fullUrl, {
-                headers: { 'User-Agent': this.userAgent },
-                timeout: 20000
-            });
+            let response;
+            const config = {
+                timeout: 30000,
+                headers: {
+                    'User-Agent': this.userAgent,
+                    ...api.headers
+                }
+            };
+
+            if (api.method === 'post') {
+                const data = { ...api.data };
+                
+                if (api.name === 'snapinsta' || api.name === 'instasupersave' || api.name === 'savefrom') {
+                    data.url = postUrl;
+                } else if (api.name === 'igram') {
+                    data.q = postUrl;
+                }
+
+                const formData = new URLSearchParams();
+                for (const [key, value] of Object.entries(data)) {
+                    formData.append(key, value);
+                }
+                config.data = formData;
+                
+                response = await axios.post(api.url, formData, config);
+            } else {
+                response = await axios.get(api.url, config);
+            }
 
             return this.processAPIResponse(api.name, response.data);
 
@@ -107,122 +130,20 @@ class InstagramPostsService {
         }
     }
 
-    buildAPIUrl(api, postUrl) {
-        const url = new URL(api.url);
-        
-        // Todas las nuevas APIs usan parámetro 'url'
-        url.searchParams.append('url', postUrl);
-
-        if (api.params) {
-            Object.entries(api.params).forEach(([key, value]) => {
-                if (value !== '') { // Solo agregar si no está vacío
-                    url.searchParams.append(key, value);
-                }
-            });
-        }
-
-        return url.toString();
-    }
-
     processAPIResponse(apiName, data) {
         try {
-            console.log(`🔍 Procesando respuesta de ${apiName}:`, JSON.stringify(data).substring(0, 200) + '...');
+            console.log(`🔍 Procesando respuesta de ${apiName}`);
 
             switch (apiName) {
-                case 'yudamods':
-                    if (data.result && Array.isArray(data.result)) {
-                        console.log(`📸 yudamods - ${data.result.length} items encontrados`);
-
-                        const mediaItems = data.result
-                            .filter(item => item && item.url)
-                            .map((item, index) => {
-                                const url = item.url;
-                                const type = this.determineMediaType(url);
-                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                                return { 
-                                    url, 
-                                    type,
-                                    index: index + 1
-                                };
-                            });
-
-                        return { 
-                            mediaItems, 
-                            type: mediaItems.length > 1 ? 'multiple' : 'single',
-                            totalItems: mediaItems.length
-                        };
-                    }
-                    break;
-
-                case 'skizoapi':
-                    if (data.media && Array.isArray(data.media)) {
-                        console.log(`📸 skizoapi - ${data.media.length} items encontrados`);
-
-                        const mediaItems = data.media
-                            .filter(item => item && item.url)
-                            .map((item, index) => {
-                                const url = item.url;
-                                const type = this.determineMediaType(url);
-                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                                return { 
-                                    url, 
-                                    type,
-                                    index: index + 1
-                                };
-                            });
-
-                        return { 
-                            mediaItems, 
-                            type: mediaItems.length > 1 ? 'multiple' : 'single',
-                            totalItems: mediaItems.length
-                        };
-                    }
-                    break;
-
-                case 'shizoco':
-                case 'shizoco-single':
-                case 'shizoco-dl':
-                case 'shizoco-api1':
-                case 'shizoco-api2':
-                    // Shizoco tiene múltiples endpoints con estructura similar
+                case 'snapinsta':
                     if (data.data && Array.isArray(data.data)) {
-                        console.log(`📸 ${apiName} - ${data.data.length} items encontrados`);
-
                         const mediaItems = data.data
                             .filter(item => item && item.url)
-                            .map((item, index) => {
-                                const url = item.url;
-                                const type = this.determineMediaType(url);
-                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                                return { 
-                                    url, 
-                                    type,
-                                    index: index + 1
-                                };
-                            });
-
-                        return { 
-                            mediaItems, 
-                            type: mediaItems.length > 1 ? 'multiple' : 'single',
-                            totalItems: mediaItems.length
-                        };
-                    }
-                    // Alternativa para algunos endpoints de Shizoco
-                    if (data.result && Array.isArray(data.result)) {
-                        console.log(`📸 ${apiName} - ${data.result.length} items encontrados`);
-
-                        const mediaItems = data.result
-                            .filter(item => item && item.url)
-                            .map((item, index) => {
-                                const url = item.url;
-                                const type = this.determineMediaType(url);
-                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                                return { 
-                                    url, 
-                                    type,
-                                    index: index + 1
-                                };
-                            });
+                            .map((item, index) => ({
+                                url: item.url,
+                                type: this.determineMediaType(item.url),
+                                index: index + 1
+                            }));
 
                         return { 
                             mediaItems, 
@@ -232,22 +153,51 @@ class InstagramPostsService {
                     }
                     break;
 
-                case 'api-sip':
+                case 'igram':
                     if (data.data && Array.isArray(data.data)) {
-                        console.log(`📸 api-sip - ${data.data.length} items encontrados`);
-
                         const mediaItems = data.data
+                            .filter(item => item && item.src)
+                            .map((item, index) => ({
+                                url: item.src,
+                                type: this.determineMediaType(item.src),
+                                index: index + 1
+                            }));
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'instasupersave':
+                    if (data.medias && Array.isArray(data.medias)) {
+                        const mediaItems = data.medias
                             .filter(item => item && item.url)
-                            .map((item, index) => {
-                                const url = item.url;
-                                const type = this.determineMediaType(url);
-                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                                return { 
-                                    url, 
-                                    type,
-                                    index: index + 1
-                                };
-                            });
+                            .map((item, index) => ({
+                                url: item.url,
+                                type: this.determineMediaType(item.url),
+                                index: index + 1
+                            }));
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'savefrom':
+                    if (data.result && Array.isArray(data.result)) {
+                        const mediaItems = data.result
+                            .filter(item => item && item.url)
+                            .map((item, index) => ({
+                                url: item.url,
+                                type: this.determineMediaType(item.url),
+                                index: index + 1
+                            }));
 
                         return { 
                             mediaItems, 
@@ -265,30 +215,18 @@ class InstagramPostsService {
 
     determineMediaType(url) {
         if (!url) return 'unknown';
-
-        if (url.includes('.mp4') || url.includes('.mov') || url.includes('.avi')) {
-            return 'video';
-        } else if (url.includes('.jpg') || url.includes('.jpeg') || url.includes('.png') || url.includes('.webp')) {
-            return 'image';
-        } else {
-            return 'video';
-        }
+        return url.includes('.mp4') ? 'video' : 'image';
     }
 
     async downloadMedia(mediaUrl) {
         try {
             console.log('📥 Descargando media:', mediaUrl);
 
-            if (!mediaUrl || !mediaUrl.startsWith('http')) {
-                throw new Error('URL de media no válida');
-            }
-
             const response = await axios({
                 method: 'GET',
                 url: mediaUrl,
                 responseType: 'arraybuffer',
                 timeout: 45000,
-                maxContentLength: 100 * 1024 * 1024,
                 headers: {
                     'User-Agent': this.userAgent,
                     'Accept': 'video/mp4,video/*,image/*,*/*;q=0.8',
@@ -296,56 +234,15 @@ class InstagramPostsService {
                 }
             });
 
-            if (!response.data || response.data.length === 0) {
-                throw new Error('El contenido descargado está vacío');
-            }
-
             console.log(`✅ Media descargado - Tamaño: ${(response.data.length / 1024 / 1024).toFixed(2)} MB`);
 
             return {
                 buffer: Buffer.from(response.data),
-                contentType: response.headers['content-type'],
-                size: response.data.length
+                contentType: response.headers['content-type']
             };
 
         } catch (error) {
-            console.error('❌ Error descargando media:', error.message);
             throw new Error(`Error descargando media: ${error.message}`);
-        }
-    }
-
-    validateMediaBuffer(buffer, expectedType) {
-        if (!buffer || buffer.length === 0) {
-            throw new Error('Buffer de media vacío');
-        }
-
-        if (expectedType === 'image') {
-            const header = buffer.slice(0, 8);
-            if (header.includes('JFIF') || header.includes('Exif') || header.includes('PNG') || header.includes('WEBP')) {
-                return true;
-            }
-        } else if (expectedType === 'video') {
-            if (buffer.length < 1000) {
-                throw new Error('Video demasiado pequeño, probablemente corrupto');
-            }
-        }
-
-        return true;
-    }
-
-    // Nueva función para obtener información del post sin descargar
-    async getPostInfo(postUrl) {
-        try {
-            const postInfo = await this.downloadPost(postUrl);
-            return {
-                totalItems: postInfo.totalItems,
-                mediaItems: postInfo.mediaItems.map(item => ({
-                    index: item.index,
-                    type: item.type
-                }))
-            };
-        } catch (error) {
-            throw new Error(`Error obteniendo información del post: ${error.message}`);
         }
     }
 }
