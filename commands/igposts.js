@@ -5,15 +5,52 @@ class InstagramPostsService {
         this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         this.apis = [
             {
-                name: 'siputzx',
-                url: 'https://api.siputzx.my.id/api/d/igdl',
-                method: 'get'
+                name: 'yudamods',
+                url: 'https://api.yudamods.my.id/api/download/instagram',
+                method: 'get',
+                params: { url: '' }
             },
             {
-                name: 'betabotz', 
-                url: 'https://api.betabotz.org/api/download/igdowloader',
+                name: 'skizoapi', 
+                url: 'https://skizo.tech/api/instagram',
                 method: 'get',
-                params: { apikey: 'bot-secx3' }
+                params: { url: '', apikey: 'skizo-2qj8H' }
+            },
+            {
+                name: 'shizoco',
+                url: 'https://shizoco.cyclic.app/download/ig',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'api-sip',
+                url: 'https://api-sip.cyclic.app/api/ig',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-single',
+                url: 'https://shizoco.cyclic.app/ig',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-dl',
+                url: 'https://shizoco.cyclic.app/igdl',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-api1',
+                url: 'https://shizoco.cyclic.app/api/igdl',
+                method: 'get',
+                params: { url: '' }
+            },
+            {
+                name: 'shizoco-api2', 
+                url: 'https://shizoco.cyclic.app/api/download/ig',
+                method: 'get',
+                params: { url: '' }
             }
         ];
     }
@@ -41,7 +78,7 @@ class InstagramPostsService {
                 console.log(`🔄 Probando API: ${api.name}`);
                 const result = await this.tryAPI(api, postUrl);
                 if (result && result.mediaItems && result.mediaItems.length > 0) {
-                    console.log(`✅ Éxito con ${api.name} - ${result.mediaItems.length} medios encontrados`);
+                    console.log(`🎯 ${api.name} FUNCIONÓ - ${result.mediaItems.length} medios encontrados`);
                     return result;
                 }
             } catch (error) {
@@ -56,7 +93,7 @@ class InstagramPostsService {
     async tryAPI(api, postUrl) {
         try {
             const fullUrl = this.buildAPIUrl(api, postUrl);
-            console.log(`📡 Llamando a: ${fullUrl}`);
+            console.log(`📡 Llamando a: ${api.name}`);
 
             const response = await axios.get(fullUrl, {
                 headers: { 'User-Agent': this.userAgent },
@@ -72,11 +109,15 @@ class InstagramPostsService {
 
     buildAPIUrl(api, postUrl) {
         const url = new URL(api.url);
+        
+        // Todas las nuevas APIs usan parámetro 'url'
         url.searchParams.append('url', postUrl);
 
         if (api.params) {
             Object.entries(api.params).forEach(([key, value]) => {
-                url.searchParams.append(key, value);
+                if (value !== '') { // Solo agregar si no está vacío
+                    url.searchParams.append(key, value);
+                }
             });
         }
 
@@ -85,59 +126,140 @@ class InstagramPostsService {
 
     processAPIResponse(apiName, data) {
         try {
-            if (apiName === 'siputzx') {
-                if (data.data && Array.isArray(data.data)) {
-                    console.log(`📸 siputzx - ${data.data.length} items encontrados`);
+            console.log(`🔍 Procesando respuesta de ${apiName}:`, JSON.stringify(data).substring(0, 200) + '...');
 
-                    const mediaItems = data.data
-                        .filter(item => item && item.url)
-                        .map((item, index) => {
-                            const url = item.url;
-                            const type = this.determineMediaType(url);
-                            console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                            return { 
-                                url, 
-                                type,
-                                index: index + 1 // Agregar índice para referencia
-                            };
-                        });
+            switch (apiName) {
+                case 'yudamods':
+                    if (data.result && Array.isArray(data.result)) {
+                        console.log(`📸 yudamods - ${data.result.length} items encontrados`);
 
-                    return { 
-                        mediaItems, 
-                        type: mediaItems.length > 1 ? 'multiple' : 'single',
-                        totalItems: mediaItems.length
-                    };
-                }
-            }
-            else if (apiName === 'betabotz') {
-                if (data.message && Array.isArray(data.message)) {
-                    console.log(`📸 betabotz - ${data.message.length} items encontrados`);
+                        const mediaItems = data.result
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
 
-                    const mediaItems = data.message
-                        .filter(item => item && item._url)
-                        .map((item, index) => {
-                            const url = item._url;
-                            const type = this.determineMediaType(url);
-                            console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
-                            return { 
-                                url, 
-                                type,
-                                index: index + 1
-                            };
-                        });
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
 
-                    return { 
-                        mediaItems, 
-                        type: mediaItems.length > 1 ? 'multiple' : 'single',
-                        totalItems: mediaItems.length
-                    };
-                }
+                case 'skizoapi':
+                    if (data.media && Array.isArray(data.media)) {
+                        console.log(`📸 skizoapi - ${data.media.length} items encontrados`);
+
+                        const mediaItems = data.media
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'shizoco':
+                case 'shizoco-single':
+                case 'shizoco-dl':
+                case 'shizoco-api1':
+                case 'shizoco-api2':
+                    // Shizoco tiene múltiples endpoints con estructura similar
+                    if (data.data && Array.isArray(data.data)) {
+                        console.log(`📸 ${apiName} - ${data.data.length} items encontrados`);
+
+                        const mediaItems = data.data
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    // Alternativa para algunos endpoints de Shizoco
+                    if (data.result && Array.isArray(data.result)) {
+                        console.log(`📸 ${apiName} - ${data.result.length} items encontrados`);
+
+                        const mediaItems = data.result
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
+
+                case 'api-sip':
+                    if (data.data && Array.isArray(data.data)) {
+                        console.log(`📸 api-sip - ${data.data.length} items encontrados`);
+
+                        const mediaItems = data.data
+                            .filter(item => item && item.url)
+                            .map((item, index) => {
+                                const url = item.url;
+                                const type = this.determineMediaType(url);
+                                console.log(`📦 Item ${index + 1}: ${url} - Tipo: ${type}`);
+                                return { 
+                                    url, 
+                                    type,
+                                    index: index + 1
+                                };
+                            });
+
+                        return { 
+                            mediaItems, 
+                            type: mediaItems.length > 1 ? 'multiple' : 'single',
+                            totalItems: mediaItems.length
+                        };
+                    }
+                    break;
             }
         } catch (error) {
             console.error(`❌ Error procesando ${apiName}:`, error);
-            throw new Error(`Error procesando respuesta de ${apiName}`);
         }
-
         return null;
     }
 
@@ -264,14 +386,14 @@ export async function igpostsCommand(sock, m, args) {
                 text: `❌ *Uso del comando:*
 
 📸 *Descargar todo el post:*
-!post <url_instagram>
+#post <url_instagram>
 
 🎯 *Descargar carrusel específico:*
-!post <número> <url_instagram>
+#post <número> <url_instagram>
 
 *Ejemplos:*
-!post https://instagram.com/p/ABC123...
-!post 3 https://instagram.com/p/ABC123...` 
+#post https://instagram.com/p/ABC123...
+#post 3 https://instagram.com/p/ABC123...` 
             }, { quoted: m });
             return;
         }
@@ -354,7 +476,7 @@ export async function igpostsCommand(sock, m, args) {
 
                 // Primero enviar mensaje informativo
                 await sock.sendMessage(m.key.remoteJid, { 
-                    text: `📦 *Post con ${postInfo.mediaItems.length} elementos*\n\n💡 *Tip:* Puedes descargar un carrusel específico usando:\n!post <número> <url>\n*Ejemplo:* !post 3 ${postUrl}` 
+                    text: `📦 *Post con ${postInfo.mediaItems.length} elementos*\n\n💡 *Tip:* Puedes descargar un carrusel específico usando:\n#post <número> <url>\n*Ejemplo:* #post 3 ${postUrl}` 
                 }, { quoted: m });
 
                 // Luego enviar todos los medios
