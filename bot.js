@@ -8,303 +8,216 @@ let connectionAttempts = 0;
 let currentSocket = null;
 
 // ==========================================
-// 🎯 CONFIGURACIÓN DE PERSISTENCIA
+// 🎯 SISTEMA DE PERSISTENCIA CON RAILWAY VOLUME
 // ==========================================
 
-// Usar /tmp para persistencia entre redeploys en Railway
-const SESSION_DIR = '/tmp/whatsapp-session';
+// Usar el volume path de Railway o fallback
+const SESSION_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH 
+    ? `${process.env.RAILWAY_VOLUME_MOUNT_PATH}/whatsapp_session`
+    : './whatsapp_session';
 
-async function ensureSessionDir() {
+async function setupSessionDir() {
     try {
+        console.log(`🔍 Configurando directorio de sesión...`);
+        console.log(`📁 Ruta: ${SESSION_DIR}`);
+        console.log(`💾 Volume disponible: ${!!process.env.RAILWAY_VOLUME_MOUNT_PATH}`);
+
         if (!existsSync(SESSION_DIR)) {
             await fs.mkdir(SESSION_DIR, { recursive: true });
-            console.log('📁 Directorio de sesión persistente creado:', SESSION_DIR);
+            console.log('✅ Directorio de sesión creado');
         }
-        
-        // Verificar permisos
-        await fs.access(SESSION_DIR);
-        console.log('✅ Directorio de sesión accesible');
-        
+
+        // Verificar permisos de escritura
+        const testFile = `${SESSION_DIR}/test.txt`;
+        await fs.writeFile(testFile, 'test');
+        await fs.unlink(testFile);
+        console.log('✅ Permisos de escritura verificados');
+
+        // Listar archivos existentes
+        const files = await fs.readdir(SESSION_DIR);
+        console.log(`📊 Archivos en sesión: ${files.length}`);
+        if (files.length > 0) {
+            console.log(`📄 Archivos: ${files.join(', ')}`);
+        }
+
+        return true;
     } catch (error) {
-        console.error('❌ Error con directorio de sesión:', error.message);
-        // Fallback a directorio local
-        return './sessions';
+        console.error('❌ Error configurando sesión:', error.message);
+        return false;
     }
-    return SESSION_DIR;
 }
 
 // ==========================================
-// 🎯 ESTRATEGIA DE CONEXIÓN MEJORADA CON PERSISTENCIA
+// 🎯 CONEXIÓN MEJORADA
 // ==========================================
 
 export async function connectToWhatsApp() {
     try {
         connectionAttempts++;
-        console.log(`🔧 Intento de conexión: ${connectionAttempts}`);
+        console.log(`\n🔄 Intento de conexión #${connectionAttempts}`);
 
-        // Obtener directorio de sesión persistente
-        const sessionDir = await ensureSessionDir();
-        console.log(`💾 Usando directorio de sesión: ${sessionDir}`);
+        // Configurar directorio de sesión
+        await setupSessionDir();
 
-        // Rotar entre diferentes configuraciones
-        const browsers = [
-            ["Chrome", "Windows", "10.0.0"],
-            ["Safari", "MacOS", "15.0"],
-            ["Edge", "Windows", "11.0.0"],
-            ["Firefox", "Linux", "120.0"]
-        ];
-
-        const randomBrowser = browsers[Math.floor(Math.random() * browsers.length)];
-
-        // Limpiar sesión solo si hay muchos intentos fallidos (menos agresivo)
-        if (connectionAttempts % 10 === 0) { // Cambiado a cada 10 intentos
-            try {
-                await fs.rm(sessionDir, { recursive: true, force: true });
-                await fs.mkdir(sessionDir, { recursive: true });
-                console.log('🗑️ Sesiones limpiadas (reinicio forzado después de muchos intentos)');
-            } catch (error) {
-                console.log('ℹ️ No se pudieron limpiar sesiones:', error.message);
-            }
-        }
-
-        // USAR SESIÓN PERSISTENTE
-        const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
+        const { state, saveCreds } = await useMultiFileAuthState(SESSION_DIR);
         
-        // Verificar si hay credenciales guardadas
-        const hasSavedCreds = state.creds && state.creds.registered;
-        console.log(`🔐 Estado de sesión: ${hasSavedCreds ? 'CREDENCIALES GUARDADAS ✅' : 'SIN CREDENCIALES ❌'}`);
+        // Verificar si tenemos sesión guardada
+        const hasSession = state.creds && state.creds.registered;
+        console.log(`🔐 Sesión guardada: ${hasSession ? 'SÍ 🎉' : 'NO'}`);
+        
+        if (hasSession) {
+            console.log(`👤 Usuario: ${state.creds.me?.id || 'Desconocido'}`);
+        }
 
         const { version } = await fetchLatestBaileysVersion();
 
         const sock = makeWASocket({
             version,
             auth: { creds: state.creds, keys: state.keys },
-            browser: randomBrowser,
-            connectTimeoutMs: 45000,
-            keepAliveIntervalMs: 15000,
-            fireInitQueries: true,
-            markOnlineOnConnect: true,
+            browser: ["Ubuntu", "Chrome", "120.0.0.0"],
+            connectTimeoutMs: 60000,
+            keepAliveIntervalMs: 20000,
             printQRInTerminal: true,
-            getMessage: async (key) => {
-                return {
-                    conversation: "mensaje"
-                }
-            },
-            retryRequestDelayMs: 2000,
-            maxRetries: 5,
+            markOnlineOnConnect: false,
             syncFullHistory: false,
-            transactionOpts: {
-                maxCommitRetries: 3,
-                delayBetweenTriesMs: 3000
-            }
+            retryRequestDelayMs: 3000,
+            maxRetries: 3,
         });
 
         currentSocket = sock;
 
-        sock.ev.on('connection.update', async (update) => { // AGREGADO async AQUÍ
+        sock.ev.on('connection.update', async (update) => {
             const { connection, qr, lastDisconnect } = update;
 
-            console.log('📡 Estado de conexión:', connection);
+            console.log(`📡 Estado: ${connection}`);
 
             if (qr) {
                 console.log('\n' + '='.repeat(50));
-                if (hasSavedCreds) {
-                    console.log('⚠️  SESIÓN GUARDADA PERO SE SOLICITA QR');
-                    console.log('📱 Esto es normal después de un redeploy');
+                if (hasSession) {
+                    console.log('⚠️  SESIÓN EXISTE PERO SE NECESITA QR');
+                    console.log('💡 Esto es normal en redeploys');
                 } else {
                     console.log('📱 PRIMERA CONEXIÓN - ESCANEA EL QR');
                 }
-                console.log('💾 La sesión se guardará en:', sessionDir);
+                console.log(`💾 Sesión: ${SESSION_DIR}`);
                 console.log('='.repeat(50));
                 qrcode.generate(qr, { small: true });
                 console.log('='.repeat(50) + '\n');
             }
 
             if (connection === 'open') {
-                console.log('🎉 ¡CONEXIÓN EXITOSA!');
-                console.log('💾 Sesión persistente activa - No necesitarás QR en próximos redeploys');
-                console.log('🤖 Bot listo para recibir comandos');
+                console.log('🎉 ¡CONECTADO A WHATSAPP!');
+                console.log('💾 Sesión persistente ACTIVADA');
+                
                 isConnected = true;
                 connectionAttempts = 0;
 
-                // Enviar mensaje de actividad periódica
+                // Guardar sesión inmediatamente
+                try {
+                    await saveCreds();
+                    console.log('✅ Sesión guardada en volume persistente');
+                } catch (error) {
+                    console.error('❌ Error guardando sesión:', error);
+                }
+
                 startKeepAlive(sock);
             }
 
             if (connection === 'close') {
                 isConnected = false;
                 const statusCode = lastDisconnect?.error?.output?.statusCode;
-                const errorMessage = lastDisconnect?.error?.message;
-
-                console.log(`❌ Conexión cerrada. Código: ${statusCode}, Error: ${errorMessage}`);
                 
-                // Si es error de autenticación, limpiar sesión
+                console.log(`❌ Desconectado. Código: ${statusCode}`);
+
                 if (statusCode === 401) {
-                    console.log('🔐 Error de autenticación, limpiando sesión...');
+                    console.log('🔐 Sesión inválida, limpiando...');
                     try {
-                        await fs.rm(sessionDir, { recursive: true, force: true });
-                        await fs.mkdir(sessionDir, { recursive: true });
+                        await fs.rm(SESSION_DIR, { recursive: true, force: true });
+                        await fs.mkdir(SESSION_DIR, { recursive: true });
                     } catch (error) {
-                        console.log('⚠️ No se pudo limpiar sesión:', error.message);
+                        console.log('⚠️ No se pudo limpiar sesión');
                     }
                 }
-                
-                console.log('🔄 Reconectando...');
-                let delay = Math.min(connectionAttempts * 3000, 20000);
-                console.log(`⏰ Esperando ${delay/1000} segundos antes de reconectar...`);
+
+                const delay = Math.min(connectionAttempts * 5000, 20000);
+                console.log(`⏰ Reconectando en ${delay/1000}s...`);
                 setTimeout(connectToWhatsApp, delay);
             }
-
-            if (connection === 'connecting') {
-                console.log('🔄 Conectando a WhatsApp...');
-                if (hasSavedCreds) {
-                    console.log('🔐 Intentando reconexión con sesión guardada...');
-                }
-            }
         });
 
-        // GUARDAR CREDENCIALES EN SESIÓN PERSISTENTE
-        sock.ev.on('creds.update', async () => {
-            try {
-                await saveCreds();
-                console.log('💾 Credenciales guardadas en sesión persistente');
-            } catch (error) {
-                console.error('❌ Error guardando credenciales:', error.message);
-            }
-        });
+        // Guardar credenciales automáticamente
+        sock.ev.on('creds.update', saveCreds);
 
-        // **MANEJADOR DE MENSAJES OPTIMIZADO** (sin cambios)
+        // Manejar mensajes
         sock.ev.on('messages.upsert', async (m) => {
             try {
                 const message = m.messages[0];
-                if (!message) return;
+                if (!message || message.key.fromMe) return;
 
-                // Ignorar mensajes propios
-                if (message.key.fromMe) return;
-
-                console.log('📩 Mensaje recibido de:', message.key.remoteJid);
-                console.log('💬 Tipo de mensaje:', Object.keys(message.message || {})[0] || 'desconocido');
-
-                // Extraer texto del mensaje de diferentes formas
                 let text = '';
-
                 if (message.message?.conversation) {
                     text = message.message.conversation;
                 } else if (message.message?.extendedTextMessage?.text) {
                     text = message.message.extendedTextMessage.text;
-                } else if (message.message?.imageMessage?.caption) {
-                    text = message.message.imageMessage.caption;
-                } else if (message.message?.videoMessage?.caption) {
-                    text = message.message.videoMessage.caption;
-                } else if (message.message?.documentMessage?.caption) {
-                    text = message.message.documentMessage.caption;
                 }
 
-                console.log('🔍 Texto extraído:', text);
+                console.log(`📩 Mensaje: ${text.substring(0, 50)}...`);
 
-                // Procesar comandos
                 if (text.startsWith('#')) {
                     const args = text.trim().split(' ');
                     const commandName = args[0].toLowerCase().replace('#', '');
 
-                    console.log(`⚡ Ejecutando comando: ${commandName}`, args.slice(1));
+                    console.log(`⚡ Comando: ${commandName}`);
 
                     try {
                         const { handleCommand } = await import('./commands/commandHandler.js');
                         await handleCommand(sock, message, commandName, args.slice(1));
-                        console.log(`✅ Comando ${commandName} ejecutado exitosamente`);
                     } catch (error) {
-                        console.error(`❌ Error ejecutando comando ${commandName}:`, error.message);
-
-                        // Enviar mensaje de error al usuario
+                        console.error(`❌ Error en comando:`, error.message);
                         await sock.sendMessage(message.key.remoteJid, {
-                            text: `❌ Error al ejecutar el comando #${commandName}: ${error.message}`
+                            text: `❌ Error en #${commandName}: ${error.message}`
                         }, { quoted: message });
                     }
-                } else {
-                    console.log('ℹ️ Mensaje sin comando, ignorando...');
                 }
-
             } catch (error) {
-                console.error('💥 Error procesando mensaje:', error.message);
-                console.error('Stack:', error.stack);
-            }
-        });
-
-        // **MANEJAR EVENTOS DE CONEXIÓN ADICIONALES** (sin cambios)
-        sock.ev.on('messages.reaction', (reactions) => {
-            console.log('🎭 Reacción recibida:', reactions);
-        });
-
-        sock.ev.on('presence.update', (presence) => {
-            // Mantener para eventos de presencia
-        });
-
-        // Evento de conexión estable
-        sock.ev.on('connection.update', (update) => {
-            if (update.connection === 'open') {
-                console.log('🔗 Conexión WhatsApp establecida y estable');
-                console.log('💾 Sesión persistente activa en:', sessionDir);
+                console.error('💥 Error en mensaje:', error);
             }
         });
 
         return sock;
 
     } catch (error) {
-        console.error('💥 Error crítico en connectToWhatsApp:', error.message);
-        const delay = Math.min(connectionAttempts * 4000, 25000);
-        console.log(`🔄 Reintentando en ${delay/1000} segundos...`);
+        console.error('💥 Error crítico:', error);
+        const delay = Math.min(connectionAttempts * 5000, 25000);
         setTimeout(connectToWhatsApp, delay);
-        throw error;
     }
 }
 
-// ==========================================
-// 🎯 SISTEMA KEEP-ALIVE PARA WHATSAPP (sin cambios)
-// ==========================================
-
 function startKeepAlive(sock) {
-    // Enviar actividad cada 8 minutos para mantener conexión
-    const keepAliveInterval = setInterval(() => {
-        if (isConnected && sock) {
-            console.log('🔗 Manteniendo conexión WhatsApp activa...');
-            // Puedes agregar aquí un ping o actividad sutil
+    const interval = setInterval(() => {
+        if (isConnected) {
+            console.log('🔗 Conexión activa...');
         } else {
-            console.log('⚠️ Conexión perdida, limpiando keep-alive...');
-            clearInterval(keepAliveInterval);
+            clearInterval(interval);
         }
-    }, 8 * 60 * 1000);
+    }, 600000);
 
-    // Limpiar intervalo si la conexión se pierde
     sock.ev.on('connection.update', (update) => {
         if (update.connection === 'close') {
-            clearInterval(keepAliveInterval);
+            clearInterval(interval);
         }
     });
 }
 
-// ==========================================
-// 🎯 MANEJO DE SEÑALES MEJORADO (sin cambios)
-// ==========================================
-
 process.on('SIGINT', () => {
-    console.log('\n🛑 Cerrando bot gracefulmente...');
-    if (currentSocket) {
-        currentSocket.ws.close();
-    }
-    process.exit(0);
-});
-
-process.on('SIGTERM', () => {
-    console.log('\n📡 Señal SIGTERM recibida, cerrando bot...');
+    console.log('\n🛑 Cerrando bot...');
     process.exit(0);
 });
 
 process.on('uncaughtException', (error) => {
     console.error('❌ Error no capturado:', error);
-    // No salir del proceso, continuar ejecución
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('❌ Promise rechazada no manejada:', reason);
+process.on('unhandledRejection', (reason) => {
+    console.error('❌ Promise rechazada:', reason);
 });
