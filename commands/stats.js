@@ -39,14 +39,24 @@ class StatsManager {
 // Instancia global del administrador de estadísticas
 const statsManager = new StatsManager();
 
-// ID del creador - TU NÚMERO +584268289324
+// ID del creador
 const CREATOR_ID = '30837949124772@lid';
 
 /**
- * Verifica si el usuario es el creador del bot
+ * Verifica si el usuario es el creador del bot (compatible con grupos)
  */
-function isCreator(userId) {
-    return userId === CREATOR_ID;
+function isCreator(userId, participant = null) {
+    // En grupos, el ID real del usuario está en participant
+    // En chats individuales, está en userId
+    const effectiveUserId = participant || userId;
+    
+    console.log('🔍 DEBUG - UserId:', userId);
+    console.log('🔍 DEBUG - Participant:', participant);
+    console.log('🔍 DEBUG - Effective UserId:', effectiveUserId);
+    console.log('🔍 DEBUG - Creator ID:', CREATOR_ID);
+    console.log('🔍 DEBUG - ¿Es creador?:', effectiveUserId === CREATOR_ID);
+    
+    return effectiveUserId === CREATOR_ID;
 }
 
 /**
@@ -65,10 +75,11 @@ function formatUptime(uptimeStr) {
 export async function statsCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
     const userId = m.key.remoteJid;
+    const participant = m.key.participant; // ⬅️ IMPORTANTE: Esto contiene el ID del usuario en grupos
 
     try {
-        // Verificar si es el creador
-        if (!isCreator(userId)) {
+        // Verificar si es el creador (compatible con grupos)
+        if (!isCreator(userId, participant)) {
             await sock.sendMessage(remoteJid, { 
                 text: '❌ *Acceso denegado*\n\nEste comando solo está disponible para el creador del bot.'
             }, { quoted: m });
@@ -95,8 +106,9 @@ export async function statsCommand(sock, m, args) {
             text: statsText
         }, { quoted: m });
 
-        // Registrar el uso del comando stats
-        statsManager.recordCommand('stats', userId);
+        // Registrar el uso del comando stats (usar participant si existe para grupos)
+        const userToRecord = participant || userId;
+        statsManager.recordCommand('stats', userToRecord);
 
     } catch (error) {
         console.error('Error en comando stats:', error);
