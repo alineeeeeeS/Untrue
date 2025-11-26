@@ -1,54 +1,121 @@
-import logger from '../services/logger.js';
+// Sistema de estadísticas simple en memoria
+class StatsManager {
+    constructor() {
+        this.startTime = new Date();
+        this.totalCommands = 0;
+        this.uniqueUsers = new Set(); // Almacena IDs de usuarios únicos
+    }
+
+    recordCommand(commandName, userId) {
+        this.totalCommands++;
+        this.uniqueUsers.add(userId); // Agregar usuario a la lista de únicos
+    }
+
+    getStats() {
+        const uptime = Date.now() - this.startTime;
+        const hours = Math.floor(uptime / (1000 * 60 * 60));
+        const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+        
+        // Obtener uso de memoria
+        const memoryUsage = process.memoryUsage();
+        const memoryMB = (memoryUsage.rss / 1024 / 1024).toFixed(2);
+        
+        return {
+            uptime: `${hours}h ${minutes}m`,
+            totalCommands: this.totalCommands,
+            uniqueUsers: this.uniqueUsers.size,
+            memoryUsage: `${memoryMB} MB`,
+            startTime: this.startTime
+        };
+    }
+
+    resetStats() {
+        this.totalCommands = 0;
+        this.uniqueUsers.clear();
+        this.startTime = new Date();
+    }
+}
+
+// Instancia global del administrador de estadísticas
+const statsManager = new StatsManager();
+
+// ID del creador - TU NÚMERO +584268289324
+const CREATOR_ID = '584268289324@s.whatsapp.net';
 
 /**
- * Comando para ver estadísticas del bot
- * Comando: #stats
+ * Verifica si el usuario es el creador del bot
  */
-export async function statsCommand(sock, m) {
+function isCreator(userId) {
+    return userId === CREATOR_ID;
+}
+
+/**
+ * Formatea la duración de forma legible
+ */
+function formatUptime(uptimeStr) {
+    const [hours, minutes] = uptimeStr.split(' ').map(val => parseInt(val));
+    if (hours === 0) return `${minutes} minutos`;
+    if (minutes === 0) return `${hours} horas`;
+    return `${hours}h ${minutes}m`;
+}
+
+/**
+ * Comando para ver estadísticas del bot (SOLO CREADOR)
+ */
+export async function statsCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
+    const userId = m.key.remoteJid;
 
     try {
-        const stats = await logger.getStats();
+        // Verificar si es el creador
+        if (!isCreator(userId)) {
+            await sock.sendMessage(remoteJid, { 
+                text: '❌ *Acceso denegado*\n\nEste comando solo está disponible para el creador del bot.'
+            }, { quoted: m });
+            return;
+        }
 
-        let statsText = '📊 *ESTADÍSTICAS DEL BOT*\n\n';
+        const stats = statsManager.getStats();
 
-        if (Object.keys(stats).length === 0) {
-            statsText += 'No hay estadísticas disponibles aún.\nUsa algunos comandos para generar estadísticas.';
-        } else {
-            // Ordenar por uso (más popular primero)
-            const sortedCommands = Object.entries(stats)
-                .sort(([,a], [,b]) => b.count - a.count);
+        let statsText = '🤖 *ESTADÍSTICAS DEL BOT*\n\n';
+        
+        // Información simplificada
+        statsText += `⏰ *Encendido:* ${formatUptime(stats.uptime)}\n`;
+        statsText += `📊 *Memoria:* ${stats.memoryUsage}\n`;
+        statsText += `👥 *Usuarios:* ${stats.uniqueUsers}\n`;
+        statsText += `🎯 *Comandos usados:* ${stats.totalCommands}`;
 
-            sortedCommands.forEach(([command, data]) => {
-                const lastUsed = new Date(data.lastUsed).toLocaleDateString('es-ES', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                statsText += `• *${command}:* ${data.count} usos\n`;
-                statsText += `  👥 ${data.users.length} usuarios únicos\n`;
-                statsText += `  ⏰ Último uso: ${lastUsed}\n\n`;
-            });
-
-            // Total general
-            const totalUses = Object.values(stats).reduce((sum, cmd) => sum + cmd.count, 0);
-            const totalUsers = new Set(Object.values(stats).flatMap(cmd => cmd.users)).size;
-
-            statsText += `📈 *TOTAL:* ${totalUses} usos por ${totalUsers} usuarios`;
+        // Manejar comando de reset
+        if (args[0] === 'reset') {
+            statsManager.resetStats();
+            statsText += '\n\n✅ *Estadísticas reiniciadas correctamente*';
         }
 
         await sock.sendMessage(remoteJid, { 
             text: statsText
         }, { quoted: m });
 
-        logger.command(remoteJid, 'stats', [], true);
+        // Registrar el uso del comando stats
+        statsManager.recordCommand('stats', userId);
 
     } catch (error) {
-        logger.error('command', 'Error en comando stats', { error: error.message });
+        console.error('Error en comando stats:', error);
         await sock.sendMessage(remoteJid, { 
             text: '❌ Error al obtener estadísticas' 
         }, { quoted: m });
     }
+}
+
+/**
+ * Función para registrar comandos (debe llamarse desde commandHandler.js)
+ */
+export function recordCommandUsage(commandName, userId) {
+    statsManager.recordCommand(commandName, userId);
+}
+
+/**
+ * Obtener estadísticas para otros usos
+ */
+export function getStats() {
+    return statsManager.getStats();
 }
