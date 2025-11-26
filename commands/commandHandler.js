@@ -16,7 +16,7 @@ import { stickerToMediaCommand } from "./stickerToMedia.js";
 import { lyricsCommand } from "./lyrics.js";
 import { bcvCommand } from "./bcv.js";
 import { qrGeneratorCommand } from "./qrGenerator.js";
-import { iaCommand } from "./gemini.js";
+import { iaCommand } from "./ia.js";
 import { toAudioCommand } from "./toAudio.js";
 import { todosCommand } from "./todos.js";
 import { totextCommand } from "./totext.js"
