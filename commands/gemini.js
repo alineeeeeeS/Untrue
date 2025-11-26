@@ -1,139 +1,84 @@
-import axios from 'axios';
-import logger from '../services/logger.js';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Tu API key - Vamos a probar con la versión más nueva
-const GEMINI_API_KEY = 'AIzaSyA27ueFDicrDV-jZtsNW1CFdhekNoRFAa8';
+// Configurar Gemini - necesitarás una API Key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-export async function geminiCommand(sock, m, args) {
+/**
+ * Comando #ia - Asistente IA con Gemini
+ * Uso: #ia <prompt>
+ * Ej: #ia explica la teoría de la relatividad
+ * Ej: #ia crea un plan de contenido para TikTok
+ */
+export async function iaCommand(sock, m, args) {
+    const remoteJid = m.key.remoteJid;
+    const userPrompt = args.join(' ').trim();
+
     try {
-        const jid = m.key.remoteJid;
-
-        if (args.length === 0) {
-            await sock.sendMessage(jid, {
-                text: '🤖 *Uso correcto:*\n`#gemini [tu pregunta]`\n\n*Ejemplos:*\n• `#gemini explica la fotosíntesis`\n• `#gemini resumen de la segunda guerra mundial`'
+        // Verificar si hay prompt
+        if (!userPrompt) {
+            await sock.sendMessage(remoteJid, { 
+                text: '❌ *Uso correcto:* `#ia <tu pregunta o prompt>`\n\nEjemplo: `#ia explica qué es el machine learning`'
             }, { quoted: m });
             return;
         }
 
-        const question = args.join(' ');
+        // Enviar mensaje de "escribiendo..."
+        await sock.sendPresenceUpdate('composing', remoteJid);
 
-        await sock.sendMessage(jid, {
-            text: '🧠 *Consultando a Gemini...*'
-        }, { quoted: m });
+        // Obtener modelo Gemini (usaremos gemini-pro que es gratuito)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-        logger.info('gemini', `Consulta Gemini para ${m.pushName}`, { question, jid });
+        // Crear prompt con contexto de que es un asistente de WhatsApp
+        const fullPrompt = `Eres un asistente útil en un bot de WhatsApp. Responde de forma concisa pero completa. 
+Usuario pregunta: ${userPrompt}
 
-        const geminiResponse = await askGeminiWithRetry(question);
+Responde en el mismo idioma que el usuario. Si pregunta en español, responde en español. 
+Mantén un tono amigable y directo.`;
 
-        const message = `🤖 *Gemini AI*\n\n` +
-                       `*Pregunta:* ${question}\n\n` +
-                       `*Respuesta:*\n${geminiResponse}\n\n` +
-                       `_💡 Powered by Google Gemini_`;
+        const result = await model.generateContent(fullPrompt);
+        const response = await result.response;
+        const text = response.text();
 
-        await sock.sendMessage(jid, {
-            text: message
-        }, { quoted: m });
+        // Dividir respuesta si es muy larga para WhatsApp
+        const maxLength = 4000;
+        if (text.length > maxLength) {
+            const parts = [];
+            for (let i = 0; i < text.length; i += maxLength) {
+                parts.push(text.substring(i, i + maxLength));
+            }
+            
+            for (let i = 0; i < parts.length; i++) {
+                await sock.sendMessage(remoteJid, { 
+                    text: `🤖 *IA [${i + 1}/${parts.length}]*\n\n${parts[i]}`
+                }, { quoted: i === 0 ? m : null });
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Pequeño delay
+            }
+        } else {
+            await sock.sendMessage(remoteJid, { 
+                text: `🤖 *IA*\n\n${text}`
+            }, { quoted: m });
+        }
 
-        logger.success('gemini', `Respuesta Gemini enviada a ${m.pushName}`, {
-            question: question,
-            jid
-        });
+        // Registrar uso en stats
+        if (typeof recordCommandUsage === 'function') {
+            recordCommandUsage('ia', m.key.remoteJid);
+        }
 
     } catch (error) {
-        logger.error('gemini', `Error en comando gemini: ${error.message}`, {
-            error: error.stack,
-            user: m.pushName,
-            jid: m.key.remoteJid
-        });
-
-        await sock.sendMessage(m.key.remoteJid, {
-            text: `❌ *Error de Gemini*\n\n${error.message}\n\n💡 *Solución:* Ve a console.cloud.google.com y habilita "Generative Language API" para tu API key.`
+        console.error('Error en comando #ia:', error);
+        
+        let errorMessage = '❌ *Error al consultar la IA*';
+        
+        if (error.message.includes('API_KEY')) {
+            errorMessage += '\n\n🔑 *Configuración requerida:*\nNecesitas agregar tu API Key de Gemini a las variables de entorno.';
+        } else if (error.message.includes('quota')) {
+            errorMessage += '\n\n📊 Límite de consultas alcanzado. Intenta más tarde.';
+        } else if (error.message.includes('network')) {
+            errorMessage += '\n\n🌐 Error de conexión. Verifica tu internet.';
+        }
+        
+        await sock.sendMessage(remoteJid, { 
+            text: errorMessage
         }, { quoted: m });
     }
-}
-
-/**
- * Consulta Gemini con múltiples intentos y versiones
- */
-async function askGeminiWithRetry(question) {
-    // Diferentes endpoints y modelos a probar
-    const attempts = [
-        {
-            name: 'Gemini 1.5 Flash',
-            url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-            model: 'gemini-1.5-flash'
-        },
-        {
-            name: 'Gemini 1.0 Pro',
-            url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${GEMINI_API_KEY}`,
-            model: 'gemini-1.0-pro'
-        },
-        {
-            name: 'Gemini Pro Latest',
-            url: `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-            model: 'gemini-pro'
-        }
-    ];
-
-    for (const attempt of attempts) {
-        try {
-            console.log(`🔄 Probando: ${attempt.name}`);
-
-            const response = await axios.post(attempt.url, {
-                contents: [{
-                    parts: [{
-                        text: `Eres un asistente útil. Responde en español de manera clara y concisa (máximo 600 caracteres). Pregunta: ${question}`
-                    }]
-                }],
-                generationConfig: {
-                    maxOutputTokens: 600,
-                    temperature: 0.7,
-                    topP: 0.8,
-                    topK: 40
-                },
-                safetySettings: [
-                    {
-                        category: "HARM_CATEGORY_HARASSMENT",
-                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                    },
-                    {
-                        category: "HARM_CATEGORY_HATE_SPEECH", 
-                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                    }
-                ]
-            }, {
-                timeout: 25000,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.data.candidates && response.data.candidates[0].content.parts[0].text) {
-                let answer = response.data.candidates[0].content.parts[0].text.trim();
-
-                if (answer.length > 1200) {
-                    answer = answer.substring(0, 1200) + '...';
-                }
-
-                console.log(`✅ Éxito con ${attempt.name}`);
-                return answer;
-            }
-
-        } catch (error) {
-            console.log(`❌ ${attempt.name} falló:`, error.response?.data?.error?.message || error.message);
-
-            // Si es error de API no habilitada, dar instrucciones específicas
-            if (error.response?.status === 403) {
-                throw new Error('Gemini API no está habilitada. Ve a Google Cloud Console y habilita "Generative Language API".');
-            }
-
-            if (error.response?.status === 429) {
-                throw new Error('Límite de consultas excedido. Intenta en unos minutos.');
-            }
-
-            continue;
-        }
-    }
-
-    throw new Error('No se pudo conectar con Gemini. Verifica que la API esté habilitada en Google Cloud Console.');
 }
