@@ -1,6 +1,5 @@
 import { pingCommand } from "./ping.js";
 import { statsCommand } from "./stats.js";
-import { rotateCommand } from "./rotate.js";
 import { tiktokCommand } from "./tiktok.js";
 import { tiktokAudioCommand } from "./tiktokAudio.js";
 import { igreelsCommand } from "./igreels.js";
@@ -22,15 +21,16 @@ import { todosCommand } from "./todos.js";
 import { totextCommand } from "./totext.js"
 import { toimgCommand } from "./toimg.js"
 import { traducirCommand } from "./traducir.js"
+// Sistema de estadísticas
+import { recordCommandUsage } from "./stats.js";
 
-// Mapeo de comandos (nombre: función)
+// Mapeo de comandos
 const commands = {
     // COMANDOS BÁSICOS
     ping: pingCommand,
     help: helpCommand,
     menu: helpCommand,
     info: helpCommand,
-    rotate: rotateCommand,
     stats: statsCommand,
 
     // COMANDOS DE DESCARGA
@@ -44,6 +44,8 @@ const commands = {
     pin: pinterestCommand,
     ytvid: youtubeCommand,  
     ytaud: youtubeAudioCommand,
+	ytv: youtubeCommand,  
+	yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
 
     // OTROS COMANDOS
@@ -58,12 +60,24 @@ const commands = {
     s: mediaToStickerCommand,
     sticker: mediaToStickerCommand,
     smedia: stickerToMediaCommand,
+	sm: stickerToMediaCommand,
     toaud: toAudioCommand,
+	toa: toAudioCommand,
     totext: totextCommand,
+	tot: totextCommand,
     toimg: toimgCommand,
+	toi: toimgCommand,
 };
 
 export async function handleCommand(sock, m, commandName, args) {
+    const userId = m.key.remoteJid;
+    
+    // REGISTRAR USO DEL COMANDO (excepto comandos básicos/metadatos)
+    const excludedCommands = ['ping', 'stats', 'help', 'menu', 'info'];
+    if (!excludedCommands.includes(commandName)) {
+        recordCommandUsage(commandName, userId);
+    }
+    
     if (commands[commandName]) {
         try {
             await commands[commandName](sock, m, args);
