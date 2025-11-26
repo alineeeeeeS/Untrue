@@ -40,7 +40,7 @@ class StatsManager {
 const statsManager = new StatsManager();
 
 // ID del creador - TU NÚMERO +584268289324
-const CREATOR_ID = '584268289324@s.whatsapp.net';
+const CREATOR_ID = '30837949124772@lid';
 
 /**
  * Verifica si el usuario es el creador del bot
