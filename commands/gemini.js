@@ -1,18 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Configurar Gemini - necesitarás una API Key
+// Configurar Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Sistema de colas y seguridad
+// Sistema de colas
 const userCooldowns = new Map();
-const COOLDOWN_TIME = 5000; // 5 segundos entre requests
+const COOLDOWN_TIME = 5000;
 
-/**
- * Comando #ia - Asistente IA con Gemini
- * Uso: #ia <prompt>
- * Ej: #ia explica la teoría de la relatividad
- * Ej: #ia crea un plan de contenido para TikTok
- */
 export async function geminiCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
     const userId = m.key.participant || m.key.remoteJid;
@@ -29,35 +23,30 @@ export async function geminiCommand(sock, m, args) {
             return;
         }
 
-        // Verificar si hay prompt
         if (!userPrompt) {
             await sock.sendMessage(remoteJid, { 
-                text: '❌ *Uso correcto:* `#ia <tu pregunta o prompt>`\n\nEjemplo: `#ia explica qué es el machine learning`'
+                text: '❌ *Uso correcto:* `#ia <tu pregunta>`\nEjemplo: `#ia explica qué es el machine learning`'
             }, { quoted: m });
             return;
         }
 
-        // Actualizar cooldown
         userCooldowns.set(userId, now);
-
-        // Enviar mensaje de "escribiendo..."
         await sock.sendPresenceUpdate('composing', remoteJid);
 
-        // ⬇️⬇️⬇️ LÍNEA CORREGIDA - USAR MODELO ACTUAL ⬇️⬇️⬇️
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        // ⬇️⬇️⬇️ USAR MODELO COMPATIBLE ⬇️⬇️⬇️
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-pro",
+            generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 1000,
+            },
+        });
 
-        // Crear prompt con contexto de que es un asistente de WhatsApp
-        const fullPrompt = `Eres un asistente útil en un bot de WhatsApp. Responde de forma concisa pero completa. 
-Usuario pregunta: ${userPrompt}
-
-Responde en el mismo idioma que el usuario. Si pregunta en español, responde en español. 
-Mantén un tono amigable y directo.`;
-
-        const result = await model.generateContent(fullPrompt);
+        const result = await model.generateContent(userPrompt);
         const response = await result.response;
         const text = response.text();
 
-        // Dividir respuesta si es muy larga para WhatsApp
+        // Dividir respuesta si es muy larga
         const maxLength = 4000;
         if (text.length > maxLength) {
             const parts = [];
@@ -69,7 +58,7 @@ Mantén un tono amigable y directo.`;
                 await sock.sendMessage(remoteJid, { 
                     text: `🤖 *IA [${i + 1}/${parts.length}]*\n\n${parts[i]}`
                 }, { quoted: i === 0 ? m : null });
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Pequeño delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         } else {
             await sock.sendMessage(remoteJid, { 
@@ -77,7 +66,6 @@ Mantén un tono amigable y directo.`;
             }, { quoted: m });
         }
 
-        // Registrar uso en stats
         if (typeof recordCommandUsage === 'function') {
             recordCommandUsage('ia', userId);
         }
@@ -88,15 +76,13 @@ Mantén un tono amigable y directo.`;
         let errorMessage = '❌ *Error al consultar la IA*';
         
         if (error.message.includes('API_KEY') || error.message.includes('API key')) {
-            errorMessage += '\n\n🔑 *Configuración requerida:*\nNecesitas agregar tu API Key de Gemini a las variables de entorno.';
-        } else if (error.message.includes('quota')) {
-            errorMessage += '\n\n📊 Límite de consultas alcanzado. Intenta más tarde.';
-        } else if (error.message.includes('network') || error.message.includes('ECONNREFUSED')) {
-            errorMessage += '\n\n🌐 Error de conexión. Verifica tu internet.';
+            errorMessage += '\n\n🔑 Error de API Key. Verifica en Railway.';
         } else if (error.message.includes('404') || error.message.includes('not found')) {
-            errorMessage += '\n\n🔧 *Error de modelo:* El modelo de IA no está disponible. Reporta este error.';
+            errorMessage += '\n\n🔧 Error: Modelo no disponible.';
+        } else if (error.message.includes('quota')) {
+            errorMessage += '\n\n📊 Límite alcanzado. Intenta más tarde.';
         } else {
-            errorMessage += `\n\nDetalle: ${error.message}`;
+            errorMessage += `\n\nError: ${error.message}`;
         }
         
         await sock.sendMessage(remoteJid, { 
