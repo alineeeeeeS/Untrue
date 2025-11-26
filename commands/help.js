@@ -32,7 +32,7 @@ export async function helpCommand(sock, m) {
   • #s o #sticker - Respondiendo a una imagen/video para crearlo
   • #smedia - Sticker a imagen/video
   • #toaud - Convertir video a audio
-  • #totext - Extraer texto de imágenes
+  • #totext - Extraer texto de imagen/audio
   • #toimg - Convertir documentos a imágenes
 
 🔧 *COMANDOS - BOT*
