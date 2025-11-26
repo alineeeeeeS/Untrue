@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+RUN apk update && apk add --no-cache git
+RUN npm install -g npm@latest
+
 # Instalar dependencias CRÍTICAS
 RUN apk update && apk add --no-cache \
     ffmpeg \
