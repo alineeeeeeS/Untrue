@@ -43,8 +43,8 @@ export async function geminiCommand(sock, m, args) {
         // Enviar mensaje de "escribiendo..."
         await sock.sendPresenceUpdate('composing', remoteJid);
 
-        // Obtener modelo Gemini (usaremos gemini-pro que es gratuito)
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        // ⬇️⬇️⬇️ LÍNEA CORREGIDA - USAR MODELO ACTUAL ⬇️⬇️⬇️
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         // Crear prompt con contexto de que es un asistente de WhatsApp
         const fullPrompt = `Eres un asistente útil en un bot de WhatsApp. Responde de forma concisa pero completa. 
@@ -93,6 +93,8 @@ Mantén un tono amigable y directo.`;
             errorMessage += '\n\n📊 Límite de consultas alcanzado. Intenta más tarde.';
         } else if (error.message.includes('network') || error.message.includes('ECONNREFUSED')) {
             errorMessage += '\n\n🌐 Error de conexión. Verifica tu internet.';
+        } else if (error.message.includes('404') || error.message.includes('not found')) {
+            errorMessage += '\n\n🔧 *Error de modelo:* El modelo de IA no está disponible. Reporta este error.';
         } else {
             errorMessage += `\n\nDetalle: ${error.message}`;
         }
