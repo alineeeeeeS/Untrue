@@ -209,12 +209,13 @@ export async function igpostsCommand(sock, m, args) {
         let postUrl = args[0];
         let selectedIndex = null;
 
-        // LÓGICA DE DETECCIÓN DE ARGUMENTOS (Igual que tu original)
+        // 1. Lógica para detectar si hay un número (selección de carrusel)
         if (args.length >= 2 && !isNaN(args[0])) {
             selectedIndex = parseInt(args[0]);
             postUrl = args[1];
         }
 
+        // 2. Lógica para detectar URL en mensaje citado (reply)
         if (!postUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedText = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
                              m.message.extendedTextMessage.contextInfo.quotedMessage?.extendedTextMessage?.text;
@@ -240,14 +241,15 @@ export async function igpostsCommand(sock, m, args) {
 
         await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
 
-        // DESCARGA DE INFO
+        // 3. Descargamos la información del post
         const postInfo = await instagramPostsService.downloadPost(postUrl);
+        const totalItems = postInfo.mediaItems.length;
 
-        // SELECCIÓN ESPECÍFICA (CARRUSEL)
+        // CASO A: Selección específica (Ej: #post 2 <link>)
         if (selectedIndex !== null) {
-            if (selectedIndex < 1 || selectedIndex > postInfo.mediaItems.length) {
+            if (selectedIndex < 1 || selectedIndex > totalItems) {
                 await sock.sendMessage(m.key.remoteJid, { 
-                    text: `❌ El post solo tiene ${postInfo.mediaItems.length} elementos.` 
+                    text: `❌ El post solo tiene ${totalItems} elementos.` 
                 }, { quoted: m });
                 return;
             }
@@ -255,30 +257,46 @@ export async function igpostsCommand(sock, m, args) {
             const item = postInfo.mediaItems[selectedIndex - 1];
             const media = await instagramPostsService.downloadMedia(item.url);
             
+            // MENSAJE PERSONALIZADO 1: Selección específica
+            const caption = `Carrusel descargado! (${selectedIndex}/${totalItems})`;
+            
             await sock.sendMessage(m.key.remoteJid, {
                 [item.type]: media.buffer,
-                caption: `Elemento ${selectedIndex}/${postInfo.mediaItems.length}`
+                caption: caption
             }, { quoted: m });
             
             await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
             return;
         }
 
-        // DESCARGA AUTOMÁTICA (TODO O UNO)
-        for (let i = 0; i < postInfo.mediaItems.length; i++) {
+        // CASO B: Descarga automática (Todo el post o post único)
+        for (let i = 0; i < totalItems; i++) {
             const item = postInfo.mediaItems[i];
             
-            // Si es un álbum muy grande y no especificó número, advertir o limitar si deseas
-            // Aquí descargamos todo como pediste:
             try {
                 const media = await instagramPostsService.downloadMedia(item.url);
+                
+                // LÓGICA DE MENSAJES PERSONALIZADOS
+                let caption = "";
+
+                // Solo ponemos caption en el primer elemento enviado
+                if (i === 0) {
+                    if (totalItems === 1) {
+                        // MENSAJE PERSONALIZADO 2: Post único
+                        caption = "Post descargado!";
+                    } else {
+                        // MENSAJE PERSONALIZADO 3: Carrusel completo (primera foto)
+                        caption = `Carrusel descargado! (${totalItems} posts)`;
+                    }
+                }
+
                 await sock.sendMessage(m.key.remoteJid, {
                     [item.type]: media.buffer,
-                    caption: i === 0 ? `Post descargado (${postInfo.mediaItems.length} elementos)` : ''
+                    caption: caption || undefined // undefined hace que no envíe texto en las siguientes fotos
                 }, { quoted: m });
                 
-                // Pausa pequeña para no saturar WhatsApp
-                if (postInfo.mediaItems.length > 1) await new Promise(r => setTimeout(r, 1000));
+                // Pausa pequeña para no saturar si son muchas fotos
+                if (totalItems > 1) await new Promise(r => setTimeout(r, 1000));
 
             } catch (e) {
                 console.log(`Error enviando item ${i+1}: ${e.message}`);
