@@ -13,48 +13,76 @@ class FacebookService {
         return this.userAgents[Math.floor(Math.random() * this.userAgents.length)];
     }
 
+    /**
+     * ¡CORRECCIÓN CLAVE! Ahora incluye el patrón /share/
+     * para aceptar enlaces de compartir y Reels.
+     */
     isValidFacebookUrl(url) {
-        const regex = /(https?:\/\/)?(www\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch)\/([^\\s]+)/;
+        // Acepta: /videos/, /reel/, /watch/, /share/ y /posts/
+        const regex = /(https?:\/\/)?(www\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch)\/(share|videos|reel|posts)\/([^\\s]+)/;
         return regex.test(url);
     }
     
-    /**
-     * CONVERSIÓN CRÍTICA: Convierte cualquier URL de Facebook a mbasic.facebook.com
-     * Esto mejora la compatibilidad con muchas APIs scraper.
-     */
+    // CONVERSIÓN CRÍTICA: Convierte a mbasic.facebook.com para las APIs
     toMbasicUrl(url) {
         if (!url) return url;
         try {
-            const u = new URL(url.replace('m.facebook.com', 'facebook.com')); // Normaliza m.
-            if (u.hostname.includes('facebook.com')) {
+            // Reemplaza cualquier subdominio por 'mbasic' si es un enlace de Facebook.
+            const u = new URL(url);
+            if (u.hostname.includes('facebook.com') || u.hostname.includes('fb.watch')) {
                 u.hostname = 'mbasic.facebook.com';
             }
             return u.toString();
         } catch (e) {
-            return url;
+            // Si falla al parsear la URL, intenta al menos un reemplazo simple.
+            return url.replace(/www\.|m\./g, 'mbasic.').replace('fb.watch', 'mbasic.facebook.com/watch');
+        }
+    }
+
+    async resolveFacebookUrl(shortUrl) {
+        try {
+            // Este paso es CRUCIAL para URLs /share/ y /fb.watch/.
+            // Forzamos una petición GET para que el servidor de Facebook nos redirija
+            // a la URL canónica del video que contiene el ID.
+            const response = await axios.get(shortUrl, {
+                headers: { 
+                    'User-Agent': this.userAgent,
+                    // Pedimos un HTML básico, no el de la app pesada
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' 
+                },
+                maxRedirects: 15, // Permitir más redirecciones para enlaces /share/
+                validateStatus: (status) => status < 400
+            });
+            
+            // La URL final es la que necesitamos (el ID de video).
+            return response.request?.res?.responseUrl || response.config.url;
+        } catch (error) {
+            console.log(`⚠️ No se pudo resolver la redirección: ${error.message}`);
+            return shortUrl;
         }
     }
 
     async downloadContent(fbUrl) {
-        if (!this.isValidFacebookUrl(fbUrl)) throw new Error('URL inválida');
-        
-        // 1. Pre-procesamiento de URL
-        const mbasicUrl = this.toMbasicUrl(fbUrl);
+        if (!this.isValidFacebookUrl(fbUrl)) {
+            throw new Error('URL inválida');
+        }
 
-        // --- LISTA DE APIS ACTUALIZADA (Más Estables) ---
+        // 1. Resolver la URL a su versión canónica (Ej: de /share/ a /videos/ID)
+        const resolvedUrl = await this.resolveFacebookUrl(fbUrl);
+        
+        // 2. Convertir la URL resuelta al formato mbasic para las APIs scraper
+        const mbasicUrl = this.toMbasicUrl(resolvedUrl);
+
+        // --- LISTA DE APIS (Sin cambios, ya son las más estables) ---
         const apis = [
-            // 1. API Basada en yt-dlp (Lógica robusta para streams DASH)
             { name: 'Isuru FDown', method: this.tryIsuruFDown.bind(this) },
-            // 2. API de Respaldo Comunitario (Nueva Opción)
             { name: 'Xtreme APIs', method: this.tryXtreme.bind(this) }
         ];
 
         for (const api of apis) {
             try {
                 console.log(`🔄 Probando API: ${api.name}`);
-                // Le pasamos la URL en formato mbasic
-                const result = await api.method(mbasicUrl); 
-                
+                const result = await api.method(mbasicUrl); // Pasamos la URL mbasic
                 if (result && result.url) return result;
             } catch (error) {
                 console.log(`❌ ${api.name} falló:`, error.message);
@@ -66,38 +94,28 @@ class FacebookService {
 
     // --- APIs (Solo Axios) ---
 
-    // API 1: Isuru FDown (Basada en yt-dlp/FFmpeg - Ideal para streams complejos)
     async tryIsuruFDown(url) {
         const apiUrl = `https://fdown.isuru.eu.org/api/v1/download?url=${encodeURIComponent(url)}`;
         const { data } = await axios.get(apiUrl, { timeout: 15000 });
         
         if (data?.success && data?.data) {
-            // Prioriza la opción que tenga la mejor calidad, o la primera
             const bestQuality = data.data.find(v => v.quality.includes('1080p')) || 
                                 data.data.find(v => v.quality.includes('720p')) ||
                                 data.data[0];
 
             if (bestQuality?.url) {
-                return {
-                    url: bestQuality.url,
-                    type: 'video'
-                };
+                return { url: bestQuality.url, type: 'video' };
             }
         }
         throw new Error('Fail Isuru FDown');
     }
 
-    // API 2: Xtreme APIs (Respaldo Comunitario)
     async tryXtreme(url) {
-        // Nota: Las APIs Vercel pueden cambiar o tener límites de tasa.
         const apiUrl = `https://xxtreme-apis.vercel.app/api/downloader/fbdown?url=${encodeURIComponent(url)}`;
         const { data } = await axios.get(apiUrl, { timeout: 15000 });
         
         if (data?.result?.url) {
-            return {
-                url: data.result.url,
-                type: 'video'
-            };
+            return { url: data.result.url, type: 'video' };
         }
         throw new Error('Fail Xtreme');
     }
@@ -112,8 +130,7 @@ class FacebookService {
                 maxContentLength: 95 * 1024 * 1024,
                 headers: {
                     'User-Agent': this.userAgent,
-                    // Header CRÍTICO para evitar 403 Forbidden en la descarga
-                    'Referer': 'https://www.facebook.com/' 
+                    'Referer': 'https://www.facebook.com/'
                 }
             });
             return { buffer: Buffer.from(response.data) };
@@ -129,6 +146,7 @@ class FacebookService {
 const facebookService = new FacebookService();
 
 export async function facebookCommand(sock, m, args) {
+    // ... (El Command Handler sigue igual para mensajes limpios) ...
     try {
         let fbUrl = args[0];
 
