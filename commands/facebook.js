@@ -14,86 +14,92 @@ class FacebookService {
     }
 
     isValidFacebookUrl(url) {
-        const regex = /(https?:\/\/)?(www\.|m\.|mbasic\.|web\.)?(facebook|fb)\.(com|watch)\/([^\s]+)/;
+        const regex = /(https?:\/\/)?(www\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch)\/([^\\s]+)/;
         return regex.test(url);
     }
-
-    async resolveFacebookUrl(shortUrl) {
+    
+    /**
+     * CONVERSIÓN CRÍTICA: Convierte cualquier URL de Facebook a mbasic.facebook.com
+     * Esto mejora la compatibilidad con muchas APIs scraper.
+     */
+    toMbasicUrl(url) {
+        if (!url) return url;
         try {
-            if (shortUrl.includes('/videos/') || shortUrl.includes('/reel/')) {
-                return shortUrl;
+            const u = new URL(url.replace('m.facebook.com', 'facebook.com')); // Normaliza m.
+            if (u.hostname.includes('facebook.com')) {
+                u.hostname = 'mbasic.facebook.com';
             }
-            const response = await axios.get(shortUrl, {
-                headers: { 'User-Agent': this.userAgent },
-                maxRedirects: 10,
-                validateStatus: (status) => status < 400
-            });
-            return response.request?.res?.responseUrl || response.config.url;
-        } catch (error) {
-            return shortUrl;
+            return u.toString();
+        } catch (e) {
+            return url;
         }
     }
 
     async downloadContent(fbUrl) {
         if (!this.isValidFacebookUrl(fbUrl)) throw new Error('URL inválida');
         
-        const resolvedUrl = await this.resolveFacebookUrl(fbUrl);
+        // 1. Pre-procesamiento de URL
+        const mbasicUrl = this.toMbasicUrl(fbUrl);
 
-        // Lista de APIs en orden de prioridad
+        // --- LISTA DE APIS ACTUALIZADA (Más Estables) ---
         const apis = [
-            { name: 'Ryzendesu', method: this.tryRyzendesu.bind(this) },
-            { name: 'Widipe', method: this.tryWidipe.bind(this) },
-            { name: 'Siputz', method: this.trySiputz.bind(this) }
+            // 1. API Basada en yt-dlp (Lógica robusta para streams DASH)
+            { name: 'Isuru FDown', method: this.tryIsuruFDown.bind(this) },
+            // 2. API de Respaldo Comunitario (Nueva Opción)
+            { name: 'Xtreme APIs', method: this.tryXtreme.bind(this) }
         ];
 
         for (const api of apis) {
             try {
                 console.log(`🔄 Probando API: ${api.name}`);
-                const result = await api.method(resolvedUrl);
+                // Le pasamos la URL en formato mbasic
+                const result = await api.method(mbasicUrl); 
+                
                 if (result && result.url) return result;
             } catch (error) {
-                console.log(`❌ ${api.name} falló.`);
+                console.log(`❌ ${api.name} falló:`, error.message);
                 continue;
             }
         }
-        throw new Error('No se pudo descargar el video (Privado o eliminado).');
+        throw new Error('No se pudo descargar el video (Privado, caído o APIs saturadas).');
     }
 
     // --- APIs (Solo Axios) ---
 
-    async tryRyzendesu(url) {
-        const { data } = await axios.get(`https://api.ryzendesu.vip/api/downloader/fbdown?url=${encodeURIComponent(url)}`, { timeout: 10000 });
-        if (data?.success && data?.metadata) {
-            return {
-                url: data.metadata.hd || data.metadata.sd,
-                type: 'video'
-            };
+    // API 1: Isuru FDown (Basada en yt-dlp/FFmpeg - Ideal para streams complejos)
+    async tryIsuruFDown(url) {
+        const apiUrl = `https://fdown.isuru.eu.org/api/v1/download?url=${encodeURIComponent(url)}`;
+        const { data } = await axios.get(apiUrl, { timeout: 15000 });
+        
+        if (data?.success && data?.data) {
+            // Prioriza la opción que tenga la mejor calidad, o la primera
+            const bestQuality = data.data.find(v => v.quality.includes('1080p')) || 
+                                data.data.find(v => v.quality.includes('720p')) ||
+                                data.data[0];
+
+            if (bestQuality?.url) {
+                return {
+                    url: bestQuality.url,
+                    type: 'video'
+                };
+            }
         }
-        throw new Error('Fail Ryzendesu');
+        throw new Error('Fail Isuru FDown');
     }
 
-    async tryWidipe(url) {
-        const { data } = await axios.get(`https://widipe.com/facebook?url=${encodeURIComponent(url)}`, { timeout: 10000 });
-        const result = data?.result;
-        if (result && (result.hd || result.sd || result.url)) {
+    // API 2: Xtreme APIs (Respaldo Comunitario)
+    async tryXtreme(url) {
+        // Nota: Las APIs Vercel pueden cambiar o tener límites de tasa.
+        const apiUrl = `https://xxtreme-apis.vercel.app/api/downloader/fbdown?url=${encodeURIComponent(url)}`;
+        const { data } = await axios.get(apiUrl, { timeout: 15000 });
+        
+        if (data?.result?.url) {
             return {
-                url: result.hd || result.sd || result.url,
+                url: data.result.url,
                 type: 'video'
             };
         }
-        throw new Error('Fail Widipe');
-    }
-
-    async trySiputz(url) {
-        const { data } = await axios.get(`https://api.siputzx.my.id/api/d/facebook?url=${encodeURIComponent(url)}`, { timeout: 10000 });
-        const video = data?.data?.find(v => v.quality === 'HD') || data?.data?.[0];
-        if (video?.url) {
-            return {
-                url: video.url,
-                type: 'video'
-            };
-        }
-        throw new Error('Fail Siputz');
+        throw new Error('Fail Xtreme');
     }
 
     async downloadMedia(mediaUrl) {
@@ -106,7 +112,8 @@ class FacebookService {
                 maxContentLength: 95 * 1024 * 1024,
                 headers: {
                     'User-Agent': this.userAgent,
-                    'Referer': 'https://www.facebook.com/'
+                    // Header CRÍTICO para evitar 403 Forbidden en la descarga
+                    'Referer': 'https://www.facebook.com/' 
                 }
             });
             return { buffer: Buffer.from(response.data) };
@@ -125,12 +132,12 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // Lógica para detectar URL en mensaje citado
+        // Lógica para detectar URL en mensaje citado (sin cambios)
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedText = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
                              m.message.extendedTextMessage.contextInfo.quotedMessage?.extendedTextMessage?.text;
             if (quotedText) {
-                const urlMatch = quotedText.match(/https?:\/\/[^\s]+/g);
+                const urlMatch = quotedText.match(/https?:\/\/[^\\s]+/g);
                 if (urlMatch) {
                     for (const url of urlMatch) {
                         if (facebookService.isValidFacebookUrl(url)) {
@@ -143,7 +150,6 @@ export async function facebookCommand(sock, m, args) {
         }
 
         if (!fbUrl) {
-            // Mensaje de ayuda minimalista
             await sock.sendMessage(m.key.remoteJid, { text: '⚠️ Usa: #fb <enlace>' }, { quoted: m });
             return;
         }
@@ -151,11 +157,14 @@ export async function facebookCommand(sock, m, args) {
         await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
 
         try {
+            // 1. Obtener URL directa del video con la cascada de APIs
             const contentInfo = await facebookService.downloadContent(fbUrl);
+            
+            // 2. Descargar el archivo (Buffer)
             const mediaData = await facebookService.downloadMedia(contentInfo.url);
 
-            // Mensajes limpios solicitados
-            const cleanCaption = contentInfo.type === 'video' ? '🎥 Video descargado!' : '🖼️ Imagen descargada!';
+            // Mensaje final limpio y minimalista
+            const cleanCaption = '🎥 Video descargado!';
 
             if (contentInfo.type === 'video') {
                 await sock.sendMessage(m.key.remoteJid, {
@@ -173,11 +182,15 @@ export async function facebookCommand(sock, m, args) {
             await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
 
         } catch (error) {
-            console.error('❌ Error FB:', error.message);
-            // Error limpio para el usuario
-            const errorMsg = error.message.includes('pesado') 
-                ? '⚠️ El video es demasiado pesado.' 
-                : '⚠️ No se pudo descargar el video.';
+            console.error('❌ Error FB Command:', error.message);
+            
+            // Mensaje de error limpio para el usuario
+            let errorMsg = '⚠️ No se pudo descargar el video.';
+            if (error.message.includes('pesado')) {
+                errorMsg = '⚠️ El video es demasiado pesado (>95MB).';
+            } else if (error.message.includes('No se pudo descargar')) {
+                errorMsg = '⚠️ No se pudo descargar (video privado o enlace expirado).';
+            }
             
             await sock.sendMessage(m.key.remoteJid, { text: errorMsg }, { quoted: m });
             await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
