@@ -2,28 +2,27 @@ import axios from 'axios';
 
 class FacebookService {
     constructor() {
-        // User-Agent moderno para evitar bloqueos de FB
-        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
         
-        // LISTA DE APIS ACTUALIZADA (Nov 2025)
-        // Prioridad 1: BK9 (Según tu recomendación y docs oficiales)
-        // Prioridad 2: Agatz (Respaldo sólido)
+        // ?? LISTA DE APIS BASADA EN TU INVESTIGACIÓN (BK9 Oficial)
         this.apis = [
             {
-                name: 'BK9 API', 
-                url: 'https://bk9.fun/downloader/facebook', // A veces usan .dev o .fun, .fun es la estable actual
+                name: 'BK9 (Servidor 1)', 
+                url: 'https://api.bk9.dev/download/fb',
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'Agatz API',
-                url: 'https://api.agatz.xyz/api/facebook',
+                name: 'BK9 (Servidor 2)',
+                // Usamos el endpoint alternativo que viste en la web
+                url: 'https://api.bk9.dev/download/fb2',
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'Vreden API',
-                url: 'https://api.vreden.web.id/api/fbdown',
+                // Un backup externo por si BK9 cae completo (Widipe suele ser estable)
+                name: 'Widipe (Backup)',
+                url: 'https://widipe.com.pl/download/fb',
                 method: 'get',
                 param: 'url'
             }
@@ -49,19 +48,19 @@ class FacebookService {
                 }
             } catch (error) {
                 console.log(`?? ${api.name} falló: ${error.message}`);
-                // Si es la última API, lanzamos el error general
-                if (api === this.apis[this.apis.length - 1]) {
-                     throw new Error('Todas las APIs fallaron. Intenta más tarde.');
+                // Pausa pequeña entre intentos para no saturar red
+                if (api !== this.apis[this.apis.length - 1]) {
+                    await new Promise(resolve => setTimeout(resolve, 800));
                 }
-                // Pequeña pausa de seguridad
-                await new Promise(resolve => setTimeout(resolve, 500));
+                continue;
             }
         }
+
+        throw new Error('No se pudo descargar el video. Verifica que el enlace sea público.');
     }
 
     async tryAPI(api, url) {
         try {
-            // Construcción segura de la URL con parámetros
             const apiUrl = new URL(api.url);
             apiUrl.searchParams.append(api.param, url);
 
@@ -70,17 +69,20 @@ class FacebookService {
                     'User-Agent': this.userAgent,
                     'Accept': 'application/json'
                 },
-                timeout: 15000 // 15s timeout
+                timeout: 10000 // 20s timeout
             });
+
+            // Si la API devuelve HTML en vez de JSON (error común en BK9 cuando falla), lanzamos error
+            if (typeof response.data === 'string' && response.data.includes('<!DOCTYPE html>')) {
+                throw new Error('La API devolvió HTML (Error 500/502)');
+            }
 
             return this.processAPIResponse(api.name, response.data);
 
         } catch (error) {
-            // Manejo de errores específicos para limpiar logs
-            if (error.code === 'ECONNABORTED') throw new Error('Tiempo de espera agotado (Timeout)');
-            if (error.code === 'ENOTFOUND') throw new Error('Servidor caído o dominio inexistente');
-            if (error.response?.status === 404) throw new Error('API ruta no encontrada (404)');
-            if (error.response?.status === 500) throw new Error('Error interno de la API');
+            if (error.code === 'ECONNABORTED') throw new Error('Timeout');
+            if (error.response?.status === 404) throw new Error('Recurso no encontrado (404)');
+            if (error.response?.status >= 500) throw new Error('Error interno del servidor API');
             throw new Error(error.message);
         }
     }
@@ -90,31 +92,37 @@ class FacebookService {
             let videoUrl = null;
             let quality = 'SD';
 
-            // Parseo específico para cada API
-            switch (apiName) {
-                case 'BK9 API':
-                    // Estructura BK9: { status: true, BK9: { HD: "...", SD: "..." } }
-                    if (data.status && data.BK9) {
-                        videoUrl = data.BK9.HD || data.BK9.SD;
-                        quality = data.BK9.HD ? 'HD' : 'SD';
-                    }
-                    break;
+            // Lógica unificada para BK9 y sus variantes
+            if (apiName.includes('BK9')) {
+                // BK9 a veces devuelve la data en 'BK9', 'result' o 'data' dependiendo del endpoint
+                const root = data.BK9 || data.result || data.data;
 
-                case 'Agatz API':
-                    // Estructura Agatz: { status: 200, data: { hd: "...", sd: "..." } }
-                    if (data.data) {
-                        videoUrl = data.data.hd || data.data.sd;
-                        quality = data.data.hd ? 'HD' : 'SD';
+                if (root) {
+                    // Caso 1: Objeto con HD/SD
+                    if (root.HD || root.SD) {
+                        videoUrl = root.HD || root.SD;
+                        quality = root.HD ? 'HD' : 'SD';
+                    } 
+                    // Caso 2: Objeto con propiedad 'url' directa
+                    else if (root.url) {
+                        videoUrl = root.url;
+                        quality = 'SD';
                     }
-                    break;
-
-                case 'Vreden API':
-                    // Estructura Vreden: { status: true, result: { url: "..." } }
-                    if (data.result) {
-                        videoUrl = data.result.url || data.result.hd || data.result.sd;
-                        quality = 'SD'; // Vreden suele dar SD
+                    // Caso 3: Array de opciones
+                    else if (Array.isArray(root)) {
+                         const best = root.find(v => v.quality === 'HD') || root[0];
+                         videoUrl = best.url;
+                         quality = best.quality || 'SD';
                     }
-                    break;
+                }
+            } 
+            
+            else if (apiName.includes('Widipe')) {
+                if (data.result && data.result.url) {
+                    videoUrl = data.result.url;
+                } else if (data.url) {
+                    videoUrl = data.url;
+                }
             }
 
             if (videoUrl && videoUrl.startsWith('http')) {
@@ -122,7 +130,7 @@ class FacebookService {
             }
 
         } catch (error) {
-            console.error(`? Error procesando respuesta de ${apiName}:`, error.message);
+            console.error(`? Error parseando respuesta de ${apiName}:`, error);
         }
         return null;
     }
@@ -135,10 +143,10 @@ class FacebookService {
                 url: mediaUrl,
                 responseType: 'arraybuffer',
                 timeout: 60000,
-                maxContentLength: 90 * 1024 * 1024, // Limite seguro de 90MB para WhatsApp
+                maxContentLength: 90 * 1024 * 1024, // 90MB límite seguro
                 headers: {
                     'User-Agent': this.userAgent,
-                    // IMPORTANTE: No enviar Referer de Facebook si el link viene de una CDN externa
+                    // IMPORTANTE: NO enviamos Referer para evitar bloqueos de CDN (fbcdn)
                 }
             });
 
@@ -149,12 +157,12 @@ class FacebookService {
 
         } catch (error) {
             if (error.code === 'ERR_Body_Length_>_MaxContentLength') {
-                throw new Error('El video pesa más de 90MB y WhatsApp no lo permitirá.');
+                throw new Error('El video es demasiado pesado (>90MB)');
             }
             if (error.response?.status === 403) {
-                throw new Error('Enlace de descarga caducado (403). Intenta de nuevo.');
+                 throw new Error('Enlace de video caducado (403 Forbidden).');
             }
-            throw new Error(`Fallo en descarga: ${error.message}`);
+            throw new Error(`Error de descarga: ${error.message}`);
         }
     }
 }
@@ -165,52 +173,43 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // Lógica para detectar mensaje citado
+        // Lógica mensaje citado
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedMsg = m.message.extendedTextMessage.contextInfo.quotedMessage;
             const quotedText = quotedMsg.conversation || quotedMsg.extendedTextMessage?.text;
-            
             if (quotedText) {
                 const urlMatch = quotedText.match(/https?:\/\/(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)[^\s]+/i);
-                if (urlMatch) {
-                    fbUrl = urlMatch[0];
-                }
+                if (urlMatch) fbUrl = urlMatch[0];
             }
         }
 
         if (!fbUrl) {
-            await sock.sendMessage(m.key.remoteJid, { 
-                text: '? *Uso:* Envía #fb + enlace o responde a un enlace con #fb' 
-            }, { quoted: m });
+            await sock.sendMessage(m.key.remoteJid, { text: '⚠️ #fb <enlace>' }, { quoted: m });
             return;
         }
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
 
-        // 1. Obtener URL
+        // 1. Obtener URL directa
         const videoInfo = await facebookService.downloadVideo(fbUrl);
         
-        // 2. Descargar Buffer
+        // 2. Descargar
         const media = await facebookService.downloadMedia(videoInfo.url);
 
         // 3. Enviar
         await sock.sendMessage(m.key.remoteJid, {
             video: media.buffer,
-            caption: `?? *Descargado* (${videoInfo.quality})\n?? Fuente: Facebook`,
+            caption: `✅ Video Descargado (${videoInfo.quality})`,
             mimetype: 'video/mp4'
         }, { quoted: m });
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
 
     } catch (error) {
-        console.error('? Error FB Command:', error);
-        
-        // Mensajes de error amigables para el usuario
-        let msg = '? *Error al descargar*';
-        if (error.message.includes('pesa más')) msg = '? El video es demasiado largo/pesado para WhatsApp.';
-        if (error.message.includes('APIs fallaron')) msg = '? No se pudo procesar el enlace. Verifica que el video sea público.';
-        
-        await sock.sendMessage(m.key.remoteJid, { text: msg }, { quoted: m });
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        console.error('❌ Error FB Command:', error);
+        await sock.sendMessage(m.key.remoteJid, { 
+            text: `❌ Error: ${error.message}` 
+        }, { quoted: m });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
     }
 }
