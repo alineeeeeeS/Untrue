@@ -4,102 +4,85 @@ class FacebookService {
     constructor() {
         this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
         
-        // üîÑ LISTA DE APIS ACTUALIZADA (Nov 2025)
-        // Estas APIs manejan mejor los cambios recientes de encriptaci√≥n de FB
+        // ?? LISTA DE APIS REEMPLAZADA (Actualizada tras ca®™da de Widipe)
         this.apis = [
             {
-                name: 'agatz',
-                url: 'https://api.agatz.xyz/api/facebook',
+                name: 'ryzendesu',
+                url: 'https://api.ryzendesu.vip/api/downloader/fbdown',
                 method: 'get'
             },
             {
-                name: 'delirius',
-                url: 'https://delirius-apiofc.vercel.app/download/facebook',
+                name: 'siputzx',
+                url: 'https://api.siputzx.my.id/api/d/facebook',
                 method: 'get'
             },
             {
-                name: 'widipe',
-                url: 'https://widipe.com.pl/api/dl/fb',
+                name: 'vreden',
+                url: 'https://api.vreden.my.id/api/fbdown',
                 method: 'get'
             }
         ];
     }
 
     isValidFacebookUrl(url) {
-        // Regex robusto para todo tipo de enlaces de FB
-        const regex = /(https?:\/\/)?(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)\/(?:(?:\w\.)*\/)?(?:(pages\/)?(?:[\w\-\.]*\/)?(?:profile\.php\?id=(?=\d.*))?([\w\-\.]*))?/;
+        // Regex mejorado para soportar los nuevos enlaces "share" y "reel"
+        const regex = /(https?:\/\/)?(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)\/(?:(?:\w\.)*\/)?(?:(pages\/)?(?:[\w\-\.]*\/)?(?:profile\.php\?id=(?=\d.*))?([\w\-\.]*)|share\/v\/|reel\/)/;
         return regex.test(url);
     }
 
-    // Funci√≥n crucial: Facebook a veces da error si le pasas un link corto a las APIs
-    // Esta funci√≥n sigue la redirecci√≥n para obtener el link final (ej: watch?v=...)
-    async resolveFacebookUrl(url) {
-        try {
-            console.log('üîó Resolviendo URL original:', url);
-            const response = await axios.get(url, {
-                maxRedirects: 10,
-                headers: {
-                    'User-Agent': this.userAgent,
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Upgrade-Insecure-Requests': '1'
-                },
-                validateStatus: (status) => status < 400
-            });
-            // Si hubo redirecci√≥n, usamos la URL final, si no, la original
-            const finalUrl = response.request.res.responseUrl || url;
-            return finalUrl;
-        } catch (e) {
-            // Si falla la resoluci√≥n, devolvemos la URL original y rezamos para que la API la entienda
-            console.log('‚ö†Ô∏è No se pudo resolver la redirecci√≥n, usando URL original.');
-            return url;
-        }
-    }
-
     async downloadVideo(fbUrl) {
-        if (!this.isValidFacebookUrl(fbUrl)) {
-            throw new Error('URL de Facebook no v√°lida');
+        // Limpiamos la URL de par®¢metros de seguimiento basura
+        let cleanUrl = fbUrl.trim();
+        
+        console.log('?? Procesando URL:', cleanUrl);
+
+        if (!this.isValidFacebookUrl(cleanUrl)) {
+            throw new Error('URL de Facebook no v®¢lida');
         }
 
-        // Paso 1: Intentar "limpiar" la URL
-        const cleanUrl = await this.resolveFacebookUrl(fbUrl);
-        console.log('üîó URL procesada:', cleanUrl);
-
-        // Paso 2: Probar APIs en orden
+        // ?? ROTACI®ÆN DE APIS
         for (const api of this.apis) {
             try {
-                console.log(`üîÑ Probando API: ${api.name}`);
+                console.log(`?? Probando API: ${api.name}`);
                 const result = await this.tryAPI(api, cleanUrl);
                 
                 if (result && result.url) {
-                    console.log(`‚úÖ √âxito con ${api.name}`);
+                    console.log(`? ®¶xito con ${api.name} (${result.quality})`);
                     return result;
                 }
             } catch (error) {
-                console.log(`‚ö†Ô∏è ${api.name} fall√≥:`, error.message);
+                console.log(`?? ${api.name} fall®Æ:`, error.message);
+                
+                // Peque?a pausa entre intentos para no saturar
                 if (api !== this.apis[this.apis.length - 1]) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 800));
                 }
                 continue;
             }
         }
 
-        throw new Error('No se pudo descargar el video. Puede ser privado o de un grupo cerrado.');
+        throw new Error('Todas las APIs fallaron. El video puede ser privado o el enlace share ha expirado.');
     }
 
     async tryAPI(api, url) {
         try {
-            const fullUrl = new URL(api.url);
-            fullUrl.searchParams.append('url', url);
+            let response;
+            const apiUrl = new URL(api.url);
+            apiUrl.searchParams.append('url', url);
 
-            const response = await axios.get(fullUrl.toString(), {
+            // Timeout de 20s para dar tiempo a procesar videos largos
+            const config = {
                 headers: { 'User-Agent': this.userAgent },
-                timeout: 15000
-            });
+                timeout: 20000 
+            };
 
+            response = await axios.get(apiUrl.toString(), config);
             return this.processAPIResponse(api.name, response.data);
 
         } catch (error) {
-            if (error.code === 'ECONNABORTED') throw new Error('Timeout');
+            if (error.code === 'ECONNABORTED') throw new Error('Timeout (La API tard®Æ demasiado)');
+            if (error.response?.status === 403) throw new Error('Acceso denegado (IP Bloqueada)');
+            if (error.response?.status === 500) throw new Error('Error interno de la API');
             throw new Error(error.message);
         }
     }
@@ -110,43 +93,49 @@ class FacebookService {
             let quality = 'SD';
 
             switch (apiName) {
-                case 'agatz':
-                    // Agatz devuelve un objeto data con hd y sd
-                    if (data.data) {
-                        videoUrl = data.data.hd || data.data.sd;
-                        quality = data.data.hd ? 'HD' : 'SD';
+                case 'ryzendesu':
+                    // Ryzendesu devuelve { success: true, url: [ { resolution: "HD", url: "..." } ] } o similar
+                    // Estructura actual: data.url o data.data con resoluciones
+                    if (data.url && Array.isArray(data.url)) {
+                        const hd = data.url.find(v => v.resolution?.includes('720') || v.type === 'hd');
+                        const sd = data.url.find(v => v.resolution?.includes('480') || v.type === 'sd');
+                        videoUrl = hd ? hd.url : (sd ? sd.url : data.url[0].url);
+                        quality = hd ? 'HD' : 'SD';
+                    } else if (data.data) {
+                         // Formato alternativo
+                         videoUrl = data.data.hd || data.data.sd;
+                         quality = data.data.hd ? 'HD' : 'SD';
+                    } else if (data.hd || data.sd) {
+                         videoUrl = data.hd || data.sd;
+                         quality = data.hd ? 'HD' : 'SD';
                     }
                     break;
 
-                case 'delirius':
-                    // Delirius suele devolver urls: [ { quality: 'hd', url: '...' } ]
-                    if (data.data && Array.isArray(data.data.urls)) {
-                        const hdVideo = data.data.urls.find(v => v.quality === 'hd');
-                        const sdVideo = data.data.urls.find(v => v.quality === 'sd');
-                        videoUrl = hdVideo ? hdVideo.url : (sdVideo ? sdVideo.url : data.data.urls[0].url);
-                        quality = hdVideo ? 'HD' : 'SD';
-                    } else if (data.data && data.data.url) {
-                        // Formato simple alternativo
-                        videoUrl = data.data.url.hd || data.data.url.sd || data.data.url;
+                case 'siputzx':
+                    // Siputzx data.data [ { url: "...", quality: "HD" } ]
+                    if (data.data && Array.isArray(data.data)) {
+                        const hd = data.data.find(v => v.quality === 'HD');
+                        const sd = data.data.find(v => v.quality === 'SD');
+                        videoUrl = hd ? hd.url : (sd ? sd.url : data.data[0].url);
+                        quality = hd ? 'HD' : 'SD';
                     }
                     break;
 
-                case 'widipe':
-                    // Widipe suele devolver { result: { url: "..." } }
-                    if (data.result && data.result.url) {
-                        videoUrl = data.result.url;
-                    } else if (data.url) {
-                        videoUrl = data.url;
+                case 'vreden':
+                    // Vreden data.result { url: "..." }
+                    if (data.result) {
+                        videoUrl = data.result.url || data.result.hd || data.result.sd;
                     }
                     break;
             }
 
-            if (videoUrl) {
+            // Validaci®Æn final: que sea una URL v®¢lida
+            if (videoUrl && videoUrl.startsWith('http')) {
                 return { url: videoUrl, quality };
             }
 
         } catch (error) {
-            console.error(`‚ùå Error parseando ${apiName}:`, error);
+            console.error(`? Error parseando respuesta de ${apiName}:`, error);
         }
         return null;
     }
@@ -158,9 +147,11 @@ class FacebookService {
                 url: mediaUrl,
                 responseType: 'arraybuffer',
                 timeout: 60000,
-                maxContentLength: 100 * 1024 * 1024, // Limite 100MB
+                maxContentLength: 100 * 1024 * 1024, // 100MB L®™mite
                 headers: {
-                    'User-Agent': this.userAgent
+                    'User-Agent': this.userAgent,
+                    // Referer a veces ayuda a que Facebook no rechace la descarga directa
+                    'Referer': 'https://www.facebook.com/'
                 }
             });
 
@@ -173,7 +164,7 @@ class FacebookService {
             if (error.code === 'ERR_Body_Length_>_MaxContentLength') {
                 throw new Error('El video es demasiado pesado (>100MB)');
             }
-            throw new Error(`Error descargando archivo: ${error.message}`);
+            throw new Error(`Error en descarga directa: ${error.message}`);
         }
     }
 }
@@ -184,7 +175,7 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // L√≥gica de mensaje citado (igual que antes)
+        // Detecci®Æn de URL en respuesta
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedText = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
                              m.message.extendedTextMessage.contextInfo.quotedMessage?.extendedTextMessage?.text;
@@ -203,35 +194,37 @@ export async function facebookCommand(sock, m, args) {
 
         if (!fbUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '‚ùå *Uso correcto:*\n#fb <enlace del video>\n\nEjemplo:\n#fb https://www.facebook.com/watch?v=...' 
+                text: '? *Uso correcto:*\n#fb <enlace del video>' 
             }, { quoted: m });
             return;
         }
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "‚è≥", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
 
-        // 1. Obtener Info y URL del video
+        // 1. Obtener URL directa del video
         const videoInfo = await facebookService.downloadVideo(fbUrl);
         
-        // 2. Descargar el buffer del video
+        // 2. Descargar el archivo
         const media = await facebookService.downloadMedia(videoInfo.url);
 
         // 3. Enviar
         await sock.sendMessage(m.key.remoteJid, {
             video: media.buffer,
-            caption: `üé¨ Video de Facebook descargado (${videoInfo.quality})`,
+            caption: `?? Video descargado!`, // Mensaje limpio como pediste
             mimetype: 'video/mp4'
         }, { quoted: m });
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "‚úÖ", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
 
     } catch (error) {
         console.error(error);
         
-        let msg = '‚ùå *Error al descargar*';
-        if (error.message.includes('pesado')) msg = '‚ùå El video pesa m√°s de 100MB, no puedo enviarlo.';
-        if (error.message.includes('privado')) msg = '‚ùå El video parece ser privado o de un grupo cerrado.';
+        let msg = '? *Error al descargar*';
+        if (error.message.includes('pesado')) msg = '? El video pesa m®¢s de 100MB.';
+        if (error.message.includes('privado')) msg = '? Video privado o enlace caducado.';
+        if (error.message.includes('APIs fallaron')) msg = '? No se pudo procesar este enlace espec®™fico.';
         
         await sock.sendMessage(m.key.remoteJid, { text: msg }, { quoted: m });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
     }
 }
