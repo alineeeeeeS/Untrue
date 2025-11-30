@@ -2,34 +2,25 @@ import axios from 'axios';
 
 class FacebookService {
     constructor() {
-        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
         
-        // ?? LISTA DE APIS "ANTIBLOQUEO" (Nov 2025)
-        // Seleccionadas especificamente porque NO suelen bloquear IPs de Railway/Hosting
+        // LISTA DE APIS ACTUALIZADA (Activas actualmente)
         this.apis = [
             {
-                name: 'Jojo (Vercel)', 
-                // Esta API esta en Vercel, por lo que suele aceptar peticiones de Railway sin problemas
-                url: 'https://jo-jo-api.vercel.app/api/fb',
+                name: 'Bk9 (Stable)', 
+                url: 'https://api.bk9.dev/download/fb',
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'Dark-Yasiya',
-                // API muy robusta para enlaces "share"
-                url: 'https://www.dark-yasiya.wzt.cz/api/facebook',
+                name: 'Widipe',
+                url: 'https://widipe.com.pl/download/fb',
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'Ario',
-                url: 'https://api.ario.my.id/api/downloader/fb',
-                method: 'get',
-                param: 'url'
-            },
-            {
-                name: 'Publer (Backup)',
-                url: 'https://api.siputzx.my.id/api/d/facebook',
+                name: 'DavidCyril',
+                url: 'https://api.davidcyriltech.my.id/facebook',
                 method: 'get',
                 param: 'url'
             }
@@ -37,16 +28,11 @@ class FacebookService {
     }
 
     isValidFacebookUrl(url) {
-        // Regex permisivo para aceptar cualquier variante de FB
         return /(https?:\/\/)?(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)/i.test(url);
     }
 
     async downloadVideo(fbUrl) {
-        // Limpieza basica de URL (quitamos espacios y tracks)
         let targetUrl = fbUrl.trim();
-        
-        // Truco: Si es un enlace 'share', a veces ayuda pasarlo a mbasic string, 
-        // pero NO intentamos resolverlo por red para evitar bloqueo de IP.
         console.log('?? Procesando URL:', targetUrl);
 
         for (const api of this.apis) {
@@ -60,15 +46,15 @@ class FacebookService {
                 }
             } catch (error) {
                 console.log(`?? ${api.name} fallo: ${error.message}`);
-                // Pausa de seguridad de 1 segundo entre intentos
                 if (api !== this.apis[this.apis.length - 1]) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    // Pequeña pausa para no saturar si es muy rápido
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
                 continue;
             }
         }
 
-        throw new Error('Servidores saturados o IP bloqueada temporalmente.');
+        throw new Error('Ninguna API pudo resolver el video. Intenta con otro enlace.');
     }
 
     async tryAPI(api, url) {
@@ -81,16 +67,13 @@ class FacebookService {
                     'User-Agent': this.userAgent,
                     'Accept': 'application/json'
                 },
-                timeout: 25000 // 25s timeout
+                timeout: 15000 // 15s es suficiente
             });
 
             return this.processAPIResponse(api.name, response.data);
 
         } catch (error) {
-            // Filtramos errores comunes para limpiar logs
             if (error.code === 'ECONNABORTED') throw new Error('Timeout');
-            if (error.response?.status === 403) throw new Error('IP Bloqueada por la API');
-            if (error.response?.status === 530) throw new Error('Error de Servidor (Cloudflare)');
             throw new Error(error.message);
         }
     }
@@ -101,36 +84,29 @@ class FacebookService {
             let quality = 'SD';
 
             switch (apiName) {
-                case 'Jojo (Vercel)':
-                    // Estructura: { result: { mp4: "...", key: "..." } }
-                    if (data.result && data.result.mp4) {
-                        videoUrl = data.result.mp4;
-                        quality = 'SD'; // Jojo suele dar SD por defecto
+                case 'Bk9 (Stable)':
+                    // Return: { status: true, result: { HD: "...", SD: "..." } }
+                    if (data.status && data.result) {
+                        videoUrl = data.result.HD || data.result.SD;
+                        quality = data.result.HD ? 'HD' : 'SD';
                     }
                     break;
 
-                case 'Dark-Yasiya':
-                    // Estructura: { result: { sd: "...", hd: "..." } }
-                    if (data.result) {
-                        videoUrl = data.result.hd || data.result.sd || data.result.url;
-                        quality = data.result.hd ? 'HD' : 'SD';
+                case 'Widipe':
+                    // Return: { status: true, result: { url: "..." } }
+                    if (data.result && data.result.url) {
+                        videoUrl = data.result.url;
+                        quality = 'SD'; // Generalmente devuelve una sola url
+                    } else if (data.url) {
+                        videoUrl = data.url;
                     }
                     break;
 
-                case 'Ario':
-                    // Estructura: { result: { hd: "...", sd: "..." } }
-                    if (data.result) {
-                        videoUrl = data.result.hd || data.result.sd;
-                        quality = data.result.hd ? 'HD' : 'SD';
-                    }
-                    break;
-
-                case 'Publer (Backup)':
-                     if (data.data && Array.isArray(data.data)) {
-                        const hd = data.data.find(v => v.quality === 'HD');
-                        const sd = data.data.find(v => v.quality === 'SD');
-                        videoUrl = hd ? hd.url : (sd ? sd.url : data.data[0].url);
-                        quality = hd ? 'HD' : 'SD';
+                case 'DavidCyril':
+                    // Return: { success: true, video: { hd: "...", sd: "..." } }
+                    if (data.video) {
+                        videoUrl = data.video.hd || data.video.sd;
+                        quality = data.video.hd ? 'HD' : 'SD';
                     }
                     break;
             }
@@ -155,12 +131,7 @@ class FacebookService {
                 timeout: 60000,
                 maxContentLength: 100 * 1024 * 1024, // 100MB
                 headers: {
-                    'User-Agent': this.userAgent,
-                    'Referer': 'https://www.facebook.com/',
-                    'Origin': 'https://www.facebook.com',
-                    'Sec-Fetch-Dest': 'video',
-                    'Sec-Fetch-Mode': 'cors',
-                    'Sec-Fetch-Site': 'cross-site'
+                    'User-Agent': this.userAgent
                 }
             });
 
@@ -173,6 +144,10 @@ class FacebookService {
             if (error.code === 'ERR_Body_Length_>_MaxContentLength') {
                 throw new Error('El video es demasiado pesado (>100MB)');
             }
+            // A veces el enlace caduca rápido, lanzamos error específico
+            if (error.response && error.response.status === 403) {
+                 throw new Error('El enlace de descarga caducó o fue rechazado por FB.');
+            }
             throw new Error(`Error descargando archivo: ${error.message}`);
         }
     }
@@ -184,31 +159,27 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // Logica de mensaje citado
+        // Lógica de mensaje citado (quoted)
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
-            const quotedText = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
-                             m.message.extendedTextMessage.contextInfo.quotedMessage?.extendedTextMessage?.text;
+            const quotedMsg = m.message.extendedTextMessage.contextInfo.quotedMessage;
+            const quotedText = quotedMsg.conversation || quotedMsg.extendedTextMessage?.text;
+            
             if (quotedText) {
-                const urlMatch = quotedText.match(/https?:\/\/[^\s]+/g);
+                const urlMatch = quotedText.match(/https?:\/\/(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)[^\s]+/i);
                 if (urlMatch) {
-                    for (const url of urlMatch) {
-                        if (facebookService.isValidFacebookUrl(url)) {
-                            fbUrl = url;
-                            break;
-                        }
-                    }
+                    fbUrl = urlMatch[0];
                 }
             }
         }
 
         if (!fbUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '? *Uso correcto:*\n#fb <enlace del video>' 
+                text: '⚠️ *Uso correcto:*\n#fb <enlace del video>' 
             }, { quoted: m });
             return;
         }
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
 
         // 1. Obtener URL directa
         const videoInfo = await facebookService.downloadVideo(fbUrl);
@@ -219,20 +190,20 @@ export async function facebookCommand(sock, m, args) {
         // 3. Enviar
         await sock.sendMessage(m.key.remoteJid, {
             video: media.buffer,
-            caption: `?? Video descargado!`,
+            caption: `✅ *Facebook Video* (${videoInfo.quality})`,
             mimetype: 'video/mp4'
         }, { quoted: m });
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
 
     } catch (error) {
-        console.error('? Error FB Command:', error);
+        console.error('❌ Error FB Command:', error);
         
-        let msg = '? *No se pudo descargar*';
-        if (error.message.includes('pesado')) msg = '? El video pesa mas de 100MB.';
-        if (error.message.includes('saturados')) msg = '? Servicios ocupados, intenta en unos minutos.';
+        let msg = '❌ *No se pudo descargar*';
+        if (error.message.includes('pesado')) msg = '⚠️ El video pesa más de 100MB.';
+        if (error.message.includes('Intenta con otro')) msg = '⚠️ No se pudo extraer el video. Asegúrate de que es público.';
         
         await sock.sendMessage(m.key.remoteJid, { text: msg }, { quoted: m });
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
     }
 }
