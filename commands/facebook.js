@@ -35,18 +35,21 @@ function shortenDescription(text) {
  */
 async function getVideoMetadata(url) {
     console.log('?? Extrayendo metadatos...');
-    const command = `"${ytDlpCommand}" --print-json --skip-download "${url}"`;
+    
+    const command = `"${ytDlpCommand}" --dump-json --skip-download --no-warnings "${url}"`;
     
     try {
         const { stdout } = await execPromise(command, { timeout: 30000 });
         const data = JSON.parse(stdout);
 
-        const uploader = data.uploader || 'Usuario Desconocido';
-        const description = shortenDescription(data.description);
+        const targetData = Array.isArray(data) ? data[0] : data;
+        
+        const uploader = targetData.uploader || 'Usuario Desconocido';
+        const description = shortenDescription(targetData.description);
         
         return { uploader, description };
     } catch (error) {
-        console.warn('⚠️ No se pudo extraer la metadata. Usando valores predeterminados.');
+        console.warn(`⚠️ No se pudo extraer la metadata. Error: ${error.message.split('\n')[0]}. Usando valores predeterminados.`);
         return { uploader: 'Usuario Desconocido', description: 'Sin descripción' };
     }
 }
@@ -115,9 +118,8 @@ export async function facebookCommand(sock, m, args) {
         console.log(`📊 Tamaño del video: ${fileSizeMB} MB`);
         
         const caption = `
-🎥 *Video descargado!*
-👤 **Usuario:** ${metadata.uploader}
-📝 **Descripción:** ${metadata.description}
+👤 *Usuario:* ${metadata.uploader}
+📝 *Descripción:* ${metadata.description}
 `.trim();
         
         await sock.sendMessage(m.key.remoteJid, {
