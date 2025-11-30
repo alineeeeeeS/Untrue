@@ -2,25 +2,28 @@ import axios from 'axios';
 
 class FacebookService {
     constructor() {
-        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
+        // User-Agent moderno para evitar bloqueos de FB
+        this.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
         
-        // LISTA DE APIS ACTUALIZADA (Activas actualmente)
+        // LISTA DE APIS ACTUALIZADA (Nov 2025)
+        // Prioridad 1: BK9 (Según tu recomendación y docs oficiales)
+        // Prioridad 2: Agatz (Respaldo sólido)
         this.apis = [
             {
-                name: 'Bk9 (Stable)', 
-                url: 'https://api.bk9.dev/download/fb',
+                name: 'BK9 API', 
+                url: 'https://bk9.fun/downloader/facebook', // A veces usan .dev o .fun, .fun es la estable actual
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'Widipe',
-                url: 'https://widipe.com.pl/download/fb',
+                name: 'Agatz API',
+                url: 'https://api.agatz.xyz/api/facebook',
                 method: 'get',
                 param: 'url'
             },
             {
-                name: 'DavidCyril',
-                url: 'https://api.davidcyriltech.my.id/facebook',
+                name: 'Vreden API',
+                url: 'https://api.vreden.web.id/api/fbdown',
                 method: 'get',
                 param: 'url'
             }
@@ -41,24 +44,24 @@ class FacebookService {
                 const result = await this.tryAPI(api, targetUrl);
                 
                 if (result && result.url) {
-                    console.log(`? Exito con ${api.name} (${result.quality})`);
+                    console.log(`? Éxito con ${api.name} (${result.quality})`);
                     return result;
                 }
             } catch (error) {
-                console.log(`?? ${api.name} fallo: ${error.message}`);
-                if (api !== this.apis[this.apis.length - 1]) {
-                    // Pequeña pausa para no saturar si es muy rápido
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                console.log(`?? ${api.name} falló: ${error.message}`);
+                // Si es la última API, lanzamos el error general
+                if (api === this.apis[this.apis.length - 1]) {
+                     throw new Error('Todas las APIs fallaron. Intenta más tarde.');
                 }
-                continue;
+                // Pequeña pausa de seguridad
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
         }
-
-        throw new Error('Ninguna API pudo resolver el video. Intenta con otro enlace.');
     }
 
     async tryAPI(api, url) {
         try {
+            // Construcción segura de la URL con parámetros
             const apiUrl = new URL(api.url);
             apiUrl.searchParams.append(api.param, url);
 
@@ -67,13 +70,17 @@ class FacebookService {
                     'User-Agent': this.userAgent,
                     'Accept': 'application/json'
                 },
-                timeout: 15000 // 15s es suficiente
+                timeout: 15000 // 15s timeout
             });
 
             return this.processAPIResponse(api.name, response.data);
 
         } catch (error) {
-            if (error.code === 'ECONNABORTED') throw new Error('Timeout');
+            // Manejo de errores específicos para limpiar logs
+            if (error.code === 'ECONNABORTED') throw new Error('Tiempo de espera agotado (Timeout)');
+            if (error.code === 'ENOTFOUND') throw new Error('Servidor caído o dominio inexistente');
+            if (error.response?.status === 404) throw new Error('API ruta no encontrada (404)');
+            if (error.response?.status === 500) throw new Error('Error interno de la API');
             throw new Error(error.message);
         }
     }
@@ -83,30 +90,29 @@ class FacebookService {
             let videoUrl = null;
             let quality = 'SD';
 
+            // Parseo específico para cada API
             switch (apiName) {
-                case 'Bk9 (Stable)':
-                    // Return: { status: true, result: { HD: "...", SD: "..." } }
-                    if (data.status && data.result) {
-                        videoUrl = data.result.HD || data.result.SD;
-                        quality = data.result.HD ? 'HD' : 'SD';
+                case 'BK9 API':
+                    // Estructura BK9: { status: true, BK9: { HD: "...", SD: "..." } }
+                    if (data.status && data.BK9) {
+                        videoUrl = data.BK9.HD || data.BK9.SD;
+                        quality = data.BK9.HD ? 'HD' : 'SD';
                     }
                     break;
 
-                case 'Widipe':
-                    // Return: { status: true, result: { url: "..." } }
-                    if (data.result && data.result.url) {
-                        videoUrl = data.result.url;
-                        quality = 'SD'; // Generalmente devuelve una sola url
-                    } else if (data.url) {
-                        videoUrl = data.url;
+                case 'Agatz API':
+                    // Estructura Agatz: { status: 200, data: { hd: "...", sd: "..." } }
+                    if (data.data) {
+                        videoUrl = data.data.hd || data.data.sd;
+                        quality = data.data.hd ? 'HD' : 'SD';
                     }
                     break;
 
-                case 'DavidCyril':
-                    // Return: { success: true, video: { hd: "...", sd: "..." } }
-                    if (data.video) {
-                        videoUrl = data.video.hd || data.video.sd;
-                        quality = data.video.hd ? 'HD' : 'SD';
+                case 'Vreden API':
+                    // Estructura Vreden: { status: true, result: { url: "..." } }
+                    if (data.result) {
+                        videoUrl = data.result.url || data.result.hd || data.result.sd;
+                        quality = 'SD'; // Vreden suele dar SD
                     }
                     break;
             }
@@ -116,7 +122,7 @@ class FacebookService {
             }
 
         } catch (error) {
-            console.error(`? Error parseando ${apiName}:`, error.message);
+            console.error(`? Error procesando respuesta de ${apiName}:`, error.message);
         }
         return null;
     }
@@ -129,9 +135,10 @@ class FacebookService {
                 url: mediaUrl,
                 responseType: 'arraybuffer',
                 timeout: 60000,
-                maxContentLength: 100 * 1024 * 1024, // 100MB
+                maxContentLength: 90 * 1024 * 1024, // Limite seguro de 90MB para WhatsApp
                 headers: {
-                    'User-Agent': this.userAgent
+                    'User-Agent': this.userAgent,
+                    // IMPORTANTE: No enviar Referer de Facebook si el link viene de una CDN externa
                 }
             });
 
@@ -142,13 +149,12 @@ class FacebookService {
 
         } catch (error) {
             if (error.code === 'ERR_Body_Length_>_MaxContentLength') {
-                throw new Error('El video es demasiado pesado (>100MB)');
+                throw new Error('El video pesa más de 90MB y WhatsApp no lo permitirá.');
             }
-            // A veces el enlace caduca rápido, lanzamos error específico
-            if (error.response && error.response.status === 403) {
-                 throw new Error('El enlace de descarga caducó o fue rechazado por FB.');
+            if (error.response?.status === 403) {
+                throw new Error('Enlace de descarga caducado (403). Intenta de nuevo.');
             }
-            throw new Error(`Error descargando archivo: ${error.message}`);
+            throw new Error(`Fallo en descarga: ${error.message}`);
         }
     }
 }
@@ -159,7 +165,7 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // Lógica de mensaje citado (quoted)
+        // Lógica para detectar mensaje citado
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedMsg = m.message.extendedTextMessage.contextInfo.quotedMessage;
             const quotedText = quotedMsg.conversation || quotedMsg.extendedTextMessage?.text;
@@ -174,36 +180,37 @@ export async function facebookCommand(sock, m, args) {
 
         if (!fbUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '⚠️ *Uso correcto:*\n#fb <enlace del video>' 
+                text: '? *Uso:* Envía #fb + enlace o responde a un enlace con #fb' 
             }, { quoted: m });
             return;
         }
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
 
-        // 1. Obtener URL directa
+        // 1. Obtener URL
         const videoInfo = await facebookService.downloadVideo(fbUrl);
         
-        // 2. Descargar buffer
+        // 2. Descargar Buffer
         const media = await facebookService.downloadMedia(videoInfo.url);
 
         // 3. Enviar
         await sock.sendMessage(m.key.remoteJid, {
             video: media.buffer,
-            caption: `✅ *Facebook Video* (${videoInfo.quality})`,
+            caption: `?? *Descargado* (${videoInfo.quality})\n?? Fuente: Facebook`,
             mimetype: 'video/mp4'
         }, { quoted: m });
 
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
 
     } catch (error) {
-        console.error('❌ Error FB Command:', error);
+        console.error('? Error FB Command:', error);
         
-        let msg = '❌ *No se pudo descargar*';
-        if (error.message.includes('pesado')) msg = '⚠️ El video pesa más de 100MB.';
-        if (error.message.includes('Intenta con otro')) msg = '⚠️ No se pudo extraer el video. Asegúrate de que es público.';
+        // Mensajes de error amigables para el usuario
+        let msg = '? *Error al descargar*';
+        if (error.message.includes('pesa más')) msg = '? El video es demasiado largo/pesado para WhatsApp.';
+        if (error.message.includes('APIs fallaron')) msg = '? No se pudo procesar el enlace. Verifica que el video sea público.';
         
         await sock.sendMessage(m.key.remoteJid, { text: msg }, { quoted: m });
-        await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "?", key: m.key } });
     }
 }
