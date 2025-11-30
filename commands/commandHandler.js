@@ -4,7 +4,6 @@ import { tiktokCommand } from "./tiktok.js";
 import { tiktokAudioCommand } from "./tiktokAudio.js";
 import { igreelsCommand } from "./igreels.js";
 import { igpostsCommand } from "./igposts.js";
-//import { igaudioCommand } from "./igaudio.js";
 import { facebookCommand } from "./facebook.js";
 import { twitterCommand } from "./twitter.js";
 import { pinterestCommand } from "./pinterest.js"
@@ -37,9 +36,11 @@ const commands = {
     // COMANDOS DE DESCARGA
     tt: tiktokCommand,
     ttaud: tiktokAudioCommand,
+	tta: tiktokAudioCommand,
     reel: igreelsCommand,
+	r: igreelsCommand,
     post: igpostsCommand,
-    //igaud: igaudioCommand,
+	p: igpostsCommand,
     fb: facebookCommand,
     tw: twitterCommand,
     pin: pinterestCommand,
