@@ -4,40 +4,41 @@ const BANNER_IMAGE_PATH = './assets/untrue_banner.jpg';
 
 export async function helpCommand(sock, m) {
     const helpText = `
-*UntrueBot - MENÚ DE AYUDA*
+*UntrueBot | MENÚ DE AYUDA*
 
 🎥 *DESCARGA - REDES SOCIALES*
-  • #tt [enlace] - Videos/imágenes de TikTok
-  • #ttaud [enlace] - Solo el audio de un TikTok
-  • #ytvid [enlace/búsqueda] - Videos de YouTube
-  • #ytaud [enlace/búsqueda] - Solo audio de YouTube
-  • #reel [enlace] - Reel de Instagram
-  • #post [enlace] - Post (o carrusel entero) de Instagram
-  • #post [número] [enlace] - Post específico de un carrusel
-  • #fb [enlace] - Videos de Facebook
-  • #pin [enlace] - Contenido de Pinterest
-  • #tw [enlace] - Videos de Twitter/X
+  • #tt [link] ▸ Videos/imágenes de TikTok
+  • #ttaud [link] ▸ Audio de un TikTok
+  • #ytvid [link/prompt] ▸ Videos de YouTube
+  • #ytaud [link/prompt] ▸ Audio de YouTube
+  • #reel [link] ▸ Reel de Instagram
+  • #post [link] ▸ Post específico o carrusel entero de Instagram
+  • #fb [link] ▸ Videos de Facebook
+  • #pin [link] ▸ Contenido de Pinterest
+  • #tw [link] ▸ Videos de X/Twitter
 
 🎵 *FUNCIONES - MÚSICA*
-  • #music [búsqueda] - Música desde YouTube
+  • #music [artista] [canción] ▸ Música desde YouTube
   • #letra [artista] [canción]
 
 🧰 *UTILIDADES*
-  • #traducir [idioma] - Responde a un texto para traducir
-  • #qr [texto/link] - Generar código QR
-  • #bcv - Ver tasa del dólar BCV
-  • #todos - Menciona a todos en un grupo
+  • #traducir [idioma] ▸ Texto a traducir
+  • #qr [texto/link] ▸ Generar códigos QR
+  • #bcv ▸ Tasa del dólar BCV
+  • #todos ▸ Menciona a todos en un grupo
   
-💾 *CONVERSIÓN MULTIMEDIA*
-  • #s o #sticker - Respondiendo a una imagen/video para crearlo
-  • #smedia - Sticker a imagen/video
-  • #toaud - Convertir video a audio
-  • #totext - Extraer texto de imagen/audio
-  • #toimg - Convertir documentos a imágenes
+💾 *CONVERTIDORES*
+  • #s ▸ Imagen/video para crear un sticker
+  • #smedia ▸ Sticker a imagen/video
+  • #toaud ▸ Extraer audio de video
+  • #totext ▸ Extraer texto de imagen/audio
+  • #toimg ▸ Documentos convertidos a imágenes
 
-🔧 *COMANDOS - BOT*
-  • #ping - Probar latencia del bot
-  • #help o #menu - Ver este menú
+🔧 *INFOBOT*
+  • #ping ▸ Latencia del bot
+  • #menu ▸ Ver este mensaje
+  
+>|< _Desarrollado por: @josentss_ >|<
     `.trim();
 
     try {

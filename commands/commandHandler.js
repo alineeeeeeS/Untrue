@@ -74,6 +74,28 @@ const commands = {
 	toi: toimgCommand,
 };
 
+async function handleInvalidCommand(sock, m, invalidCommandName) {
+    const remoteJid = m.key.remoteJid;
+    const fullCommand = `#${invalidCommandName}`; 
+    
+    const customErrorMessage = `
+❌ *ERROR: Comando no reconocido* ❌
+
+El comando *${fullCommand}* no existe o está mal escrito.
+
+▸ Para ver la lista de comandos, usa *#menu*.
+▸ Asegúrate de no tener errores tipográficos.
+    `.trim();
+
+    try {
+        await sock.sendMessage(remoteJid, {
+            text: customErrorMessage
+        }, { quoted: m });
+    } catch (error) {
+        console.error('❌ Error enviando mensaje de comando inválido:', error);
+    }
+}
+
 export async function handleCommand(sock, m, commandName, args) {
     const userId = m.key.remoteJid;
     
@@ -95,7 +117,6 @@ export async function handleCommand(sock, m, commandName, args) {
             );
         }
     } else {
-        // Si el comando no existe, mostrar ayuda
-        await helpCommand(sock, m);
+        await handleInvalidCommand(sock, m, commandName);
     }
 }
