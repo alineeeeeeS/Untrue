@@ -1,31 +1,33 @@
-import { pingCommand } from "./ping.js";
-import { statsCommand } from "./stats.js";
-import { tiktokCommand } from "./tiktok.js";
-import { tiktokAudioCommand } from "./tiktokAudio.js";
-import { igreelsCommand } from "./igreels.js";
-import { igpostsCommand } from "./igposts.js";
-import { facebookCommand } from "./facebook.js";
-import { twitterCommand } from "./twitter.js";
-import { pinterestCommand } from "./pinterest.js"
-import { helpCommand } from "./help.js";
-import { mediaToStickerCommand } from "./mediaToSticker.js";
-import { youtubeCommand } from "./youtube.js";
-import { youtubeAudioCommand } from "./youtubeAudio.js";
-import { stickerToMediaCommand } from "./stickerToMedia.js";
-import { lyricsCommand } from "./lyrics.js";
-import { bcvCommand } from "./bcv.js";
-import { qrGeneratorCommand } from "./qrGenerator.js";
-import { iaCommand } from "./ia.js";
-import { toAudioCommand } from "./toAudio.js";
-import { todosCommand } from "./todos.js";
-import { totextCommand } from "./totext.js"
-import { toimgCommand } from "./toimg.js"
-import { traducirCommand } from "./traducir.js"
-// Sistema de estadísticas
+import { pingCommand } from "./ping.js"; // Ver latencia del bot
+import { statsCommand } from "./stats.js"; // Ver estadísticas del bot
+import { tiktokCommand } from "./tiktok.js"; // Descargar un tiktok
+import { tiktokAudioCommand } from "./tiktokAudio.js"; // Descargar solo audio de un tiktok
+import { igreelsCommand } from "./igreels.js"; // Descargar reels de instagram
+import { igpostsCommand } from "./igposts.js"; // Descargar posts/carruseles de instagram
+import { facebookCommand } from "./facebook.js"; // Descargar contenido desde facebook
+import { twitterCommand } from "./twitter.js"; // Descargar contenido desde X/Twitter
+import { pinterestCommand } from "./pinterest.js" // Descargar contenido desde pinterest
+import { helpCommand } from "./help.js"; // Menú de ayuda
+import { mediaToStickerCommand } from "./mediaToSticker.js"; // Convertir imagen/video a sticker
+import { youtubeCommand } from "./youtube.js"; // Descargar video desde youtube
+import { youtubeAudioCommand } from "./youtubeAudio.js"; // Descargar audio desde youtube
+import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sticker a imagen/video
+import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
+import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
+import { qrGeneratorCommand } from "./qrGenerator.js"; // Texto/link a QR
+import { iaCommand } from "./ia.js"; // Preguntas a la ia (Groq AI)
+import { toAudioCommand } from "./toAudio.js"; // Extraer el audio de un video
+import { todosCommand } from "./todos.js"; // Mencionar a todos en un grupo
+import { totextCommand } from "./totext.js" // Audio/imagen a texto
+import { toimgCommand } from "./toimg.js" // Documentos docx/xlsx/pdf a imagen
+import { traducirCommand } from "./traducir.js" // Traducir textos a multiples idiomas (es,en,ja,it,fr...)
+
+// Importación de variable para recopilar estadísticas de uso de comandos
 import { recordCommandUsage } from "./stats.js";
 
 // Mapeo de comandos
 const commands = {
+	
     // COMANDOS BÁSICOS
     ping: pingCommand,
     help: helpCommand,
@@ -50,7 +52,7 @@ const commands = {
 	yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
 
-    // OTROS COMANDOS
+    // UTILIDADES VARIAS
     letra: lyricsCommand,
     bcv: bcvCommand,
     qr: qrGeneratorCommand,

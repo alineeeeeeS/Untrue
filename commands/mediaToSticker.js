@@ -6,146 +6,102 @@ import sharp from 'sharp';
 import { promisify } from 'util';
 import { exec } from 'child_process';
 
-// CORRECCIÓN DE IMPORTACIÓN
 import WebP from 'node-webpmux';
-const { Image: WebpMuxImage } = WebP; // Importación compatible con CommonJS
+const { Image: WebpMuxImage } = WebP;
 
 const execPromise = promisify(exec);
+// Asegúrate que esta ruta sea correcta en Railway. Usualmente 'ffmpeg' basta si está en el PATH,
+// pero mantenemos tu ruta absoluta por seguridad.
 const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
 
 // ----------------------------------------------------------------------
 // --- FUNCIONES AUXILIARES ---
 // ----------------------------------------------------------------------
 
-/**
- * Genera el buffer EXIF válido para WhatsApp/node-webpmux.
- */
 function generateExifBuffer(exifData) {
     const jsonString = JSON.stringify(exifData);
     const jsonBuffer = Buffer.from(jsonString, 'utf-8');
-
-    // Estructura de cabecera TIFF para WhatsApp (22 bytes)
     const exifTemp = Buffer.from([
         0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 
         0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 
         0x00, 0x00
     ]);
-
-    // Escribir la longitud (JSON.length + 1 null byte) en el offset 14 (Little Endian)
     exifTemp.writeUInt32LE(jsonBuffer.length + 1, 14);
-
-    // Concatenar Cabecera, JSON y Null Byte
-    return Buffer.concat([
-        exifTemp,
-        jsonBuffer,
-        Buffer.from([0x00]) // Null byte de terminación
-    ]);
+    return Buffer.concat([exifTemp, jsonBuffer, Buffer.from([0x00])]);
 }
-
 
 function cleanUpFile(filePath) {
     if (filePath && fs.existsSync(filePath)) {
         try {
             fs.unlinkSync(filePath);
-            console.log(`🧹 Archivo temporal eliminado: ${filePath}`);
         } catch (e) {
             console.warn(`⚠️ Error limpiando archivo ${filePath}: ${e.message}`);
         }
     }
 }
 
-async function checkIfWebPIsAnimated(filePath) {
-    try {
-        const buffer = fs.readFileSync(filePath);
-        const data = buffer.toString('hex');
-        const hasANIM = data.includes('414e494d'); // ANIM
-        const hasANMF = data.includes('414e4d46'); // ANMF
-        return hasANIM && hasANMF;
-    } catch (error) {
-        return false;
-    }
-}
-
-async function optimizeAnimatedWebP(inputPath, outputPath, duration) {
-    console.warn('⚠️ Optimización no implementada en el snippet, saltando.');
-    return true; 
-}
-
 /**
- * CONVERSIÓN DE VIDEO A WEBP - MÉTODO 1 (CORREGIDO)
- * Usa scale/crop para asegurar que el video rellena todo el 512x512.
+ * Función maestra de conversión con control de calidad.
+ * Intenta convertir. Si el archivo > 950KB, retorna false para que se intente con menor calidad.
  */
-async function convertToAnimatedWebPMethod1(inputPath, outputPath, duration) {
-    try {
-        const timeLimit = Math.min(duration, 8); 
-        // Filtro CORREGIDO: scale=512:512:force_original_aspect_ratio=increase luego crop=512:512
-        const command = `${ffmpegCommand} -y -i ${inputPath} -t ${timeLimit} -vcodec libwebp -vf "scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15,setsar=1" -loop 0 -crf 25 -preset default ${outputPath}`;
-        await execPromise(command, { maxBuffer: 1024 * 1024 * 50 });
-        return fs.existsSync(outputPath);
-    } catch (error) {
-        console.error('❌ Error en Method 1 (proporciones):', error.message);
-        return false;
-    }
-}
+async function ffmpegConvertToWebP(input, output, options) {
+    const { fps, duration, quality, resolution } = options;
+    
+    // Filtros: Escalar, Cortar al centro, FPS, Loop infinito
+    // -lossless 0: Compresión con pérdida (vital para bajar peso)
+    // -compression_level 4: Balance entre velocidad de CPU y tamaño
+    // -q:v [quality]: Calidad de 0 a 100
+    // -an: Eliminar audio
+    
+    const scaleFilter = `scale=${resolution}:${resolution}:force_original_aspect_ratio=increase,crop=${resolution}:${resolution},fps=${fps}`;
+    
+    const command = `${ffmpegCommand} -y -i "${input}" -t ${duration} -vcodec libwebp -vf "${scaleFilter}" -loop 0 -lossless 0 -compression_level 4 -q:v ${quality} -preset default -an -vsync 0 "${output}"`;
 
-/**
- * CONVERSIÓN DE VIDEO A WEBP - MÉTODO 2 (CORREGIDO)
- * También usa scale/crop para consistencia y mejor resultado.
- */
-async function convertToAnimatedWebPMethod2(inputPath, outputPath, duration) {
     try {
-        const timeLimit = Math.min(duration, 8); 
-        // Filtro CORREGIDO: Usando el mismo filtro gráfico robusto
-        const command = `${ffmpegCommand} -y -i ${inputPath} -t ${timeLimit} -vcodec libwebp -vf "scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15,setsar=1" -loop 0 -preset default -an -vsync 0 -crf 25 ${outputPath}`;
         await execPromise(command, { maxBuffer: 1024 * 1024 * 50 });
-        return fs.existsSync(outputPath);
+        
+        if (!fs.existsSync(output)) return { success: false, size: 0 };
+        
+        const stats = fs.statSync(output);
+        const sizeKB = stats.size / 1024;
+
+        return { success: true, size: sizeKB };
     } catch (error) {
-        console.error('❌ Error en Method 2 (proporciones):', error.message);
-        return false;
+        console.error('❌ Error FFmpeg:', error.message);
+        return { success: false, size: 0 };
     }
 }
 
 // ----------------------------------------------------------------------
-// --- FUNCIÓN PRINCIPAL DE INYECCIÓN ---
+// --- INYECCIÓN DE METADATOS ---
 // ----------------------------------------------------------------------
 
-/**
- * Función que encapsula la lógica de inyección para ser más limpia.
- */
 async function injectStickerMetadata(inputPath, outputPath, m) {
-    const userName = m.pushName || "Usuario Anónimo";
+    const userName = m.pushName || "Usuario";
     const creationDate = new Date().toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    }).replace(/\//g, '/');
+        day: '2-digit', month: '2-digit', year: 'numeric'
+    });
 
     const finalFooterText = `@${userName} | ${creationDate}`;
 
     const exifData = {
-        'sticker-pack-id': 'untrue-bot-sticker-id',
-        'sticker-pack-name': 'UntrueBot - @josentss\n',
+        'sticker-pack-id': 'untrue-bot-id',
+        'sticker-pack-name': 'UntrueBot Sticker\n',
         'sticker-pack-publisher': finalFooterText, 
         'author': finalFooterText,
-        'emojis': '✨' 
+        'emojis': ['✨', '😜']
     };
 
-    // Generar el buffer EXIF con la longitud correcta
     const exifBuffer = generateExifBuffer(exifData);
-
     const img = new WebpMuxImage();
+    
     await img.load(inputPath); 
-
-    // Asignar el buffer dinámico
     img.exif = exifBuffer;
-
     await img.save(outputPath);
-    console.log(`✅ Metadatos EXIF inyectados con: ${finalFooterText}`);
 }
 
-
 // ----------------------------------------------------------------------
-// --- COMANDOS DE PROCESAMIENTO ---
+// --- COMANDO PRINCIPAL ---
 // ----------------------------------------------------------------------
 
 export async function mediaToStickerCommand(sock, m) {
@@ -153,9 +109,7 @@ export async function mediaToStickerCommand(sock, m) {
     const quotedMessage = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
 
     if (!quotedMessage) {
-        await sock.sendMessage(remoteJid, { 
-            text: `❌ *DEBES RESPONDER A UNA IMAGEN O VIDEO*\n\nUsa #s o #sticker respondiendo a:\n• Imagen → Sticker estático\n• Video → Sticker animado (max 10 segundos)` 
-        }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text: `❌ Responde a una imagen o video.` }, { quoted: m });
         return;
     }
 
@@ -167,146 +121,128 @@ export async function mediaToStickerCommand(sock, m) {
         } else if (quotedMessage.videoMessage) {
             await processVideoSticker(sock, m, quotedMessage.videoMessage);
         } else {
-            await sock.sendMessage(remoteJid, { 
-                text: '❌ *DEBES RESPONDER A UNA IMAGEN O VIDEO* para crear un sticker.' 
-            }, { quoted: m });
+            await sock.sendMessage(remoteJid, { text: '❌ Solo imágenes o videos.' }, { quoted: m });
         }
 
     } catch (error) {
-        console.error('❌ Error general en mediaToStickerCommand:', error);
-        await sock.sendMessage(remoteJid, { 
-            text: '❌ Error inesperado durante el procesamiento del sticker.' 
-        }, { quoted: m });
+        console.error('❌ Error Fatal:', error);
+        await sock.sendMessage(remoteJid, { text: '❌ Error interno procesando el sticker.' }, { quoted: m });
     }
 }
 
-/**
- * Procesar imagen para sticker estático
- */
 async function processImageSticker(sock, m, imageMessage) {
     const remoteJid = m.key.remoteJid;
-    let tempInputPath = null;
-    let tempWebpNoMeta = null; 
-    let tempOutputPath = null; 
+    let tempInput = join(tmpdir(), `img-${Date.now()}.jpg`);
+    let tempWebp = join(tmpdir(), `img-${Date.now()}.webp`);
+    let finalWebp = join(tmpdir(), `sticker-${Date.now()}.webp`);
 
     try {
-        // 1. Descargar y guardar imagen
         const stream = await downloadContentFromMessage(imageMessage, 'image');
-        tempInputPath = join(tmpdir(), `image-input-${Date.now()}.jpeg`);
         const buffer = [];
-        for await (const chunk of stream) { buffer.push(chunk); }
-        fs.writeFileSync(tempInputPath, Buffer.concat(buffer));
+        for await (const chunk of stream) buffer.push(chunk);
+        fs.writeFileSync(tempInput, Buffer.concat(buffer));
 
-        // 2. Convertir a WebP *sin* metadatos (temporal)
-        tempWebpNoMeta = join(tmpdir(), `sticker-nometa-${Date.now()}.webp`);
-        await sharp(tempInputPath)
+        await sharp(tempInput)
             .resize(512, 512, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-            .webp()
-            .toFile(tempWebpNoMeta);
+            .webp({ quality: 75 }) // Calidad estandar para imagenes
+            .toFile(tempWebp);
 
-        // 3. INYECTAR METADATOS EXIF (USANDO LA FUNCIÓN CORREGIDA)
-        tempOutputPath = join(tmpdir(), `sticker-final-${Date.now()}.webp`);
-        await injectStickerMetadata(tempWebpNoMeta, tempOutputPath, m); 
+        await injectStickerMetadata(tempWebp, finalWebp, m); 
 
-        if (!fs.existsSync(tempOutputPath)) {
-            throw new Error('No se pudo crear el archivo WebP final');
-        }
-
-        const fileStats = fs.statSync(tempOutputPath);
-        console.log(`📊 Tamaño del sticker: ${(fileStats.size / 1024).toFixed(2)} KB`);
-
-        // 4. Enviar el Sticker FINAL
-        await sock.sendMessage(remoteJid, { 
-            sticker: fs.readFileSync(tempOutputPath),
-        }, { quoted: m });
-
-        console.log('✅ Sticker de imagen enviado exitosamente');
+        await sock.sendMessage(remoteJid, { sticker: fs.readFileSync(finalWebp) }, { quoted: m });
 
     } catch (error) {
-        console.error('❌ Error en procesamiento de imagen:', error);
         throw error;
     } finally {
-        cleanUpFile(tempInputPath);
-        cleanUpFile(tempWebpNoMeta);
-        cleanUpFile(tempOutputPath);
+        cleanUpFile(tempInput);
+        cleanUpFile(tempWebp);
+        cleanUpFile(finalWebp);
     }
 }
 
-/**
- * Procesar video para sticker animado
- */
 async function processVideoSticker(sock, m, videoMessage) {
     const remoteJid = m.key.remoteJid;
-    let tempInputPath = null;
-    let tempWebpNoMeta = null; 
-    let tempOutputPath = null; 
+    let tempInput = join(tmpdir(), `vid-${Date.now()}.mp4`);
+    let tempWebp = join(tmpdir(), `vid-${Date.now()}.webp`);
+    let finalWebp = join(tmpdir(), `sticker-${Date.now()}.webp`);
 
     try {
+        // 1. Validar duración (Permitimos hasta 15s)
         const videoDuration = videoMessage.seconds || 0;
-        const MAX_DURATION = 10;
+        const MAX_DURATION = 15;
 
         if (videoDuration > MAX_DURATION) {
-            await sock.sendMessage(remoteJid, { 
-                text: `❌ *VIDEO DEMASIADO LARGO*\n\nLos videos para stickers deben ser máximo *${MAX_DURATION} segundos*.\n\nTu video: ${videoDuration} segundos\n\nRecorta el video y vuelve a intentarlo.` 
-            }, { quoted: m });
+            await sock.sendMessage(remoteJid, { text: `❌ Máximo ${MAX_DURATION} segundos.` }, { quoted: m });
             return;
         }
 
-        // 1. Descargar y guardar video
+        // 2. Descargar
         const stream = await downloadContentFromMessage(videoMessage, 'video');
-        tempInputPath = join(tmpdir(), `video-input-${Date.now()}.mp4`);
         const buffer = [];
-        for await (const chunk of stream) { buffer.push(chunk); }
-        fs.writeFileSync(tempInputPath, Buffer.concat(buffer));
+        for await (const chunk of stream) buffer.push(chunk);
+        fs.writeFileSync(tempInput, Buffer.concat(buffer));
 
-        // 2. CONVERSIÓN a WebP base
-        tempWebpNoMeta = join(tmpdir(), `sticker-nometa-${Date.now()}.webp`);
+        // 3. ESTRATEGIA DE COMPRESIÓN ADAPTATIVA
+        // WhatsApp requiere < 1MB (1000KB). Apuntamos a < 900KB para dejar espacio a metadata.
+        
+        // Configuración inicial basada en duración
+        let fps = 15; 
+        if (videoDuration < 5) fps = 20; // Video corto = Más fluidez
+        if (videoDuration > 10) fps = 12; // Video largo = Menos FPS para ahorrar espacio
 
-        let success = await convertToAnimatedWebPMethod1(tempInputPath, tempWebpNoMeta, videoDuration);
+        let resolution = 512;
+        let quality = 50;
+        let attempt = 1;
+        let conversionResult = { success: false, size: 0 };
 
-        if (!success) {
-            success = await convertToAnimatedWebPMethod2(tempInputPath, tempWebpNoMeta, videoDuration);
+        // --- INTENTO 1: Calidad Estándar ---
+        console.log(`🎬 Intento 1: ${fps}fps, Q${quality}, Res${resolution}`);
+        conversionResult = await ffmpegConvertToWebP(tempInput, tempWebp, { fps, duration: videoDuration, quality, resolution });
+
+        // --- INTENTO 2: Si pesa más de 900KB, bajar calidad ---
+        if (conversionResult.success && conversionResult.size > 900) {
+            console.log(`⚠️ Sticker pesado (${conversionResult.size.toFixed(0)}KB). Reintentando bajando calidad...`);
+            quality = 30; // Bajamos calidad agresivamente
+            fps = Math.max(10, fps - 5); // Bajamos FPS pero no menos de 10
+            attempt = 2;
+            conversionResult = await ffmpegConvertToWebP(tempInput, tempWebp, { fps, duration: videoDuration, quality, resolution });
         }
 
-        if (!success || !fs.existsSync(tempWebpNoMeta)) {
-            throw new Error('No se pudo crear el sticker animado después de múltiples intentos');
+        // --- INTENTO 3 (PÁNICO): Si sigue pesando mucho, bajar resolución ---
+        if (conversionResult.success && conversionResult.size > 900) {
+            console.log(`⚠️ Aún pesado (${conversionResult.size.toFixed(0)}KB). Modo Pánico (Reduciendo resolución)...`);
+            resolution = 384; // Se ve decente en celular aun
+            quality = 20;
+            fps = 10;
+            attempt = 3;
+            conversionResult = await ffmpegConvertToWebP(tempInput, tempWebp, { fps, duration: videoDuration, quality, resolution });
         }
 
-        // 3. INYECTAR METADATOS EXIF (USANDO LA FUNCIÓN CORREGIDA)
-        tempOutputPath = join(tmpdir(), `sticker-final-${Date.now()}.webp`);
-        await injectStickerMetadata(tempWebpNoMeta, tempOutputPath, m);
-
-        if (!fs.existsSync(tempOutputPath)) {
-            throw new Error('No se pudo crear el archivo WebP animado final');
+        if (!conversionResult.success || conversionResult.size > 1050) { // Margen de error 1.05MB max
+             throw new Error('No se pudo comprimir el video por debajo de 1MB.');
         }
 
-        // 4. Verificación y optimización
-        if (!(await checkIfWebPIsAnimated(tempOutputPath))) {
-            throw new Error('El archivo WebP generado no es animado');
+        // 4. Inyectar Metadatos
+        await injectStickerMetadata(tempWebp, finalWebp, m);
+
+        // 5. Verificar tamaño final con metadata
+        const finalStats = fs.statSync(finalWebp);
+        console.log(`✅ Sticker final enviado: ${(finalStats.size / 1024).toFixed(2)} KB (Intento ${attempt})`);
+
+        if (finalStats.size > 1024 * 1024) {
+             await sock.sendMessage(remoteJid, { text: '❌ El sticker es demasiado complejo para WhatsApp (Peso > 1MB).' }, { quoted: m });
+             return;
         }
 
-        const outputStats = fs.statSync(tempOutputPath);
-        if (outputStats.size > 500 * 1024) {
-            await optimizeAnimatedWebP(tempInputPath, tempOutputPath, videoDuration);
-        }
-
-        // 5. Enviar el Sticker FINAL
-        const stickerBuffer = fs.readFileSync(tempOutputPath);
-        await sock.sendMessage(remoteJid, { 
-            sticker: stickerBuffer,
-        }, { quoted: m });
-
-        console.log(`✅ Sticker animado de ${videoDuration}s enviado exitosamente`);
+        // 6. Enviar
+        await sock.sendMessage(remoteJid, { sticker: fs.readFileSync(finalWebp) }, { quoted: m });
 
     } catch (error) {
-        console.error('❌ Error en procesamiento de video:', error);
-
-        await sock.sendMessage(remoteJid, { 
-            text: `❌ *ERROR DE CONVERSIÓN*\n\nNo se pudo crear el sticker animado.\n\nPosibles causas:\n• El video es muy largo\n• Formato no compatible\n• Intenta con un video más corto (3-7 segundos)` 
-        }, { quoted: m });
+        console.error('❌ Error VideoSticker:', error);
+        await sock.sendMessage(remoteJid, { text: '❌ Error creando el sticker animado.' }, { quoted: m });
     } finally {
-        cleanUpFile(tempInputPath);
-        cleanUpFile(tempWebpNoMeta);
-        cleanUpFile(tempOutputPath);
+        cleanUpFile(tempInput);
+        cleanUpFile(tempWebp);
+        cleanUpFile(finalWebp);
     }
 }
