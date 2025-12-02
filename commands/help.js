@@ -38,7 +38,7 @@ export async function helpCommand(sock, m) {
   • #ping ▸ Latencia del bot
   • #menu ▸ Ver este mensaje
   
->|< _Desarrollado por: @josentss_ >|<
+>|< _Desarrollado por: @josentss_
     `.trim();
 
     try {

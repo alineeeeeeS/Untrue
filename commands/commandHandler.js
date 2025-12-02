@@ -79,8 +79,7 @@ async function handleInvalidCommand(sock, m, invalidCommandName) {
     const fullCommand = `#${invalidCommandName}`; 
     
     const customErrorMessage = `
-❌ *ERROR: Comando no reconocido* ❌
-
+❌ *ERROR: Comando no reconocido*
 El comando *${fullCommand}* no existe o está mal escrito.
 
 ▸ Para ver la lista de comandos, usa *#menu*.

@@ -16,38 +16,40 @@ export async function bcvCommand(sock, m, args) {
         const fechaSolicitada = args[0]; // Fecha en formato dd/mm/aaaa o dd-mm-aaaa
 
         await sock.sendMessage(jid, {
-            text: '💰 *Consultando precio del dólar BCV...*'
+            text: '?? *Consultando precios del BCV (D�lar y Euro)...*'
         }, { quoted: m });
 
-        logger.info('bcv', `Consultando precio del dólar para ${m.pushName}${fechaSolicitada ? ` fecha: ${fechaSolicitada}` : ''}`, { jid });
+        logger.info('bcv', `Consultando precios del BCV para ${m.pushName}${fechaSolicitada ? ` fecha: ${fechaSolicitada}` : ''}`, { jid });
 
         let bcvData;
 
-        // Si se solicita una fecha específica, buscar en el historial
+        // Si se solicita una fecha espec�fica, buscar en el historial
         if (fechaSolicitada) {
             bcvData = await getBCVFromHistorial(fechaSolicitada);
         } else {
             // Consultar precio actual
             bcvData = await getBCVPrice();
 
-            // Guardar en historial después de obtener el precio actual
-            if (bcvData.price && bcvData.fechacorta) {
-                await guardarEnHistorial(bcvData.fechacorta, bcvData.price);
+            // Guardar en historial despu�s de obtener el precio actual (Ahora guarda USD y EUR)
+            if (bcvData.usdPrice && bcvData.eurPrice && bcvData.fechacorta) {
+                await guardarEnHistorial(bcvData.fechacorta, bcvData.usdPrice, bcvData.eurPrice);
             }
         }
 
-        const message = `💵 *Tipo de Cambio BCV*\n\n` +
-                       `💰 *Dólar:* ${bcvData.price}\n` +
-                       `📅 *Fecha:* ${bcvData.date}\n` +
-                       `${bcvData.historical ? '📚 _Dato histórico_' : '🔄 _Actualizado recientemente_'}\n` +
+        const message = `? *Tipo de Cambio BCV*\n\n` +
+                       `?? *D�lar (USD):* ${bcvData.usdPrice}\n` +
+                       `?? *Euro (EUR):* ${bcvData.eurPrice}\n` +
+                       `?? *Fecha:* ${bcvData.date}\n` +
+                       `${bcvData.historical ? '?? _Dato hist�rico_' : '? _Actualizado recientemente_'}\n` +
                        `\n_www.bcv.org.ve/_`;
 
         await sock.sendMessage(jid, {
             text: message
         }, { quoted: m });
 
-        logger.success('bcv', `Precio del dólar enviado a ${m.pushName}`, {
-            price: bcvData.price,
+        logger.success('bcv', `Precios (USD/EUR) del BCV enviados a ${m.pushName}`, {
+            usdPrice: bcvData.usdPrice,
+            eurPrice: bcvData.eurPrice,
             date: bcvData.date,
             historical: bcvData.historical || false,
             jid
@@ -61,21 +63,44 @@ export async function bcvCommand(sock, m, args) {
         });
 
         await sock.sendMessage(m.key.remoteJid, {
-            text: `❌ *Error al consultar el BCV*\n\n${error.message}`
+            text: `? *Error al consultar el BCV*\n\n${error.message}`
         }, { quoted: m });
     }
 }
 
 /**
- * Obtiene el precio del dólar desde el BCV
+ * Normaliza y formatea el texto del precio a 'X.XXXX Bs'
+ */
+function formatPrice(priceText) {
+    // 1. Reemplazar comas por puntos y eliminar caracteres no num�ricos
+    priceText = priceText.replace(/[^\d,.]/g, '').replace(',', '.');
+    
+    if (priceText && !isNaN(parseFloat(priceText))) {
+        // 2. Formatear a 6 decimales para mantener precisi�n interna
+        const priceFloat = parseFloat(priceText).toFixed(6);
+
+        // 3. Recortar a 4 decimales para mostrar
+        const parts = priceFloat.split('.');
+        if (parts[1]) {
+            parts[1] = parts[1].substring(0, 4);
+            while (parts[1].length < 4) {
+                parts[1] += '0';
+            }
+        }
+        
+        return `${parts.join('.')} Bs`;
+    }
+    return null;
+}
+
+/**
+ * Obtiene los precios de D�lar y Euro desde el BCV
  */
 async function getBCVPrice() {
     try {
-        console.log('🌐 Consultando BCV...');
+        console.log('?? Consultando BCV...');
 
-        const httpsAgent = new https.Agent({
-            rejectUnauthorized: false,
-        });
+        const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
         const response = await axios.get('https://www.bcv.org.ve', {
             timeout: 15000,
@@ -91,90 +116,75 @@ async function getBCVPrice() {
         });
 
         const $ = cheerio.load(response.data);
-        console.log('✅ Página del BCV cargada correctamente');
-
-        // Selector específico del dólar principal
-        console.log('🔍 Usando selector específico del dólar principal...');
-
-        const dollarPriceElement = $('#dolar .col-sm-6.centrado strong');
+        console.log('?? P�gina del BCV cargada correctamente');
+        
+        // --- 1. EXTRACCI�N DEL D�LAR (USD) ---
+        // Selector robusto: #dolar strong
+        const dollarPriceElement = $('#dolar strong'); 
+        let usdPrice = "N/A Bs";
 
         if (dollarPriceElement.length > 0) {
-            let priceText = dollarPriceElement.first().text().trim();
-            console.log(`✅ Precio encontrado en selector específico: "${priceText}"`);
-
-            // Limpiar y formatear el precio - MANTENER MÁS DECIMALES
-            priceText = priceText.replace(/[^\d,.]/g, '').replace(',', '.');
-
-            if (priceText && !isNaN(parseFloat(priceText))) {
-                // Formatear a 4 decimales en lugar de 2
-                const dollarPrice = parseFloat(priceText).toFixed(6); // 6 decimales para mantener precisión
-
-                // Recortar a 4 decimales pero manteniendo el formato correcto
-                const parts = dollarPrice.split('.');
-                if (parts[1]) {
-                    // Mantener solo 4 decimales
-                    parts[1] = parts[1].substring(0, 4);
-                    // Asegurarse de que tenga 4 dígitos (rellenar con ceros si es necesario)
-                    while (parts[1].length < 4) {
-                        parts[1] += '0';
-                    }
-                }
-
-                const formattedPrice = parts.join('.');
-                console.log(`💰 Precio formateado (4 decimales): ${formattedPrice} Bs`);
-
-                // EXTRAER FECHA DEL BCV - Selector corregido
-                let bcvDate = '';
-                const dateElement = $('.pull-right.dinpro.center .date-display-single');
-
-                if (dateElement.length > 0) {
-                    bcvDate = dateElement.first().text().trim();
-                    console.log(`📅 Fecha extraída del BCV: "${bcvDate}"`);
-
-                    // TRANSFORMAR FECHA: "Jueves, 20 Noviembre  2025" → "20/11/2025"
-                    try {
-                        const fechaTransformada = transformarFechaBCV(bcvDate);
-                        bcvDate = fechaTransformada;
-                        console.log(`📅 Fecha transformada: "${fechaTransformada}"`);
-                    } catch (error) {
-                        console.log('❌ Error transformando fecha, usando fecha original:', error.message);
-                        // Si hay error, mantenemos la fecha original del BCV
-                    }
-                } else {
-                    console.log('❌ No se encontró la fecha en el BCV, usando fecha local');
-                    bcvDate = new Date().toLocaleDateString('es-VE');
-                }
-
-                // Crear fecha corta para el historial (ddmmaaaa)
-                const fechacorta = bcvDate.split('/').join('');
-
-                return {
-                    price: `${formattedPrice} Bs`,
-                    date: bcvDate, // Usa la fecha del BCV transformada
-                    fechacorta: fechacorta,
-                    time: new Date().toLocaleTimeString('es-VE'),
-                    updated: 'Hace unos segundos',
-                    historical: false
-                };
-            }
+            usdPrice = formatPrice(dollarPriceElement.first().text().trim());
+            console.log(`? Precio USD encontrado: ${usdPrice}`);
         } else {
-            console.log('❌ No se encontró el elemento con el selector específico');
+            console.log('? No se encontr� el elemento del precio USD');
+        }
+        
+        // --- 2. EXTRACCI�N DEL EURO (EUR) ---
+        // Selector robusto: #euro strong (confirmado por la estructura HTML)
+        const euroPriceElement = $('#euro strong');
+        let eurPrice = "N/A Bs";
+
+        if (euroPriceElement.length > 0) {
+            eurPrice = formatPrice(euroPriceElement.first().text().trim());
+            console.log(`? Precio EUR encontrado: ${eurPrice}`);
+        } else {
+            console.log('? No se encontr� el elemento del precio EUR');
         }
 
-        throw new Error('No se pudo extraer el precio del dólar');
+        // Si fallan ambos, lanza un error para usar los precios de respaldo
+        if (usdPrice === "N/A Bs" && eurPrice === "N/A Bs") {
+             throw new Error('No se pudo extraer ni el precio del d�lar ni el del euro');
+        }
+
+        // --- 3. EXTRACCI�N DE LA FECHA ---
+        let bcvDate = '';
+        const dateElement = $('.pull-right.dinpro.center .date-display-single');
+
+        if (dateElement.length > 0) {
+            bcvDate = dateElement.first().text().trim();
+            const fechaTransformada = transformarFechaBCV(bcvDate);
+            bcvDate = fechaTransformada;
+        } else {
+            bcvDate = new Date().toLocaleDateString('es-VE');
+        }
+        
+        const fechacorta = bcvDate.split('/').join('');
+
+        return {
+            usdPrice: usdPrice,
+            eurPrice: eurPrice,
+            date: bcvDate, 
+            fechacorta: fechacorta,
+            time: new Date().toLocaleTimeString('es-VE'),
+            updated: 'Hace unos segundos',
+            historical: false
+        };
 
     } catch (error) {
-        console.error('❌ Error consultando BCV:', error.message);
+        console.error('? Error consultando BCV:', error.message);
 
         const now = new Date();
         const fechaCorta = now.toLocaleDateString('es-VE').split('/').join('');
 
+        // Precios de respaldo estimados (actualizados a la estructura dual)
         return {
-            price: "36.5000 Bs (Estimado)",
+            usdPrice: "36.5000 Bs (Est.)",
+            eurPrice: "40.0000 Bs (Est.)",
             date: now.toLocaleDateString('es-VE'),
             fechacorta: fechaCorta,
             time: now.toLocaleTimeString('es-VE'),
-            updated: 'Valor estimado - BCV no disponible',
+            updated: 'Valores estimados - BCV no disponible',
             historical: false
         };
     }
@@ -185,56 +195,63 @@ async function getBCVPrice() {
  */
 async function getBCVFromHistorial(fechaInput) {
     try {
-        // Normalizar fecha (acepta dd/mm/aaaa o dd-mm-aaaa)
         const fechaNormalizada = fechaInput.replace(/-/g, '/');
         const fechacorta = fechaNormalizada.split('/').join('');
 
-        console.log(`📚 Buscando en historial: ${fechaNormalizada} (${fechacorta})`);
+        console.log(`?? Buscando en historial: ${fechaNormalizada} (${fechacorta})`);
 
-        // Cargar historial
         const historial = await cargarHistorial();
 
         if (historial[fechacorta]) {
-            console.log(`✅ Precio histórico encontrado: ${historial[fechacorta]}`);
+            // El historial ahora devuelve un objeto con USD y EUR
+            const data = historial[fechacorta];
+            console.log(`?? Precios hist�ricos encontrados: USD=${data.usdPrice}, EUR=${data.eurPrice}`);
             return {
-                price: historial[fechacorta],
+                usdPrice: data.usdPrice,
+                eurPrice: data.eurPrice,
                 date: fechaNormalizada,
                 fechacorta: fechacorta,
                 time: '--:--:--',
-                updated: 'Dato histórico',
+                updated: 'Dato hist�rico',
                 historical: true
             };
         } else {
-            throw new Error(`No se encontró registro para la fecha ${fechaNormalizada}`);
+            throw new Error(`No se encontr� registro para la fecha ${fechaNormalizada}`);
         }
 
     } catch (error) {
-        console.error('❌ Error buscando en historial:', error.message);
+        console.error('? Error buscando en historial:', error.message);
         throw new Error(`No se pudo encontrar el precio para la fecha solicitada: ${error.message}`);
     }
 }
 
 /**
- * Guarda un nuevo registro en el historial
+ * Guarda un nuevo registro en el historial (Ahora acepta USD y EUR)
  */
-async function guardarEnHistorial(fechacorta, precio) {
+async function guardarEnHistorial(fechacorta, usdPrice, eurPrice) {
     try {
-        // Cargar historial existente
         const historial = await cargarHistorial();
 
-        // Solo guardar si es un precio nuevo o diferente
-        if (!historial[fechacorta] || historial[fechacorta] !== precio) {
-            historial[fechacorta] = precio;
+        const nuevoRegistro = {
+            usdPrice: usdPrice,
+            eurPrice: eurPrice
+        };
+        
+        // Convertir el registro existente a una cadena JSON para comparaci�n profunda
+        const nuevoRegistroStr = JSON.stringify(nuevoRegistro);
+        const existenteStr = historial[fechacorta] ? JSON.stringify(historial[fechacorta]) : null;
 
-            // Guardar archivo
+        if (!existenteStr || existenteStr !== nuevoRegistroStr) {
+            historial[fechacorta] = nuevoRegistro;
+
             await fs.writeFile(HISTORIAL_FILE, JSON.stringify(historial, null, 2), 'utf8');
-            console.log(`💾 Guardado en historial: ${fechacorta} -> ${precio}`);
+            console.log(`? Guardado en historial: ${fechacorta} -> USD: ${usdPrice}, EUR: ${eurPrice}`);
         } else {
-            console.log(`ℹ️  Precio ya existe en historial: ${fechacorta}`);
+            console.log(`?? Precios ya existen en historial: ${fechacorta}`);
         }
 
     } catch (error) {
-        console.error('❌ Error guardando en historial:', error.message);
+        console.error('? Error guardando en historial:', error.message);
     }
 }
 
@@ -244,58 +261,57 @@ async function guardarEnHistorial(fechacorta, precio) {
 async function cargarHistorial() {
     try {
         const data = await fs.readFile(HISTORIAL_FILE, 'utf8');
-        return JSON.parse(data);
+        const json = JSON.parse(data);
+        
+        // Manejar registros antiguos que solo guardaban el precio del d�lar (string)
+        for (const key in json) {
+            if (typeof json[key] === 'string') {
+                // Convertir la antigua cadena (solo USD) a la nueva estructura de objeto
+                json[key] = {
+                    usdPrice: json[key],
+                    eurPrice: "N/A Bs (Antiguo)" // Marcar el EUR como no disponible
+                };
+            }
+        }
+        
+        return json;
     } catch (error) {
-        // Si el archivo no existe, crear uno vacío
         if (error.code === 'ENOENT') {
-            console.log('📁 Creando nuevo archivo de historial...');
+            console.log('?? Creando nuevo archivo de historial...');
             await fs.writeFile(HISTORIAL_FILE, JSON.stringify({}, null, 2), 'utf8');
             return {};
         }
-        console.error('❌ Error cargando historial:', error.message);
+        console.error('? Error cargando historial:', error.message);
         return {};
     }
 }
 
 /**
- * Transforma fecha del BCV de "Jueves, 20 Noviembre  2025" a "20/11/2025"
+ * Transforma fecha del BCV de "Jueves, 20 Noviembre 2025" a "20/11/2025"
  */
 function transformarFechaBCV(fechaBCV) {
-    // Mapeo de meses en español a números
     const meses = {
         'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
         'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
         'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
     };
 
-    // Remover el día de la semana (ej: "Jueves, ") y normalizar espacios múltiples
     const fechaNormalizada = fechaBCV.replace(/^[^,]+, /, '').replace(/\s+/g, ' ').trim();
-    console.log(`📅 Fecha normalizada: "${fechaNormalizada}"`);
-
-    // Dividir en día, mes y año (ahora con espacios normalizados)
     const partes = fechaNormalizada.split(' ');
-
-    console.log(`📅 Partes de la fecha:`, partes);
 
     if (partes.length >= 3) {
         const dia = partes[0].padStart(2, '0');
         const mesTexto = partes[1].toLowerCase();
-        const año = partes[2]; // Ahora debería capturar el año correctamente
-
-        console.log(`📅 Día: ${dia}, Mes: ${mesTexto}, Año: ${año}`);
+        const a�o = partes[2];
 
         const mesNumero = meses[mesTexto];
 
-        if (mesNumero && año) {
-            return `${dia}/${mesNumero}/${año}`;
+        if (mesNumero && a�o) {
+            return `${dia}/${mesNumero}/${a�o}`;
         } else if (mesNumero) {
-            // Si tenemos mes pero no año, usar año actual
-            const añoActual = new Date().getFullYear().toString();
-            return `${dia}/${mesNumero}/${añoActual}`;
+            const a�oActual = new Date().getFullYear().toString();
+            return `${dia}/${mesNumero}/${a�oActual}`;
         }
     }
-
-    // Si no se puede transformar, devolver la fecha original
-    console.log('❌ No se pudo transformar la fecha, usando original');
     return fechaBCV;
 }
