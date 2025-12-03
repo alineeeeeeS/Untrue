@@ -12,7 +12,7 @@ export async function pinterestCommand(sock, m, args) {
         // Verificar si hay URL
         if (args.length === 0) {
             await sock.sendMessage(jid, {
-                text: '📌 *Uso correcto:*\n`#pin [url_de_pinterest]`\n\n*Ejemplo:*\n`#pin https://pin.it/abc123`\n`#pin https://pinterest.com/pin/123456`'
+                text: '📌 *Uso correcto:*\n`▸ #pin _link_'
             }, { quoted: m });
             return;
         }
@@ -22,7 +22,7 @@ export async function pinterestCommand(sock, m, args) {
         // Validar que sea una URL de Pinterest
         if (!url.includes('pinterest.com') && !url.includes('pin.it')) {
             await sock.sendMessage(jid, {
-                text: '❌ *URL inválida*\nSolo soporto enlaces de Pinterest (pinterest.com o pin.it)'
+                text: '❌ *URL inválida*\n\n▸ Solo soporta enlaces como: _pinterest.com_ o _pin.it_'
             }, { quoted: m });
             return;
         }

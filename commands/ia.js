@@ -9,7 +9,7 @@ export async function iaCommand(sock, m, args) {
     try {
         if (!userPrompt) {
             await sock.sendMessage(remoteJid, { 
-                text: '❌ *Uso:* `#ia <tu pregunta>`\n\nEjemplos:\n• `#ia explica la teoría de la relatividad`\n• `#ia ideas para contenido viral`\n• `#ia resume un libro famoso`'
+                text: '❌ *Uso correcto:*\n▸ #ia _prompt/pregunta_'
             }, { quoted: m });
             return;
         }

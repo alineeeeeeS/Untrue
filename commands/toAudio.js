@@ -23,7 +23,7 @@ export async function toAudioCommand(sock, m, args) {
             await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `❌ *USO INCORRECTO*\n\nResponde a un video con el comando:\n*#toaud*` 
+                    text: `❌ *Uso incorrecto*\n\n▸ Debes responder a un video con *#toaud* para extraer el audio correctamente.` 
                 },
                 { quoted: m }
             );
@@ -35,7 +35,7 @@ export async function toAudioCommand(sock, m, args) {
             await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `❌ *NO ES UN VIDEO*\n\nEl mensaje al que respondiste no contiene un video válido.` 
+                    text: `❌ *Formato inválido*\n\n▸ El mensaje al que respondiste no contiene un video válido.` 
                 },
                 { quoted: m }
             );
@@ -45,7 +45,7 @@ export async function toAudioCommand(sock, m, args) {
         // Enviar mensaje de procesamiento
         const processingMsg = await sock.sendMessage(
             m.key.remoteJid,
-            { text: `🎧 *Extrayendo audio...*\n⏳ Esto puede tomar unos segundos...` },
+            { text: `🎧 *Extrayendo audio...*` },
             { quoted: m }
         );
 
@@ -152,7 +152,7 @@ export async function toAudioCommand(sock, m, args) {
         await sock.sendMessage(
             m.key.remoteJid,
             { 
-                text: `❌ *ERROR AL PROCESAR*\n\nNo se pudo extraer el audio del video.\nError: ${error.message}` 
+                text: `❌ *Error de procesos*\n\n▸ No se pudo extraer correctamente el audio del video.\n▸ Error: ${error.message}` 
             },
             { quoted: m }
         );

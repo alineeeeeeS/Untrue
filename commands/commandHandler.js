@@ -82,8 +82,8 @@ async function handleInvalidCommand(sock, m, invalidCommandName) {
 ❌ *ERROR: Comando no reconocido*
 El comando *${fullCommand}* no existe o está mal escrito.
 
-▸ Para ver la lista de comandos, usa *#menu*.
 ▸ Asegúrate de no tener errores tipográficos.
+▸ Para ver la lista de comandos, usa *#menu*.
     `.trim();
 
     try {

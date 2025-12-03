@@ -9,7 +9,7 @@ export async function qrGeneratorCommand(sock, m, args) {
             return await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `📱 *Generador de Códigos QR*\n\n#qr [texto o url]\n\nEjemplo: #qr https://google.com` 
+                    text: `❌ *Uso correcto:*\n▸ #qr _texto/link_\n▸ *Ejemplo:* #qr fast.com` 
                 },
                 { quoted: m }
             );

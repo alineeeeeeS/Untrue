@@ -126,7 +126,7 @@ export async function lyricsCommand(sock, m, args) {
 
     if (!query) {
         await sock.sendMessage(remoteJid, { 
-            text: `❌ *FALTA TÍTULO DE CANCIÓN*\n\nEjemplo: *#letra nsqk los alpes*` 
+            text: `❌ *Faltan datos de la canción*\n\n▸ *Uso correcto:* #letra radiohead airbag` 
         }, { quoted: m });
         return;
     }
@@ -141,7 +141,7 @@ export async function lyricsCommand(sock, m, args) {
 
         if (!lyrics) {
             await sock.sendMessage(remoteJid, { 
-                text: `⚠️ *LETRA NO ENCONTRADA*\n\nNo se pudo encontrar la letra. Asegúrate de escribir el *artista y el título* correctamente.` 
+                text: `⚠️ *Letra no encontrada*\n\n▸ Asegúrate de escribir el artista y el título correctamente.\n▸ Si está todo bien y sigue sin encontrarse, los servidores de _letras.com_ no la tienen registrada.` 
             }, { quoted: m });
             return;
         }
@@ -156,7 +156,7 @@ export async function lyricsCommand(sock, m, args) {
 ${lyrics}
 
 ---------------------------------
-✨ Fuente: Letras.com
+✨ Fuente: _letras.com_
 `.trim();
 
         await sock.sendMessage(remoteJid, { text: responseText }, { quoted: m });

@@ -38,7 +38,7 @@ export async function facebookCommand(sock, m, args) {
 
         if (!fbUrl || !isValidFacebookUrl(fbUrl)) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ *Uso correcto:*\n#fb <enlace del video de Facebook>' 
+                text: '❌ *Uso correcto:*\n▸ #fb _link_' 
             }, { quoted: m });
             return;
         }
@@ -57,7 +57,7 @@ export async function facebookCommand(sock, m, args) {
                         `--max-filesize 100M ` + 
                         `--rm-cache-dir ` + // Borra cache de yt-dlp que a veces da problemas
                         `--user-agent "Mozilla/5.0 (Linux; Android 10; Mobile)" ` + // Se identifica como móvil
-                        `--extractor-args "facebook:web_server=m" ` + // **CLAVE:** FUERZA el scraping desde la web móvil
+                        `--extractor-args "facebook:web_server=m" ` + 
                         `-o "${tempFilePath}" ` +
                         `"${fbUrl}"`;
 

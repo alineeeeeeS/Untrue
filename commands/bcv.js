@@ -16,27 +16,26 @@ export async function bcvCommand(sock, m, args) {
         const fechaSolicitada = args[0]; // Fecha en formato dd/mm/aaaa o dd-mm-aaaa
 
         await sock.sendMessage(jid, {
-            text: 'ℹ️ *Consultando precios del BCV (Dólar y Euro)...*'
+            text: '📊 *Consultando tasas del BCV...*'
         }, { quoted: m });
 
         logger.info('bcv', `Consultando precios del BCV para ${m.pushName}${fechaSolicitada ? ` fecha: ${fechaSolicitada}` : ''}`, { jid });
 
         let bcvData;
 
-        // Si se solicita una fecha específica, buscar en el historial
         if (fechaSolicitada) {
             bcvData = await getBCVFromHistorial(fechaSolicitada);
         } else {
             // Consultar precio actual
             bcvData = await getBCVPrice();
 
-            // Guardar en historial después de obtener el precio actual (Ahora guarda USD y EUR)
+            // Guardar en historial después de obtener el precio actual
             if (bcvData.usdPrice && bcvData.eurPrice && bcvData.fechacorta) {
                 await guardarEnHistorial(bcvData.fechacorta, bcvData.usdPrice, bcvData.eurPrice);
             }
         }
 
-        const message = `✅ *Tipo de Cambio BCV*\n\n` +
+        const message = `▸ *Tipo de Cambio BCV* ◂\n\n` +
                        `💰 *Dólar (USD):* ${bcvData.usdPrice}\n` +
                        `💶 *Euro (EUR):* ${bcvData.eurPrice}\n` +
                        `📅 *Fecha:* ${bcvData.date}\n` +

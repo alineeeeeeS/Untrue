@@ -27,7 +27,7 @@ export async function toimgCommand(sock, m, args) {
             await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `❌ *USO INCORRECTO*\n\nResponde a un documento con el comando:\n*#toimg* o *#toimg <página>*\n\n📄 Formatos soportados: PDF, DOCX, XLSX` 
+                    text: `❌ *Uso incorrecto*\n\nPara extraer todas las páginas del documento:\n▸ #toimg\n\nPara extraer una página específica del documento:\n▸ #toimg _número_\n\n🗂️ _Formatos soportados:_ PDF, DOCX y XLSX` 
                 },
                 { quoted: m }
             );

@@ -18,7 +18,7 @@ export async function totextCommand(sock, m, args) {
             await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `❌ *USO INCORRECTO*\n\nResponde a una *imagen* o *audio* con:\n*#totext*\n\n📷 Imagen → Extrae texto (OCR)\n🎵 Audio → Transcribe a texto` 
+                    text: `❌ *Uso incorrecto*\n\n▸ Responde a una _imagen/audio_ con: *#totext*` 
                 },
                 { quoted: m }
             );

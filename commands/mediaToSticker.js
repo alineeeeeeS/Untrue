@@ -10,8 +10,6 @@ import WebP from 'node-webpmux';
 const { Image: WebpMuxImage } = WebP;
 
 const execPromise = promisify(exec);
-// Asegúrate que esta ruta sea correcta en Railway. Usualmente 'ffmpeg' basta si está en el PATH,
-// pero mantenemos tu ruta absoluta por seguridad.
 const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
 
 // ----------------------------------------------------------------------

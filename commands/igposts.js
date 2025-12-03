@@ -234,7 +234,7 @@ export async function igpostsCommand(sock, m, args) {
 
         if (!postUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: `❌ *Uso correcto:*\n#post <link>\n#post <numero> <link>` 
+                text: `❌ *Uso correcto:*\n\n_Para post único o carrusel entero:_\n▸ #post _link_\n\n_Para post específico de un carrusel:_\n▸ #post *numero* _link_` 
             }, { quoted: m });
             return;
         }

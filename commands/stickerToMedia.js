@@ -235,12 +235,7 @@ export async function stickerToMediaCommand(sock, m, args) {
         if (!targetMessage.message?.stickerMessage) {
             await sock.sendMessage(m.key.remoteJid, { 
                 text: `❌ *Uso correcto:*\n\n` +
-                      `📱 *Convertir sticker a media:*\n` +
-                      `• Envía el comando !smedia respondiendo a un sticker\n` +
-                      `• O usa !smedia y adjunta un sticker\n\n` +
-                      `💡 *Funcionalidades:*\n` +
-                      `• Stickers estáticos → Imagen JPEG (FFmpeg) ✅\n` +
-                      `• Stickers animados → Video MP4 (Sharp + FFmpeg) ✅`
+                      `▸ Debes responder a un sticker con *#smedia* para convertirlo.`
             }, { quoted: m });
             return;
         }

@@ -1,4 +1,3 @@
-// Sistema de estadísticas simple en memoria
 class StatsManager {
     constructor() {
         this.startTime = new Date();
@@ -75,10 +74,10 @@ function formatUptime(uptimeStr) {
 export async function statsCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
     const userId = m.key.remoteJid;
-    const participant = m.key.participant; // ⬅️ IMPORTANTE: Esto contiene el ID del usuario en grupos
+    const participant = m.key.participant;
 
     try {
-        // Verificar si es el creador (compatible con grupos)
+        // Verificar si es el creador
         if (!isCreator(userId, participant)) {
             await sock.sendMessage(remoteJid, { 
                 text: '❌ *Acceso denegado*\n\nEste comando solo está disponible para el creador del bot.'
@@ -119,7 +118,7 @@ export async function statsCommand(sock, m, args) {
 }
 
 /**
- * Función para registrar comandos (debe llamarse desde commandHandler.js)
+ * Función para registrar comandos
  */
 export function recordCommandUsage(commandName, userId) {
     statsManager.recordCommand(commandName, userId);

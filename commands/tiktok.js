@@ -13,7 +13,7 @@ export async function tiktokCommand(sock, m, args) {
     // 1. Validar el enlace
     if (!url || !url.includes('tiktok.com')) {
         await sock.sendMessage(remoteJid, { 
-            text: `❌ *ENLACE INVÁLIDO*\n\nPor favor, proporciona un enlace de TikTok válido.\n\nEjemplo: *#tiktok https://vm.tiktok.com/...*` 
+            text: `❌ *Uso correcto*\n▸ #tt _link_\n\n▸ El comando es igual de funcional para _imagen/carrusel_.` 
         }, { quoted: m });
         return;
     }

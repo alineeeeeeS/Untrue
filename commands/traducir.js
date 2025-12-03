@@ -12,7 +12,7 @@ export async function traducirCommand(sock, m, args) {
             await sock.sendMessage(
                 m.key.remoteJid,
                 { 
-                    text: `❌ *USO INCORRECTO*\n\nResponde a un mensaje de texto con:\n*#traducir <idioma>*\n\n🌐 Idiomas soportados:\n• es - Español\n• en - Inglés\n• de - Alemán\n• fr - Francés\n• it - Italiano\n• ja - Japonés\n• ko - Coreano\n• pt - Portugués\n• ar - Árabe\n\n💡 Ejemplo: #traducir es` 
+                    text: `❌ *Uso incorrecto*\n\n▸ Responde a un _mensaje de texto_ con: *#traducir* _idioma_\n\n🌐 *Idiomas soportados:*\n• es - Español\n• en - Inglés\n• de - Alemán\n• fr - Francés\n• it - Italiano\n• ja - Japonés\n• ko - Coreano\n• pt - Portugués\n• ar - Árabe\n\n▸ *Ejemplo:* #traducir _es_` 
                 },
                 { quoted: m }
             );

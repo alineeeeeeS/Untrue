@@ -32,14 +32,14 @@ export async function igreelsCommand(sock, m, args) {
 
         if (!reelUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ *Uso:* #reel <url_instagram>\n*Ejemplo:* #reel https://instagram.com/reel/ABC123...' 
+                text: '❌ *Uso correcto:*\n▸ #reel _link_' 
             }, { quoted: m });
             return;
         }
 
         if (!isValidInstagramUrl(reelUrl)) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ URL de Instagram no válida. Debe ser un Reel, Post o Story pública.' 
+                text: '❌ *URL de Instagram no válida*\n\n▸ El link debe tener _/reel/_ dentro de su estructura.' 
             }, { quoted: m });
             return;
         }

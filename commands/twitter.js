@@ -387,14 +387,8 @@ export async function twitterCommand(sock, m, args) {
 
         if (!twitterUrl) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: `❌ *Uso del comando:*
-
-🐦 *Descargar de Twitter/X:*
-#tw <url_twitter>
-
-*Ejemplos:*
-#tw https://twitter.com/user/status/123456789
-#tw https://x.com/user/status/123456789` 
+                text: `❌ *Uso correcto:*
+▸ #tw _link_` 
             }, { quoted: m });
             return;
         }
@@ -403,7 +397,7 @@ export async function twitterCommand(sock, m, args) {
 
         if (!twitterService.isValidTwitterUrl(twitterUrl)) {
             await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ URL de Twitter no válida.' 
+                text: '❌ URL de Twitter no válida\n\n▸ Asegúrate de que el *link* tenga en su estructura _/status/_ para procesarlo correctamente.' 
             }, { quoted: m });
             return;
         }

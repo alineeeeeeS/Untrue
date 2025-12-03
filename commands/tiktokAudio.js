@@ -6,7 +6,7 @@ export async function tiktokAudioCommand(sock, m, args) {
 
     if (!url || !url.includes('tiktok.com')) {
         await sock.sendMessage(remoteJid, { 
-            text: `❌ *ENLACE INVÁLIDO*\n\nProporciona un enlace de TikTok válido.\n\nEjemplo: #ttaudio https://vm.tiktok.com/...` 
+            text: `❌ *Uso correcto:*\n▸ #ttaud _link_` 
         }, { quoted: m });
         return;
     }
