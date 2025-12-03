@@ -25,6 +25,7 @@ export async function helpCommand(sock, m) {
   • #traducir [idioma] ▸ Texto a traducir
   • #qr [texto/link] ▸ Generar códigos QR
   • #bcv ▸ Tasa del dólar BCV
+  • #usdt ▸ Promedio de precio del USDT
   • #todos ▸ Menciona a todos en un grupo
   
 💾 *CONVERTIDORES*

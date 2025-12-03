@@ -14,6 +14,7 @@ import { youtubeAudioCommand } from "./youtubeAudio.js"; // Descargar audio desd
 import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sticker a imagen/video
 import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
 import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
+import { usdtCommand } from "./usdt.js"; // Consultar precio promedio del USDT desde el p2p de Binance
 import { qrGeneratorCommand } from "./qrGenerator.js"; // Texto/link a QR
 import { iaCommand } from "./ia.js"; // Preguntas a la ia (Groq AI)
 import { toAudioCommand } from "./toAudio.js"; // Extraer el audio de un video
@@ -55,6 +56,7 @@ const commands = {
     // UTILIDADES VARIAS
     letra: lyricsCommand,
     bcv: bcvCommand,
+    usdt: usdtCommand,
     qr: qrGeneratorCommand,
     todos: todosCommand,
     traducir: traducirCommand,
