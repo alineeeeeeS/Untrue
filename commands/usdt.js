@@ -4,12 +4,68 @@ import logger from '../services/logger.js';
 // Endpoint oficial de la API de CriptoYa para USDT en Bolívares (VES)
 const CRIPTOYA_API_URL = 'https://criptoya.com/api/usdt/ves'; 
 
+/**
+ * Formatea un número al estilo venezolano (Monto Bs) y asegura hasta 4 decimales.
+ */
+const formatVES = (num, maxDecimals = 4) => {
+    // Si el número original no tiene 4 decimales significativos, lo redondeamos.
+    // Usamos toFixed para asegurar la cantidad de decimales, luego toLocaleString para el formato de miles/decimales
+    const fixedNum = parseFloat(num).toFixed(maxDecimals);
+
+    // Separar la parte entera y decimal
+    const parts = fixedNum.split('.');
+    
+    // Formatear la parte entera con separador de miles (punto en VE)
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    
+    // Reconstruir el monto con coma como separador decimal
+    let formattedAmount = integerPart + (parts.length > 1 ? ',' + parts[1] : ',00');
+
+    // Asegurar 2 decimales si no hay más
+    if (formattedAmount.split(',').length === 1 || formattedAmount.split(',')[1].length < 2) {
+        formattedAmount += '00';
+    }
+
+    // El resultado final es "Monto Bs"
+    return `${formattedAmount} Bs`;
+};
+
+/**
+ * Genera la fecha y hora actual en formato de Venezuela (GMT-4), con formato DD/MM/AAAA HH:MM
+ */
+const getVenezuelanDateTime = () => {
+    // Usamos el objeto Intl.DateTimeFormat para garantizar el formato y la zona horaria (America/Caracas es GMT-4)
+    const optionsDate = {
+        timeZone: 'America/Caracas',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    };
+    const optionsTime = {
+        timeZone: 'America/Caracas',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // Formato 24 horas
+    };
+
+    const date = new Date();
+    
+    const formattedDate = new Intl.DateTimeFormat('es-VE', optionsDate).format(date);
+    const formattedTime = new Intl.DateTimeFormat('es-VE', optionsTime).format(date);
+    
+    return {
+        date: formattedDate, // DD/MM/AAAA
+        time: formattedTime   // HH:MM
+    };
+};
+
+
 export async function usdtCommand(sock, m, args) {
     const jid = m.key.remoteJid;
 
     try {
         await sock.sendMessage(jid, {
-            text: '🔎 *Consultando tasa de referencia P2P de USDT...* (Fuente: CriptoYa API)'
+            text: '📊 *Consultando precios desde BinanceP2P...*'
         }, { quoted: m });
 
         logger.info('usdt', `Consultando tasa USDT P2P para ${m.pushName}`, { jid });
@@ -22,12 +78,10 @@ export async function usdtCommand(sock, m, args) {
         const data = response.data;
 
         // 2. Extraer precios y calcular el promedio P2P
-        let totalBid = 0; // Precio de Compra (lo que el exchange ofrece por tu USDT)
-        let totalAsk = 0; // Precio de Venta (lo que el exchange pide por el USDT)
+        let totalAsk = 0; 
+        let totalBid = 0; 
         let count = 0;
         
-        // Iterar sobre los datos para sumar todos los precios 'bid' y 'ask'
-        // Esto incluye Binance, Bitget, Bybit, etc.
         for (const exchange in data) {
             if (data[exchange].ask && data[exchange].bid) {
                 totalAsk += data[exchange].ask;
@@ -40,37 +94,25 @@ export async function usdtCommand(sock, m, args) {
             throw new Error('API no devolvió tasas P2P válidas.');
         }
 
-        // 3. Calcular los promedios
-        const avgAskPrice = totalAsk / count;
-        const avgBidPrice = totalBid / count;
+        // 3. Calcular el punto medio (Tasa de Referencia)
+        const usdtAveragePrice = ((totalAsk / count) + (totalBid / count)) / 2;
         
-        // Calcular el punto medio (Tasa de Referencia general del mercado)
-        const usdtAveragePrice = (avgAskPrice + avgBidPrice) / 2;
-        
-        // 4. Formatear la salida en Bolívares (VES)
-        const formatVES = (num) => {
-            return `Bs ${num.toLocaleString('es-VE', { 
-                minimumFractionDigits: 2, 
-                maximumFractionDigits: 2 
-            })}`;
-        };
+        // 4. Obtener fecha y hora de Venezuela
+        const { date, time } = getVenezuelanDateTime();
 
-        const date = new Date().toLocaleDateString('es-VE');
-        const time = new Date().toLocaleTimeString('es-VE');
-
-        // 5. Construir y enviar la respuesta
+        // 5. Construir y enviar la respuesta con el nuevo formato limpio
         const message = `▸ *Promedio del USDT* ◂\n\n` +
                         `💵 *Tasa de referencia:* ${formatVES(usdtAveragePrice)}\n` +
                         `📈 *Precio de venta:* ${formatVES(avgAskPrice)}\n` +
                         `📉 *Precio de compra:* ${formatVES(avgBidPrice)}\n` +
-                        `_${date} ${time}_\n\n` +
-                        `▸ La tasa de referencia es promediada de acuerdo al historial de transacciones desde _BinanceP2P_`;
+                        `🗓️ _${date} ${time}_\n\n` +
+                        `_www.binance.com/_`; 
 
         await sock.sendMessage(jid, {
             text: message
         }, { quoted: m });
         
-        logger.success('usdt', `Tasa USDT P2P enviada: ${formatVES(usdtAveragePrice)}`, { jid });
+        logger.success('usdt', `Tasa USDT P2P enviada: ${formatVES(usdtAveragePrice, 4)}`, { jid });
 
     } catch (error) {
         console.error('❌ Error en comando usdt:', error);
