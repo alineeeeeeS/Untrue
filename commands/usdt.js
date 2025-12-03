@@ -51,7 +51,7 @@ const getVenezuelanDateTime = () => {
         timeZone: 'America/Caracas',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false // Formato 24 horas
+        hour12: true // Formato 24 horas
     };
 
     const date = new Date();
@@ -112,10 +112,10 @@ export async function usdtCommand(sock, m, args) {
 
         // 5. Construir y enviar la respuesta con el nuevo formato limpio
         const message = `▸ *Promedio del USDT* ◂\n\n` +
-                        `💵 *Tasa de referencia:* ${formatVES(usdtAveragePrice, 4)}\n` +
-                        `📈 *Precio de venta:* ${formatVES(avgAskPrice, 4)}\n` + 
-                        `📉 *Precio de compra:* ${formatVES(avgBidPrice, 4)}\n` + 
-                        `🗓️ _${date} ${time}_\n\n` +
+                        `💵 *Tasa promedio:* ${formatVES(usdtAveragePrice, 4)}\n` +
+                        `📈 *Venta:* ${formatVES(avgAskPrice, 4)}\n` + 
+                        `📉 *Compra:* ${formatVES(avgBidPrice, 4)}\n` + 
+                        `🗃️ ${date} ${time}\n\n` +
                         `_www.binance.com/_`;
 
         await sock.sendMessage(jid, {
