@@ -5,7 +5,7 @@ RUN apt update && apt install -y --no-install-recommends \
     # Dependencias de compilación básicas (incluye make, g++, etc.)
     build-essential \
     python3 \
-    # Librerías de desarrollo para Canvas (con prefijo 'lib' en Debian)
+    # Librerías de desarrollo para Canvas
     libcairo2-dev \
     libpango1.0-dev \
     libjpeg-dev \
@@ -18,9 +18,9 @@ RUN apt update && apt install -y --no-install-recommends \
     libreoffice \
     imagemagick \
     ghostscript \
-    # Fuentes y Java
+    # Fuentes y Java (CORRECCIÓN APLICADA: Usamos el JRE por defecto)
     fonts-freefont-ttf \
-    openjdk-11-jre-headless \
+    default-jre-headless \
     # Limpiar caché de apt
     && rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +48,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-# Aquí la instalación de Canvas DEBE funcionar
+# La instalación de Canvas ahora debería funcionar gracias al cambio de Alpine a Slim/Debian
 RUN npm install
 
 COPY . .
