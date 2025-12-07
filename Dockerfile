@@ -7,8 +7,7 @@ RUN npm install -g npm@latest
 RUN apk update && apk add --no-cache \
     ffmpeg \
     python3 \
-    make \
-    g++ \
+    build-base \    
     cairo-dev \
     pango-dev \
     libjpeg-turbo-dev \
