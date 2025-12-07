@@ -1,34 +1,28 @@
-FROM node:20-alpine
+FROM node:20-slim
 
-# Instalamos git y la versión más reciente de npm
-RUN apk update && apk add --no-cache git
-RUN npm install -g npm@latest
-
-# Instalar dependencias CRÍTICAS para Node-Canvas y otros módulos
-# Se incluyen todas las dependencias de compilación y librerías C/C++ necesarias
-RUN apk update && apk add --no-cache \
-    # Dependencias de compilación (build-base incluye make, g++, y la mayoría de headers)
-    build-base \
-    python3-dev \
-    # Dependencia CLAVE para asegurar los tipos C++ (incluye <cstdint>)
-    libstdc++ \
-    # Librerías de desarrollo para Canvas
-    cairo-dev \
-    pango-dev \
-    libjpeg-turbo-dev \
-    giflib-dev \
-    freetype-dev \
-    librsvg-dev \
-    zlib-dev \           
+# Instalamos las dependencias CRÍTICAS (Ahora usando 'apt' de Debian)
+RUN apt update && apt install -y --no-install-recommends \
+    # Dependencias de compilación básicas (incluye make, g++, etc.)
+    build-essential \
+    python3 \
+    # Librerías de desarrollo para Canvas (con prefijo 'lib' en Debian)
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    libfreetype6-dev \
+    librsvg2-dev \
     # Otros paquetes del bot
     ffmpeg \
-    python3 \
     wget \
     libreoffice \
     imagemagick \
     ghostscript \
-    ttf-freefont \
-    openjdk11-jre
+    # Fuentes y Java
+    fonts-freefont-ttf \
+    openjdk-11-jre-headless \
+    # Limpiar caché de apt
+    && rm -rf /var/lib/apt/lists/*
 
 # DESCARGAR YT-DLP MÁS RECIENTE DIRECTAMENTE
 RUN wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
@@ -41,16 +35,20 @@ RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
     mkdir -p /home/runner/workspace/node_modules/ffmpeg-static && \
     ln -sf /usr/bin/ffmpeg /home/runner/workspace/node_modules/ffmpeg-static/ffmpeg
 
-# Configurar políticas de ImageMagick para permitir PDF
-RUN echo "<policymap>" > /etc/ImageMagick-7/policy.xml && \
-    echo "<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" />" >> /etc/ImageMagick-7/policy.xml && \
-    echo "<policy domain=\"coder\" rights=\"read|write\" pattern=\"LABEL\" />" >> /etc/ImageMagick-7/policy.xml && \
-    echo "</policymap>" >> /etc/ImageMagick-7/policy.xml
+# Configurar políticas de ImageMagick para permitir PDF (usando sed para editar el archivo de política)
+RUN POLICY_FILE=$(find /etc/ImageMagick-* -name policy.xml | head -n 1) ; \
+    if [ ! -z "$POLICY_FILE" ]; then \
+        # Elimina la línea que restringe el uso de PDF
+        sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/d' "$POLICY_FILE" ; \
+        # Elimina la línea que restringe el uso de LABEL
+        sed -i '/<policy domain="coder" rights="none" pattern="LABEL" \/>/d' "$POLICY_FILE" ; \
+    fi
 
 WORKDIR /app
 
 COPY package*.json ./
-# Asegúrate de haber regenerado el package-lock.json localmente antes de este paso
+
+# Aquí la instalación de Canvas DEBE funcionar
 RUN npm install
 
 COPY . .
