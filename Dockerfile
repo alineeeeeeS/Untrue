@@ -2,7 +2,9 @@ FROM node:20-slim
 
 # Instalamos las dependencias CRÍTICAS (Ahora usando 'apt' de Debian)
 RUN apt update && apt install -y --no-install-recommends \
-    # Dependencias de compilación básicas (incluye make, g++, etc.)
+    # Dependencia CLAVE: Necesaria para que npm pueda descargar dependencias de GitHub
+    git \
+    # Dependencias de compilación básicas (incluye make, g++, etc. para 'canvas')
     build-essential \
     python3 \
     # Librerías de desarrollo para Canvas
@@ -18,7 +20,7 @@ RUN apt update && apt install -y --no-install-recommends \
     libreoffice \
     imagemagick \
     ghostscript \
-    # Fuentes y Java (CORRECCIÓN APLICADA: Usamos el JRE por defecto)
+    # Fuentes y Java
     fonts-freefont-ttf \
     default-jre-headless \
     # Limpiar caché de apt
@@ -35,7 +37,7 @@ RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
     mkdir -p /home/runner/workspace/node_modules/ffmpeg-static && \
     ln -sf /usr/bin/ffmpeg /home/runner/workspace/node_modules/ffmpeg-static/ffmpeg
 
-# Configurar políticas de ImageMagick para permitir PDF (usando sed para editar el archivo de política)
+# Configurar políticas de ImageMagick para permitir PDF
 RUN POLICY_FILE=$(find /etc/ImageMagick-* -name policy.xml | head -n 1) ; \
     if [ ! -z "$POLICY_FILE" ]; then \
         # Elimina la línea que restringe el uso de PDF
@@ -48,7 +50,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-# La instalación de Canvas ahora debería funcionar gracias al cambio de Alpine a Slim/Debian
+# La instalación de Canvas ahora debería funcionar
 RUN npm install
 
 COPY . .
