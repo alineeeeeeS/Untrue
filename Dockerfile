@@ -4,14 +4,18 @@ RUN apk update && apk add --no-cache git
 RUN npm install -g npm@latest
 
 # Instalar dependencias CRÍTICAS
+# Se sustituye 'make' y 'g++' por 'build-base' y se añaden dependencias de desarrollo específicas.
 RUN apk update && apk add --no-cache \
     ffmpeg \
     python3 \
-    build-base \    
+    build-base \
+    python3-dev \           
     cairo-dev \
     pango-dev \
     libjpeg-turbo-dev \
     giflib-dev \
+    freetype-dev \       
+    librsvg-dev \       
     wget \
     libreoffice \
     imagemagick \
