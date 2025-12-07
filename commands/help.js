@@ -8,9 +8,9 @@ export async function helpCommand(sock, m) {
 
 🎥 *DESCARGA - REDES SOCIALES*
   • #tt [link] ▸ Videos/imágenes de TikTok
-  • #ttaud [link] ▸ Audio de un TikTok
-  • #ytvid [link/prompt] ▸ Videos de YouTube
-  • #ytaud [link/prompt] ▸ Audio de YouTube
+  • #tta [link] ▸ Audio de un TikTok
+  • #ytv [link/prompt] ▸ Videos de YouTube
+  • #yta [link/prompt] ▸ Audio de YouTube
   • #reel [link] ▸ Reel de Instagram
   • #post [link] ▸ Post específico o carrusel entero de Instagram
   • #fb [link] ▸ Videos de Facebook
@@ -22,18 +22,19 @@ export async function helpCommand(sock, m) {
   • #letra [artista] [canción]
 
 🧰 *UTILIDADES*
-  • #traducir [idioma] ▸ Texto a traducir
+  • #ia [prompt] ▸ Consultar con la IA
+  • #trans [idioma] ▸ Texto a traducir
   • #qr [texto/link] ▸ Generar códigos QR
-  • #bcv ▸ Tasa del dólar BCV
-  • #usdt ▸ Promedio de precio del USDT
+  • #bcv ▸ Tasa del dólar/euro BCV
+  • #usdt ▸ Precio promedio del USDT
   • #todos ▸ Menciona a todos en un grupo
   
 💾 *CONVERTIDORES*
   • #s ▸ Imagen/video para crear un sticker
-  • #smedia ▸ Sticker a imagen/video
-  • #toaud ▸ Extraer audio de video
-  • #totext ▸ Extraer texto de imagen/audio
-  • #toimg ▸ Documentos convertidos a imágenes
+  • #sm ▸ Sticker a imagen/video
+  • #toa ▸ Extraer audio de video
+  • #tot ▸ Extraer texto de imagen/audio
+  • #toi ▸ Documentos convertidos a imágenes
 
 🔧 *INFOBOT*
   • #ping ▸ Latencia del bot
