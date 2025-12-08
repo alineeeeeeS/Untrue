@@ -15,6 +15,7 @@ import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sti
 import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
 import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
 import { usdtCommand } from "./usdt.js"; // Consultar precio promedio del USDT desde el p2p de Binance
+import { calcCommand } from "./calc.js"; // Conversión de monedas utilizando las tasas
 import { qrGeneratorCommand } from "./qrGenerator.js"; // Texto/link a QR
 import { iaCommand } from "./ia.js"; // Preguntas a la ia (Groq AI)
 import { toAudioCommand } from "./toAudio.js"; // Extraer el audio de un video
@@ -57,6 +58,7 @@ const commands = {
     letra: lyricsCommand,
     bcv: bcvCommand,
     usdt: usdtCommand,
+	calc: calcCommand,
     qr: qrGeneratorCommand,
     todos: todosCommand,
     traducir: traducirCommand,
