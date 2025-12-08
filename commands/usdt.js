@@ -97,9 +97,9 @@ export async function getUSDTPrice() {
         
         const { date } = getVenezuelanDateTime();
 
-        // Devolvemos la tasa con 6 decimales de precisión para el cálculo
+        // Devolvemos la tasa con 4 decimales de precisión para el cálculo
         return { 
-            avgPrice: usdtAveragePrice.toFixed(6) + " Bs",
+            avgPrice: usdtAveragePrice.toFixed(4) + " Bs",
             date: date
         };
 
