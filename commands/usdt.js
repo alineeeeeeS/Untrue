@@ -65,6 +65,53 @@ const getVenezuelanDateTime = () => {
     };
 };
 
+// ------------------------------------------------------------------
+// Función Exportada para la Calculadora (#calc)
+// ------------------------------------------------------------------
+export async function getUSDTPrice() {
+    try {
+        const response = await axios.get(CRIPTOYA_API_URL, {
+            timeout: 10000 
+        });
+
+        const data = response.data;
+        let totalAsk = 0; 
+        let totalBid = 0; 
+        let count = 0;
+        
+        for (const exchange in data) {
+            if (data[exchange].ask && data[exchange].bid) {
+                totalAsk += data[exchange].ask;
+                totalBid += data[exchange].bid;
+                count++;
+            }
+        }
+        
+        if (count === 0) {
+            throw new Error('API no devolvió tasas P2P válidas.');
+        }
+
+        const avgAskPrice = totalAsk / count; 
+        const avgBidPrice = totalBid / count; 
+        const usdtAveragePrice = (avgAskPrice + avgBidPrice) / 2; 
+        
+        const { date } = getVenezuelanDateTime();
+
+        // Devolvemos la tasa con 6 decimales de precisión para el cálculo
+        return { 
+            avgPrice: usdtAveragePrice.toFixed(6) + " Bs",
+            date: date
+        };
+
+    } catch (error) {
+        logger.error('usdt', 'Error obteniendo precio USDT para calc:', error);
+        const { date } = getVenezuelanDateTime();
+        return { 
+            avgPrice: "N/A Bs (Est.)", 
+            date: date
+        }; 
+    }
+}
 
 export async function usdtCommand(sock, m, args) {
     const jid = m.key.remoteJid;
