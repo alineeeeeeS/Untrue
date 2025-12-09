@@ -28,12 +28,12 @@ export async function iaCommand(sock, m, args) {
 
         console.log('🚀 Conectando con Groq AI...');
 
-        // ⬇️ MODELOS ACTUALES DE GROQ ⬇️
+        // Modelos funcionales actualmente de Groq AI
         const availableModels = [
-            "llama-3.1-8b-instant",    // Más rápido
-            "llama-3.1-70b-versatile", // Más inteligente
-            "mixtral-8x7b-32768",      // Buen balance
-            "gemma2-9b-it"             // Alternativa
+            "llama-3.1-70b-versatile", 
+			"mixtral-8x7b-32768",      
+			"llama-3.1-8b-instant",   
+			"gemma2-9b-it"           
         ];
 
         let lastError = null;
