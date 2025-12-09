@@ -7,6 +7,9 @@ import { readFileSync, unlinkSync, existsSync } from 'fs';
 const execPromise = promisify(exec);
 const ytDlpCommand = '/usr/local/bin/yt-dlp';
 
+// Ruta absoluta a las cookies en el contenedor Docker (WORKDIR /app)
+const cookiesPath = '/app/cookies.txt';
+
 export async function igreelsCommand(sock, m, args) {
     let tempFilePath = null;
     
@@ -30,99 +33,75 @@ export async function igreelsCommand(sock, m, args) {
             }
         }
 
-        if (!reelUrl) {
+        if (!reelUrl || !isValidInstagramUrl(reelUrl)) {
             await sock.sendMessage(m.key.remoteJid, { 
                 text: '❌ *Uso correcto:*\n▸ #reel _link_' 
             }, { quoted: m });
             return;
         }
 
-        if (!isValidInstagramUrl(reelUrl)) {
-            await sock.sendMessage(m.key.remoteJid, { 
-                text: '❌ *URL de Instagram no válida*\n\n▸ El link debe tener _/reel/_ dentro de su estructura.' 
-            }, { quoted: m });
-            return;
-        }
-
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
         console.log(`📥 Descargando Instagram reel: ${reelUrl}`);
 
-        // Crear archivo temporal
         tempFilePath = join(tmpdir(), `instagram_reel_${Date.now()}.mp4`);
 
-        // ESTRATEGIA DE DESCARGA
-        try {
-            // PRIMER INTENTO: Calidad 1080p
-            console.log('🎯 Intentando descarga en calidad 1080p...');
-            const command = `"${ytDlpCommand}" -f "best[height<=1080]" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
-            await execPromise(command, { timeout: 60000 });
-
-            if (!existsSync(tempFilePath)) {
-                throw new Error('No se pudo generar el archivo de video');
-            }
-
-            console.log('✅ Descarga completada con calidad 1080p');
-
-        } catch (firstError) {
-            console.log('🔄 Calidad 1080p no disponible, intentando cualquier calidad...');
-            
-            // SEGUNDO INTENTO: Cualquier calidad disponible
-            const fallbackCommand = `"${ytDlpCommand}" -f "best" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
-            await execPromise(fallbackCommand, { timeout: 60000 });
-            
-            if (!existsSync(tempFilePath)) {
-                throw new Error('No se pudo descargar el reel en ninguna calidad');
-            }
-            
-            console.log('✅ Descarga completada con calidad disponible');
+        // CONSTRUCCIÓN DEL COMANDO CON COOKIES
+        // Añadimos --cookies si el archivo existe
+        let cookiesArg = '';
+        if (existsSync(cookiesPath)) {
+            console.log('🍪 Cookies detectadas, usándolas para autenticación...');
+            cookiesArg = `--cookies "${cookiesPath}"`;
+        } else {
+            console.warn('⚠️ No se encontró cookies.txt en /app/cookies.txt');
         }
 
-        // Leer el archivo descargado
+        // Comando base robusto
+        const command = `"${ytDlpCommand}" ${cookiesArg} -f "best" --no-playlist --merge-output-format mp4 -o "${tempFilePath}" "${reelUrl}"`;
+
+        try {
+            await execPromise(command, { timeout: 60000 });
+        } catch (downloadError) {
+            console.error('Error descarga principal:', downloadError.message);
+            throw downloadError;
+        }
+
+        if (!existsSync(tempFilePath)) {
+            throw new Error('No se pudo generar el archivo de video');
+        }
+
+        console.log('✅ Descarga completada');
+
         const videoBuffer = readFileSync(tempFilePath);
         const fileSizeMB = (videoBuffer.length / 1024 / 1024).toFixed(2);
-
         console.log(`📊 Tamaño del video: ${fileSizeMB} MB`);
 
-        // Enviar video directamente con caption simple
         await sock.sendMessage(m.key.remoteJid, {
             video: videoBuffer,
             caption: 'Reel descargado!',
             fileName: 'instagram_reel.mp4'
         }, { quoted: m });
 
-        console.log('✅ Reel enviado correctamente');
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
 
     } catch (error) {
-        console.error('Error general:', error);
+        console.error('Error general Instagram:', error);
 
         let errorMessage = '❌ *Error al descargar el reel*\n\n';
 
-        if (error.message.includes('Private') || error.message.includes('privado')) {
-            errorMessage += '🔒 *Contenido privado*\n';
-            errorMessage += 'Solo funciona con contenido público de Instagram.';
-        } else if (error.message.includes('Unsupported') || error.message.includes('No se pudo')) {
-            errorMessage += '📱 *URL no soportada o inválida*\n';
-            errorMessage += 'Asegúrate de que sea un Reel público.';
-        } else if (error.message.includes('Sign in')) {
-            errorMessage += '🔐 *Instagram requiere verificación*\n';
-            errorMessage += 'Intenta con otro contenido.';
-        } else if (error.message.includes('format is not available')) {
-            errorMessage += '🎬 *Formato no disponible*\n';
-            errorMessage += 'El reel no está disponible en las calidades soportadas.';
+        if (error.message.includes('login') || error.message.includes('rate-limit')) {
+            errorMessage += '🔒 *Bloqueo de Instagram*\n';
+            errorMessage += 'El servidor requiere autenticación (cookies) para descargar este contenido.';
+        } else if (error.message.includes('Private') || error.message.includes('privado')) {
+            errorMessage += '🔒 *Contenido privado*\nSolo funciona con contenido público.';
         } else {
-            errorMessage += `⚠️ *Error:* ${error.message}\n`;
-            errorMessage += '🔄 Intenta con otro enlace.';
+            errorMessage += `⚠️ *Error:* No se pudo procesar el enlace.`;
         }
 
         await sock.sendMessage(m.key.remoteJid, { text: errorMessage }, { quoted: m });
+        await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
     } finally {
-        // Limpieza
         if (tempFilePath && existsSync(tempFilePath)) {
-            try {
-                unlinkSync(tempFilePath);
-                console.log('🧹 Archivo temporal eliminado');
-            } catch (cleanError) {
-                console.warn('No se pudo eliminar temporal:', cleanError.message);
-            }
+            try { unlinkSync(tempFilePath); } catch (e) {}
         }
     }
 }

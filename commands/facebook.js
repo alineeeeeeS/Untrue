@@ -5,10 +5,8 @@ import { join } from 'path';
 import { readFileSync, unlinkSync, existsSync } from 'fs';
 
 const execPromise = promisify(exec);
-
 const ytDlpCommand = '/usr/local/bin/yt-dlp';
 
-// Función utilitaria para validar URLs de Facebook
 function isValidFacebookUrl(url) {
     return /(https?:\/\/)?(www\.|web\.|m\.|mbasic\.)?(facebook|fb)\.(com|watch|me)/i.test(url);
 }
@@ -19,7 +17,7 @@ export async function facebookCommand(sock, m, args) {
     try {
         let fbUrl = args[0];
 
-        // Lógica de URL citada (quoted)
+        // Lógica de URL citada
         if (!fbUrl && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quotedText = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
                              m.message.extendedTextMessage.contextInfo.quotedMessage?.extendedTextMessage?.text;
@@ -46,78 +44,53 @@ export async function facebookCommand(sock, m, args) {
         await sock.sendMessage(m.key.remoteJid, { react: { text: "⏳", key: m.key } });
         console.log(`📥 Procesando URL: ${fbUrl}`);
         
-        // 1. CREAR ARCHIVO TEMPORAL Y DESCARGAR
         tempFilePath = join(tmpdir(), `facebook_video_${Date.now()}.mp4`);
         
-        // **COMANDO DE DESCARGA OPTIMIZADO PARA RESILIENCIA**
         const downloadCommand = `"${ytDlpCommand}" ` +
                         `-f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best" ` +
                         `--no-playlist ` +
                         `--merge-output-format mp4 ` +
                         `--max-filesize 100M ` + 
-                        `--rm-cache-dir ` + // Borra cache de yt-dlp que a veces da problemas
-                        `--user-agent "Mozilla/5.0 (Linux; Android 10; Mobile)" ` + // Se identifica como móvil
-                        `--extractor-args "facebook:web_server=m" ` + 
+                        `--rm-cache-dir ` + 
                         `-o "${tempFilePath}" ` +
                         `"${fbUrl}"`;
 
-        console.log('🎯 Ejecutando descarga de video (modo móvil forzado)...');
+        console.log('🎯 Ejecutando descarga de video (Modo estándar)...');
         
         const { stdout, stderr } = await execPromise(downloadCommand, { timeout: 120000 });
         
-        if (stderr) console.warn('yt-dlp warnings:', stderr);
         if (!existsSync(tempFilePath)) {
-            throw new Error('yt-dlp no pudo generar el archivo de video. Podría ser privado o no encontrado.');
+            throw new Error('yt-dlp no pudo generar el archivo de video.');
         }
 
-        console.log('✅ Descarga con yt-dlp completada');
+        console.log('✅ Descarga completada');
 
-        // 2. LEER Y ENVIAR
         const videoBuffer = readFileSync(tempFilePath);
-        const fileSizeMB = (videoBuffer.length / 1024 / 1024).toFixed(2);
-        console.log(`📊 Tamaño del video: ${fileSizeMB} MB`);
-        
-        // CAPTION LIMPIO
-        const caption = `Video descargado!`;
         
         await sock.sendMessage(m.key.remoteJid, {
             video: videoBuffer,
-            caption: caption,
+            caption: 'Video descargado!',
             fileName: 'facebook_video.mp4',
             mimetype: 'video/mp4'
         }, { quoted: m });
 
         await sock.sendMessage(m.key.remoteJid, { react: { text: "✅", key: m.key } });
-        console.log('✅ Video enviado correctamente');
 
     } catch (error) {
-        console.error('❌ Error FB Command (yt-dlp):', error);
-        
+        console.error('❌ Error FB Command:', error);
         let msg = `❌ *Error al descargar el video*.`;
-        if (error.message.includes('pesado')) msg = '⚠️ El video es demasiado pesado (>100MB) para WhatsApp.';
-        if (error.message.includes('privado') || error.message.includes('login')) {
-            msg = '🔒 *Error*: El video es privado o requiere inicio de sesión.';
-        }
         
-        // Mensaje específico para el error recurrente de yt-dlp
-        if (error.message.includes('Cannot parse data')) {
-            msg = '❌ *Error de compatibilidad*: Facebook cambió su formato. Inténtalo con la URL `m.facebook.com` si la tienes. Si el error persiste, la herramienta `yt-dlp` requiere una *nueva actualización* (`yt-dlp -U`).';
-        } else if (error.message.includes('yt-dlp no pudo generar')) {
-            msg = '❌ El contenido no pudo ser extraído por yt-dlp (enlace inválido o contenido restringido).';
+        if (error.message.includes('Unsupported URL')) {
+            msg = '❌ *Enlace no soportado*: El formato del enlace no es reconocido por el sistema.';
+        } else if (error.message.includes('privado') || error.message.includes('login')) {
+            msg = '🔒 *Video Privado*: No se puede acceder al contenido.';
         }
         
         await sock.sendMessage(m.key.remoteJid, { text: msg }, { quoted: m });
         await sock.sendMessage(m.key.remoteJid, { react: { text: "❌", key: m.key } });
-        
     } finally {
-        // Limpieza de archivo temporal
         if (tempFilePath && existsSync(tempFilePath)) {
-            try {
-                unlinkSync(tempFilePath);
-                console.log('🧹 Archivo temporal de Facebook eliminado');
-            } catch (cleanError) {
-                console.warn('No se pudo eliminar temporal:', cleanError.message);
-            }
+            try { unlinkSync(tempFilePath); } catch (e) {}
         }
     }
 }
