@@ -1,28 +1,27 @@
 import fetch from 'node-fetch'; 
-import * as fs from 'fs/promises';
+import { createWriteStream, existsSync } from 'fs'; 
+import { unlink, stat } from 'fs/promises'; 
 import * as path from 'path';
 
 // Límites de WhatsApp y de seguridad para el bot
-const MAX_FILE_SIZE_MB = 100; // El límite de WhatsApp para documentos es alto, pero uso un límite seguro
-const DOWNLOAD_TIMEOUT_MS = 60000; // 60 segundos de timeout
+const MAX_FILE_SIZE_MB = 100; 
+const DOWNLOAD_TIMEOUT_MS = 120000; // 2 minutos para archivos grandes
 
 export async function dlCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
     let fileUrl = args.join(' ').trim();
     
-    // Si el usuario no pega un link, asumimos que está respondiendo a un mensaje que contiene el link
+    // Si el usuario no pega un link, asumimos que está respondiendo a un mensaje
     if (!fileUrl && m.quoted) {
-        // Intentar obtener el texto del mensaje al que se responde
         fileUrl = m.quoted.text || m.quoted.caption || '';
     }
 
-    // Usar una expresión simple para encontrar la primera URL
     const urlMatch = fileUrl.match(/(https?:\/\/[^\s]+)/i);
     if (urlMatch) {
         fileUrl = urlMatch[0];
     } else {
         await sock.sendMessage(remoteJid, { 
-            text: '❌ *Uso correcto:*\n▸ #dl _link_\n▸ #dl respondiendo a un _link_'
+            text: '❌ *Uso correcto:*\n▸ #dl _URL_ del archivo o responde a un mensaje con el link.'
         }, { quoted: m });
         return;
     }
@@ -32,83 +31,106 @@ export async function dlCommand(sock, m, args) {
     try {
         await sock.sendPresenceUpdate('composing', remoteJid);
         
-        // 1. OBTENER INFORMACIÓN DEL ENLACE (HEAD request)
-        // Esto verifica el Content-Length y Content-Type sin descargar el archivo completo.
+        // 1. HEAD REQUEST (Validación previa)
         const headResponse = await fetch(fileUrl, { method: 'HEAD', signal: AbortSignal.timeout(10000) });
 
-        if (!headResponse.ok) {
-            throw new Error(`Error al acceder al link: ${headResponse.status} - ${headResponse.statusText}`);
-        }
+        // Nota: Algunos servidores no soportan HEAD, si falla, intentamos GET directo abajo
+        let fileSizeMB = null;
+        let fileMime = 'application/octet-stream';
 
-        const contentLength = headResponse.headers.get('content-length');
-        const fileMime = headResponse.headers.get('content-type');
-        const fileSizeMB = contentLength ? (parseInt(contentLength, 10) / (1024 * 1024)) : null;
+        if (headResponse.ok) {
+            const contentLength = headResponse.headers.get('content-length');
+            fileMime = headResponse.headers.get('content-type') || fileMime;
+            fileSizeMB = contentLength ? (parseInt(contentLength, 10) / (1024 * 1024)) : null;
 
-        if (fileSizeMB && fileSizeMB > MAX_FILE_SIZE_MB) {
-            throw new Error(`El archivo excede el límite de ${MAX_FILE_SIZE_MB} MB (${fileSizeMB.toFixed(2)} MB).`);
+            if (fileSizeMB && fileSizeMB > MAX_FILE_SIZE_MB) {
+                throw new Error(`El archivo excede el límite de ${MAX_FILE_SIZE_MB} MB (${fileSizeMB.toFixed(2)} MB).`);
+            }
         }
         
-        // Determinar la extensión del archivo
+        // Determinar extensión y nombre
         const urlPath = new URL(fileUrl).pathname;
-        let fileExt = path.extname(urlPath) || '.dat';
+        let fileExt = path.extname(urlPath) || '';
         
-        // Si no hay extensión, intentar determinarla por MIME Type
-        if (fileExt === '.dat' || fileExt === '') {
-             // (Aquí podrías agregar un mapa MIME-a-Extensión si lo necesitas, ej: 'application/pdf' -> '.pdf')
-             fileExt = fileMime.includes('pdf') ? '.pdf' : fileExt;
-             fileExt = fileMime.includes('zip') ? '.zip' : fileExt;
+        if (!fileExt || fileExt === '.') {
+             if (fileMime.includes('pdf')) fileExt = '.pdf';
+             else if (fileMime.includes('zip')) fileExt = '.zip';
+             else if (fileMime.includes('image')) fileExt = '.jpg';
+             else if (fileMime.includes('audio')) fileExt = '.mp3';
+             else if (fileMime.includes('video')) fileExt = '.mp4';
+             else fileExt = '.dat'; 
         }
 
-        const fileName = `download-${Date.now()}${fileExt}`;
-        filePath = path.join(process.cwd(), fileName);
+        const fileName = `dl-${Date.now()}${fileExt}`;
+        filePath = path.join(process.cwd(), fileName); // Guardar en raíz temporalmente
         
         await sock.sendMessage(remoteJid, { 
-            text: `⏳ *Iniciando Descarga...*\n\nArchivo: ${fileName}\nTamaño estimado: ${fileSizeMB ? fileSizeMB.toFixed(2) + ' MB' : 'Desconocido'}`
+            text: `⏳ *Descargando archivo...*\n\n📄 Tipo: ${fileExt}\n📊 Peso aprox: ${fileSizeMB ? fileSizeMB.toFixed(2) + ' MB' : 'Desconocido'}`
         }, { quoted: m });
 
-        // 2. DESCARGAR EL ARCHIVO COMPLETO
+        // 2. DESCARGAR EL ARCHIVO (GET)
         const downloadResponse = await fetch(fileUrl, { signal: AbortSignal.timeout(DOWNLOAD_TIMEOUT_MS) });
 
         if (!downloadResponse.ok) {
-            throw new Error(`Error de descarga: ${downloadResponse.status} - ${downloadResponse.statusText}`);
+            throw new Error(`Error HTTP: ${downloadResponse.status} - ${downloadResponse.statusText}`);
         }
 
-        // Crear un stream de escritura y guardar el archivo temporalmente
-        const fileWriteStream = fs.createWriteStream(filePath);
+        // Crear el stream de escritura (AQUÍ ESTABA EL ERROR ANTERIOR)
+        const fileWriteStream = createWriteStream(filePath);
+
+        // Pipear la descarga al archivo
         await new Promise((resolve, reject) => {
             downloadResponse.body.pipe(fileWriteStream);
-            downloadResponse.body.on('error', reject);
-            fileWriteStream.on('finish', resolve);
-            fileWriteStream.on('error', reject);
+            downloadResponse.body.on('error', (err) => {
+                fileWriteStream.close();
+                reject(err);
+            });
+            fileWriteStream.on('finish', () => {
+                fileWriteStream.close(); // Asegurar cierre del archivo
+                resolve();
+            });
+            fileWriteStream.on('error', (err) => {
+                fileWriteStream.close();
+                reject(err);
+            });
         });
 
-        // 3. ENVIAR EL ARCHIVO POR WHATSAPP
-        const finalStats = await fs.stat(filePath);
+        // Verificar tamaño final real
+        const finalStats = await stat(filePath);
+        const finalSizeMB = finalStats.size / (1024 * 1024);
 
+        if (finalSizeMB > MAX_FILE_SIZE_MB) {
+            throw new Error(`Archivo final demasiado grande (${finalSizeMB.toFixed(2)} MB).`);
+        }
+
+        // 3. ENVIAR EL ARCHIVO
         await sock.sendMessage(remoteJid, {
             document: { url: filePath },
-            mimetype: fileMime || 'application/octet-stream',
-            fileName: fileName,
-            caption: `✅ *Descarga Completa (${(finalStats.size / (1024 * 1024)).toFixed(2)} MB)*\n\nArchivo descargado por el bot (Proxy Geográfico).`
+            mimetype: fileMime,
+            fileName: path.basename(urlPath) || fileName, // Intenta usar el nombre original del link
+            caption: `✅ *Descarga Completa*\n📦 Peso: ${finalSizeMB.toFixed(2)} MB`
         }, { quoted: m });
         
-        console.log(`✅ Archivo descargado y enviado: ${fileName}`);
+        console.log(`✅ Archivo enviado: ${fileName}`);
 
     } catch (error) {
         console.error('Error en comando #dl:', error);
         
-        await sock.sendMessage(remoteJid, { 
-            text: `❌ *Error en la descarga*\n\nNo se pudo descargar o enviar el archivo.\n\nDetalles: ${error.message}`
-        }, { quoted: m });
+        let msg = `❌ *Error en la descarga*\n\n${error.message}`;
+        if (error.name === 'AbortError') {
+            msg = '❌ *Tiempo de espera agotado*. El archivo tarda mucho en descargar.';
+        }
+        
+        await sock.sendMessage(remoteJid, { text: msg }, { quoted: m });
 
     } finally {
-        // 4. LIMPIEZA
-        if (filePath) {
+        // 4. LIMPIEZA SEGURA
+        if (filePath && existsSync(filePath)) {
             try {
-                await fs.unlink(filePath);
-                console.log(`🗑️ Archivo temporal eliminado: ${filePath}`);
+                await unlink(filePath);
+                console.log(`🗑️ Temporal eliminado: ${filePath}`);
             } catch (cleanupError) {
-                console.error(`Error al eliminar archivo temporal ${filePath}:`, cleanupError);
+                console.error(`Error eliminando temporal:`, cleanupError);
             }
         }
     }
