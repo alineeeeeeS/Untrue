@@ -2,10 +2,11 @@ import fetch from 'node-fetch';
 import { createWriteStream, existsSync } from 'fs'; 
 import { unlink, stat } from 'fs/promises'; 
 import * as path from 'path';
+import { URL } from 'url'; // Necesario para manejar la URL en Node.js
 
 // Límites de WhatsApp y de seguridad para el bot
 const MAX_FILE_SIZE_MB = 100; 
-const DOWNLOAD_TIMEOUT_MS = 120000; // 2 minutos para archivos grandes
+const DOWNLOAD_TIMEOUT_MS = 120000; // 2 minutos de timeout para descargas
 
 export async function dlCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
@@ -27,71 +28,84 @@ export async function dlCommand(sock, m, args) {
     }
 
     let filePath = '';
+    let finalFileName = `dl-${Date.now()}.dat`; // Nombre por defecto inicial (se sobrescribirá)
     
     try {
         await sock.sendPresenceUpdate('composing', remoteJid);
         
-        // 1. HEAD REQUEST (Validación previa)
-        const headResponse = await fetch(fileUrl, { method: 'HEAD', signal: AbortSignal.timeout(10000) });
-
-        // Nota: Algunos servidores no soportan HEAD, si falla, intentamos GET directo abajo
-        let fileSizeMB = null;
-        let fileMime = 'application/octet-stream';
-
-        if (headResponse.ok) {
-            const contentLength = headResponse.headers.get('content-length');
-            fileMime = headResponse.headers.get('content-type') || fileMime;
-            fileSizeMB = contentLength ? (parseInt(contentLength, 10) / (1024 * 1024)) : null;
-
-            if (fileSizeMB && fileSizeMB > MAX_FILE_SIZE_MB) {
-                throw new Error(`El archivo excede el límite de ${MAX_FILE_SIZE_MB} MB (${fileSizeMB.toFixed(2)} MB).`);
-            }
-        }
-        
-        // Determinar extensión y nombre
-        const urlPath = new URL(fileUrl).pathname;
-        let fileExt = path.extname(urlPath) || '';
-        
-        if (!fileExt || fileExt === '.') {
-             if (fileMime.includes('pdf')) fileExt = '.pdf';
-             else if (fileMime.includes('zip')) fileExt = '.zip';
-             else if (fileMime.includes('image')) fileExt = '.jpg';
-             else if (fileMime.includes('audio')) fileExt = '.mp3';
-             else if (fileMime.includes('video')) fileExt = '.mp4';
-             else fileExt = '.dat'; 
-        }
-
-        const fileName = `dl-${Date.now()}${fileExt}`;
-        filePath = path.join(process.cwd(), fileName); // Guardar en raíz temporalmente
-        
-        await sock.sendMessage(remoteJid, { 
-            text: `⏳ *Descargando archivo...*\n\n📄 Tipo: ${fileExt}\n📊 Peso aprox: ${fileSizeMB ? fileSizeMB.toFixed(2) + ' MB' : 'Desconocido'}`
-        }, { quoted: m });
-
-        // 2. DESCARGAR EL ARCHIVO (GET)
-        const downloadResponse = await fetch(fileUrl, { signal: AbortSignal.timeout(DOWNLOAD_TIMEOUT_MS) });
+        // 1. DESCARGAR EL ARCHIVO (GET) - fetch sigue las redirecciones automáticamente.
+        const downloadResponse = await fetch(fileUrl, { 
+            signal: AbortSignal.timeout(DOWNLOAD_TIMEOUT_MS),
+            redirect: 'follow' 
+        });
 
         if (!downloadResponse.ok) {
             throw new Error(`Error HTTP: ${downloadResponse.status} - ${downloadResponse.statusText}`);
         }
+        
+        // --- LÓGICA CLAVE: EXTRAER EL NOMBRE DEL ARCHIVO REAL ---
+        
+        // A. Intentar obtener el nombre del Content-Disposition (Header más fiable)
+        const contentDisposition = downloadResponse.headers.get('content-disposition');
+        if (contentDisposition) {
+            // Expresión regular robusta para encontrar filename o filename*
+            const fileNameMatch = contentDisposition.match(/filename\*?=['"]?(?:utf-8''|)([^;"]+)/i);
+            if (fileNameMatch && fileNameMatch[1]) {
+                finalFileName = decodeURIComponent(fileNameMatch[1]); 
+            }
+        }
+        
+        // B. Fallback: Intentar usar el nombre de la URL después de las redirecciones
+        if (finalFileName.includes('.dat')) {
+            const finalUrl = downloadResponse.url; 
+            const urlPath = new URL(finalUrl).pathname;
+            const basename = path.basename(urlPath);
+            
+            // Si el nombre no es una URL genérica de redirección (como AutoDL)
+            if (basename && basename.length > 5 && !basename.includes('AutoDL')) {
+                finalFileName = basename;
+            }
+        }
 
-        // Crear el stream de escritura (AQUÍ ESTABA EL ERROR ANTERIOR)
+        // C. Parche específico para Oracle/Java si la extensión es genérica
+        // Esto cubre el caso en que Content-Disposition no fue claro y la URL final tampoco.
+        if (fileUrl.includes('oracle.com') && !finalFileName.includes('.')) {
+             finalFileName += '.exe';
+        }
+        
+        // -----------------------------------------------------------
+
+        const contentLength = downloadResponse.headers.get('content-length');
+        const fileMime = downloadResponse.headers.get('content-type') || 'application/octet-stream';
+        const fileSizeMB = contentLength ? (parseInt(contentLength, 10) / (1024 * 1024)) : null;
+
+        if (fileSizeMB && fileSizeMB > MAX_FILE_SIZE_MB) {
+            throw new Error(`El archivo excede el límite de ${MAX_FILE_SIZE_MB} MB (${fileSizeMB.toFixed(2)} MB).`);
+        }
+        
+        filePath = path.join(process.cwd(), finalFileName); 
+
+        await sock.sendMessage(remoteJid, { 
+            text: `⏳ *Descargando archivo...*\n\n📄 Nombre: ${finalFileName}\n📊 Peso aprox: ${fileSizeMB ? fileSizeMB.toFixed(2) + ' MB' : 'Desconocido'}`
+        }, { quoted: m });
+
+        // 2. CREAR STREAM Y PIPE (Descarga)
         const fileWriteStream = createWriteStream(filePath);
 
-        // Pipear la descarga al archivo
         await new Promise((resolve, reject) => {
             downloadResponse.body.pipe(fileWriteStream);
-            downloadResponse.body.on('error', (err) => {
+            
+            // Manejo de errores en la descarga y escritura
+            const errorHandler = (err) => {
                 fileWriteStream.close();
                 reject(err);
-            });
+            };
+
+            downloadResponse.body.on('error', errorHandler);
+            fileWriteStream.on('error', errorHandler);
             fileWriteStream.on('finish', () => {
-                fileWriteStream.close(); // Asegurar cierre del archivo
+                fileWriteStream.close(); 
                 resolve();
-            });
-            fileWriteStream.on('error', (err) => {
-                fileWriteStream.close();
-                reject(err);
             });
         });
 
@@ -107,11 +121,11 @@ export async function dlCommand(sock, m, args) {
         await sock.sendMessage(remoteJid, {
             document: { url: filePath },
             mimetype: fileMime,
-            fileName: path.basename(urlPath) || fileName, // Intenta usar el nombre original del link
+            fileName: finalFileName,
             caption: `✅ *Descarga Completa*\n📦 Peso: ${finalSizeMB.toFixed(2)} MB`
         }, { quoted: m });
         
-        console.log(`✅ Archivo enviado: ${fileName}`);
+        console.log(`✅ Archivo enviado: ${finalFileName}`);
 
     } catch (error) {
         console.error('Error en comando #dl:', error);
@@ -125,6 +139,7 @@ export async function dlCommand(sock, m, args) {
 
     } finally {
         // 4. LIMPIEZA SEGURA
+        // Solo intenta borrar si el archivo existe
         if (filePath && existsSync(filePath)) {
             try {
                 await unlink(filePath);
