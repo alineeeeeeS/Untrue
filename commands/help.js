@@ -6,7 +6,7 @@ export async function helpCommand(sock, m) {
     const helpText = `
 *UntrueBot | MENÚ DE AYUDA*
 
-🎥 *DESCARGA - REDES SOCIALES*
+🎥 *DESCARGAS*
   • #tt [link] ▸ Videos/imágenes de TikTok
   • #tta [link] ▸ Audio de un TikTok
   • #ytv [link/prompt] ▸ Videos de YouTube
@@ -16,6 +16,7 @@ export async function helpCommand(sock, m) {
   • #fb [link] ▸ Videos de Facebook
   • #pin [link] ▸ Contenido de Pinterest
   • #tw [link] ▸ Videos de X/Twitter
+  • #dl [link] ▸ Distintos tipos de descargas
 
 🎵 *FUNCIONES - MÚSICA*
   • #music [artista] [canción] ▸ Música desde YouTube
@@ -41,7 +42,7 @@ export async function helpCommand(sock, m) {
   • #ping ▸ Latencia del bot
   • #menu ▸ Ver este mensaje
   
->|< _Desarrollado por: @josentss_
+*>|<* _Desarrollado por: @josentss_
     `.trim();
 
     try {

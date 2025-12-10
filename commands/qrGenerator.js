@@ -1,4 +1,3 @@
-// commands/qrGenerator.js
 import QRCode from 'qrcode';
 
 export async function qrGeneratorCommand(sock, m, args) {

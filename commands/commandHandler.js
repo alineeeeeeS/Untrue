@@ -11,6 +11,7 @@ import { helpCommand } from "./help.js"; // Menú de ayuda
 import { mediaToStickerCommand } from "./mediaToSticker.js"; // Convertir imagen/video a sticker
 import { youtubeCommand } from "./youtube.js"; // Descargar video desde youtube
 import { youtubeAudioCommand } from "./youtubeAudio.js"; // Descargar audio desde youtube
+import { dlCommand } from './downloader.js'; // Descargas de cualquier tipo de link directo
 import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sticker a imagen/video
 import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
 import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
@@ -53,6 +54,7 @@ const commands = {
 	ytv: youtubeCommand,  
 	yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
+	dl: dlCommand,
 
     // UTILIDADES VARIAS
     letra: lyricsCommand,
