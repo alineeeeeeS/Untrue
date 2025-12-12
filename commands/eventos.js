@@ -25,7 +25,7 @@ function getRandomImpact(money, isNegative) {
     return isNegative ? -finalImpact : finalImpact;
 }
 
-// --- DEFINICIÓN DE EVENTOS TEMÁTICOS VENEZOLANOS ---
+// --- DEFINICIÓN DE EVENTOS TEMÁTICOS VENEZOLANOS (MENSAJES ORIGINALES) ---
 const EVENTS = [
     // --- Eventos Negativos (Probabilidad: 70%) ---
     {
@@ -43,15 +43,15 @@ const EVENTS = [
         emoji: '⛽',
         message: 'Se te coló el carro en la cola por gasolina. ¡Qué rabia! Perdiste',
     },
-    {
-        type: 'negative',
-        emoji: '🔌',
-        message: 'Hubo un *bajón* de luz y la nevera se te dañó. Perdiste',
+    { 
+        type: 'negative', 
+        emoji: '🔌', 
+        message: 'Hubo un *bajón* de luz y la nevera se te dañó. Perdiste'
     },
-    {
-        type: 'negative',
-        emoji: '📦',
-        message: 'El repartidor de tu encomienda cobró un *extra por el envío*. Perdiste',
+    { 
+        type: 'negative', 
+        emoji: '📦', 
+        message: 'El repartidor de tu encomienda cobró un *extra por el envío*. Perdiste' 
     },
     
     // --- Eventos Positivos (Probabilidad: 30%) ---
@@ -75,7 +75,8 @@ const EVENTS = [
 // --- LÓGICA PRINCIPAL DEL COMANDO ---
 export async function eventosCommand(sock, m) {
     const jid = m.key.remoteJid;
-    const sender = m.sender;
+    // FIX: Se usa m.key.participant para identificar al usuario en grupos
+    const sender = m.key.participant || m.sender; 
     
     await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
     
@@ -84,7 +85,7 @@ export async function eventosCommand(sock, m) {
         const now = Date.now();
         
         // --- 1. Chequeo de Cooldown ---
-        const lastEventTimestamp = new Date(user.lastEvent || 0).getTime();
+        const lastEventTimestamp = new Date(user.lastEvent || 0).getTime(); 
         if (now - lastEventTimestamp < COOLDOWN_TIME) {
             const remaining = COOLDOWN_TIME - (now - lastEventTimestamp);
             const minutes = Math.floor(remaining / (60 * 1000));
@@ -95,6 +96,7 @@ export async function eventosCommand(sock, m) {
             if (seconds > 0) timeRemaining += `${minutes > 0 ? ' y ' : ''}${seconds} segundo${seconds > 1 ? 's' : ''}`;
             
             await sock.sendMessage(jid, { react: { text: "⏰", key: m.key } });
+            // MENSAJE ORIGINAL MANTENIDO
             return sock.sendMessage(jid, { 
                 text: `⏳ *TIEMPO DE ESPERA*.\n\nEl último evento ocurrió hace poco. Vuelve en *${timeRemaining.trim()}* para activar otro.` 
             }, { quoted: m });
@@ -113,6 +115,7 @@ export async function eventosCommand(sock, m) {
             amount = -user.money; // Solo pierde lo que tiene
         }
         
+        // LLAMADA CRÍTICA: Aquí es donde se actualiza y se obtiene el saldo guardado.
         const newBalance = await economy.updateBalance(sender, amount);
         
         // --- 4. Actualizar Cooldown y Notificar ---
@@ -122,6 +125,7 @@ export async function eventosCommand(sock, m) {
         const action = amount >= 0 ? 'Ganaste' : 'Perdiste';
         const formattedAmount = Math.abs(amount).toLocaleString('es-VE', { minimumFractionDigits: 2 });
         
+        // MENSAJE ORIGINAL MANTENIDO
         const message = `${event.emoji} *EVENTO ACTIVADO* ${event.emoji}\n\n` +
                         `${event.message} *${formattedAmount} Bs*. \n\n` +
                         `----------------------------------------\n` +

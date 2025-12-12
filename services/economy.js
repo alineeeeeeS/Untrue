@@ -27,6 +27,9 @@ export const economy = {
         // Lee la data del JSON
         const data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         
+        // Verifica si el usuario ya existe o si necesita migración
+        let userNeedsSave = false;
+        
         if (!data.users[userId]) {
             data.users[userId] = {
                 money: 500, // Bono inicial de bienvenida
@@ -35,12 +38,17 @@ export const economy = {
                 wins: 0,
                 losses: 0
             };
-            // Guarda el nuevo usuario
-            await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
+            userNeedsSave = true;
         }
         
+        // Migración (Asegura que usuarios viejos tengan lastEvent)
         if (data.users[userId].lastEvent === undefined) {
              data.users[userId].lastEvent = 0;
+             userNeedsSave = true;
+        }
+
+        if (userNeedsSave) {
+             // Guarda el nuevo usuario o el usuario migrado
              await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
         }
         
@@ -49,12 +57,14 @@ export const economy = {
 
     // 2. Modificar el saldo (suma o resta) y guardar de forma segura
     async updateBalance(userId, amount) {
-        const data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
+        // Lee la data inicial
+        let data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         
-        // Si el usuario no existe, lo crea antes de actualizar
+        // Si el usuario no existe, lo crea a través de getUser (que lo guarda)
         if (!data.users[userId]) {
             await this.getUser(userId); 
-            return this.updateBalance(userId, amount);
+            // **FIX**: Vuelve a leer la data para asegurar que el usuario creado esté en el objeto 'data'
+            data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         }
         
         const user = data.users[userId];
@@ -69,11 +79,13 @@ export const economy = {
     
     // 3. Actualizar un campo específico (útil para lastDaily, lastEvent y estadísticas de juego)
     async updateField(userId, field, value) {
-        const data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
+        // Lee la data inicial
+        let data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         
         if (!data.users[userId]) {
              await this.getUser(userId); 
-             return this.updateField(userId, field, value);
+             // Vuelve a leer la data para incluir el usuario recién creado
+             data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         }
         
         data.users[userId][field] = value;
