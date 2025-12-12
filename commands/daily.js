@@ -27,7 +27,7 @@ export async function dailyCommand(sock, m) {
             if (minutes > 0) timeRemaining += `${hours > 0 ? ' y ' : ''}${minutes} minuto${minutes > 1 ? 's' : ''}`;
             
             await sock.sendMessage(jid, { react: { text: "⏰", key: m.key } });
-            return m.reply(`⏳ Ya reclamaste tu bono. Vuelve en *${timeRemaining.trim()}* para recibir *${REWARD} Bs*.`);
+            return sock.sendMessage(jid, { text: `⏳ Ya reclamaste tu bono. Vuelve en *${timeRemaining.trim()}* para recibir *${REWARD} Bs*.` }, { quoted: m });
         }
 
         // 1. Acreditar recompensa
@@ -37,11 +37,11 @@ export async function dailyCommand(sock, m) {
         await economy.updateField(sender, 'lastDaily', now);
 
         await sock.sendMessage(jid, { react: { text: "🎁", key: m.key } });
-        m.reply(`🎁 *BONO DIARIO*\n\nHas recibido *${REWARD} Bs*.\n💰 Nuevo Saldo: *${newBalance.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*`);
+        await sock.sendMessage(jid, { text: `🎁 *BONO DIARIO*\n\nHas recibido *${REWARD} Bs*.\n💰 Nuevo Saldo: *${newBalance.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*` }, { quoted: m });
 
     } catch (error) {
         console.error('Error en dailyCommand:', error);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        m.reply("❌ Ocurrió un error al reclamar tu bono. Intenta más tarde.");
+        await sock.sendMessage(jid, { text: "❌ Ocurrió un error al reclamar tu bono. Intenta más tarde." }, { quoted: m });
     }
 }

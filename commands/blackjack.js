@@ -97,16 +97,16 @@ export async function blackjackCommand(sock, m, args) {
     if (action === 'start') {
         if (sessions.has(jid)) {
             await sock.sendMessage(jid, { react: { text: "⚠️", key: m.key } });
-            return m.reply("⚠️ Ya hay un juego activo en este chat. Usa *#bj hit* o *#bj stand*.");
+            return sock.sendMessage(jid, { text: "⚠️ Ya hay un juego activo en este chat. Usa *#bj hit* o *#bj stand*." }, { quoted: m });
         }
         
         const bet = parseInt(args[1]) || 100;
         
-        if (isNaN(bet) || bet < 10) return m.reply("❌ La apuesta mínima es de *10 Bs*.");
+        if (isNaN(bet) || bet < 10) return sock.sendMessage(jid, { text: "❌ La apuesta mínima es de *10 Bs*." }, { quoted: m });
         
         if (userAccount.money < bet) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return m.reply(`❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${userAccount.money} Bs*\nNecesitas más dinero para esta apuesta.`);
+            return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${userAccount.money} Bs*\nNecesitas más dinero para esta apuesta.` }, { quoted: m });
         }
 
         // Descontar apuesta inmediatamente
@@ -130,18 +130,18 @@ export async function blackjackCommand(sock, m, args) {
             const msg = formatGame(game, true) + `\n\n🥳 *¡BLACKJACK!* Has ganado *${winAmount} Bs*.`;
             sessions.delete(jid);
             await sock.sendMessage(jid, { react: { text: "💰", key: m.key } });
-            return m.reply(msg);
+            return sock.sendMessage(jid, { text: msg }, { quoted: m });
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
-        return m.reply(formatGame(game) + `\n\nEscribe *#bj hit* (Pedir) o *#bj stand* (Plantarse).`);
+        return sock.sendMessage(jid, { text: formatGame(game) + `\n\nEscribe *#bj hit* (Pedir) o *#bj stand* (Plantarse).` }, { quoted: m });
     }
 
     // --- Lógica de Juego Activo ---
     
     const game = sessions.get(jid);
-    if (!game) return m.reply("❌ No hay un juego activo. Inicia uno con *#bj start [apuesta]*");
-    if (game.player !== sender) return m.reply("❌ Este no es tu juego.");
+    if (!game) return sock.sendMessage(jid, { text: "❌ No hay un juego activo. Inicia uno con *#bj start [apuesta]*" }, { quoted: m });
+    if (game.player !== sender) return sock.sendMessage(jid, { text: "❌ Este no es tu juego." }, { quoted: m });
     
     if (action === 'hit') {
         game.playerHand.push(game.deck.deal());
@@ -151,10 +151,10 @@ export async function blackjackCommand(sock, m, args) {
             sessions.delete(jid);
             await economy.updateField(sender, 'losses', userAccount.losses + 1);
             await sock.sendMessage(jid, { react: { text: "💥", key: m.key } });
-            return m.reply(formatGame(game, true) + `\n\n💥 *TE PASASTE (Bust - ${score}).* Perdiste tu apuesta de *${game.bet} Bs*.`);
+            return sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n💥 *TE PASASTE (Bust - ${score}).* Perdiste tu apuesta de *${game.bet} Bs*.` }, { quoted: m });
         }
         await sock.sendMessage(jid, { react: { text: "⬇️", key: m.key } });
-        return m.reply(formatGame(game));
+        return sock.sendMessage(jid, { text: formatGame(game) }, { quoted: m });
     }
 
     if (action === 'stand') {
@@ -187,7 +187,7 @@ export async function blackjackCommand(sock, m, args) {
             await sock.sendMessage(jid, { react: { text: "😭", key: m.key } });
         }
 
-        await m.reply(formatGame(game, true) + `\n\n${finalMsg}`);
+        await sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n${finalMsg}` }, { quoted: m });
         sessions.delete(jid); 
     }
 }

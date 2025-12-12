@@ -61,8 +61,9 @@ const commands = {
 
 	// ENTRETENIMIENTO
 	bj: blackjackCommand,
-	blackjack: blackjackCommand,
-
+	bal: balCommand,
+	daily: dailyCommand,
+	
     // UTILIDADES VARIAS
     letra: lyricsCommand,
     bcv: bcvCommand,
