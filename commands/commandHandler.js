@@ -26,7 +26,7 @@ import { toimgCommand } from "./toimg.js"; // Documentos docx/xlsx/pdf a imagen
 import { traducirCommand } from "./traducir.js"; // Traducir textos a multiples idiomas (es,en,ja,it,fr...)
 import { blackjackCommand } from './blackjack.js'; // Juego de cartas sencillo para el chat
 import { ruletaCommand } from './ruleta.js'; // Juego de ruleta sencillo
-import { slotsCommand } from './commands/slots.js'; // Juego de tragamonedas
+import { slotsCommand } from './slots.js'; // Juego de tragamonedas
 import { balCommand } from './bal.js'; // Estadísticas del jugador (dinero, partidas ganadas/perdidas...)
 import { dailyCommand } from './daily.js'; // Recompensa diaria para jugadores 
 
@@ -61,7 +61,7 @@ const commands = {
     music: youtubeAudioCommand,
 	dl: dlCommand,
 
-	// ENTRETENIMIENTO
+	// ECONOMÍA
 	bj: blackjackCommand,
 	ruleta: ruletaCommand,
 	rul: ruletaCommand,
