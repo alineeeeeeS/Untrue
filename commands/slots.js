@@ -1,33 +1,37 @@
 import { economy } from '../services/economy.js';
 
-// Definición de los símbolos y sus pagos
-const SYMBOLS = [
-    { emoji: '🍇', multiplier: 1 }, // Uvas (paga poco)
-    { emoji: '🍉', multiplier: 1.5 }, // Sandías
-    { emoji: '🔔', multiplier: 2 }, // Campana
-    { emoji: '🍒', multiplier: 3 }, // Cerezas
-    { emoji: '7️⃣', multiplier: 5 }  // Siete (el Jackpot)
+// Definición de los símbolos y sus probabilidades/pagos (8 Símbolos)
+const WEIGHTED_SYMBOLS = [
+    { emoji: '💩', weight: 35, multiplier: 0.0, name: 'Caca' }, // Alta probabilidad de pérdida (no paga)
+    { emoji: '🍇', weight: 25, multiplier: 1.0, name: 'Uvas' }, 
+    { emoji: '🍋', weight: 15, multiplier: 1.5, name: 'Limón' }, 
+    { emoji: '🍉', weight: 10, multiplier: 2.0, name: 'Sandía' }, 
+    { emoji: '🔔', weight: 7, multiplier: 3.0, name: 'Campana' }, 
+    { emoji: '🍒', weight: 5, multiplier: 4.0, name: 'Cerezas' }, 
+    { emoji: '💰', weight: 2, multiplier: 8.0, name: 'Bolsa' }, 
+    { emoji: '7️⃣', weight: 1, multiplier: 20.0, name: 'Siete' } // Jackpot Alto (1% de probabilidad por rodillo)
 ];
 
-const SLOT_ITEMS = SYMBOLS.flatMap(s => Array(10 - s.multiplier * 2).fill(s.emoji)); // Distribuye la probabilidad
-// Ejemplo: 7️⃣ aparece menos veces que 🍇
+// Genera un array de 100 items ponderados para un sorteo justo
+const SLOT_ITEMS = WEIGHTED_SYMBOLS.flatMap(s => Array(s.weight).fill(s.emoji)); 
 
-// Función principal para girar los tres rodillos
+// Función principal para girar los tres rodillos (usa el nuevo SLOT_ITEMS)
 function spinSlots() {
+    const items = SLOT_ITEMS;
     const results = [
-        SLOT_ITEMS[Math.floor(Math.random() * SLOT_ITEMS.length)],
-        SLOT_ITEMS[Math.floor(Math.random() * SLOT_ITEMS.length)],
-        SLOT_ITEMS[Math.floor(Math.random() * SLOT_ITEMS.length)]
+        items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)],
+        items[Math.floor(Math.random() * items.length)]
     ];
     return results;
 }
 
 /**
  * Tragamonedas de tres rodillos. Uso: #slots [apuesta]
- * Pago: x3 (triple), x2 (doble), x0 (nada)
  */
 export async function slotsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
+    // Asegurarse de que el sender use el JID del participante para la economía
     const sender = m.key.participant || m.sender;
     
     // Validar apuesta
@@ -45,7 +49,7 @@ export async function slotsCommand(sock, m, args) {
     
     if (user.money < betAmount) {
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${user.money} Bs*` }, { quoted: m });
+        return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${user.money.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*` }, { quoted: m });
     }
 
     // Descontar apuesta inmediatamente
@@ -55,54 +59,48 @@ export async function slotsCommand(sock, m, args) {
     const results = spinSlots();
     const [r1, r2, r3] = results;
     
-    // Contar ocurrencias de cada símbolo
     const counts = {};
     results.forEach(r => counts[r] = (counts[r] || 0) + 1);
     
     let multiplier = 0;
     let winType = '';
-    let winningSymbol = '';
-
+    
     // Evaluar ganancias
     if (counts[r1] === 3) { // Jackpot! Triple Coincidencia
-        winningSymbol = r1;
-        const symbolData = SYMBOLS.find(s => s.emoji === r1);
-        multiplier = symbolData ? symbolData.multiplier * 15 : 10; // Jackpot paga mucho (x15 base)
-        winType = `🔥 *JACKPOT* (${r1} x3)`;
+        const symbolData = WEIGHTED_SYMBOLS.find(s => s.emoji === r1);
+        multiplier = symbolData ? symbolData.multiplier * 20 : 0; // Multiplicador x20 (Jackpot)
+        winType = `🔥 *JACKPOT* - Triple ${symbolData.name}`;
     } else if (counts[r1] === 2 || counts[r2] === 2) { // Doble Coincidencia
-        winningSymbol = counts[r1] === 2 ? r1 : r2;
-        const symbolData = SYMBOLS.find(s => s.emoji === winningSymbol);
-        multiplier = symbolData ? symbolData.multiplier * 3 : 2; // Doble paga (x3 base)
-        winType = `✨ Coincidencia Doble (${winningSymbol} x2)`;
+        const winningEmoji = counts[r1] === 2 ? r1 : r2;
+        const symbolData = WEIGHTED_SYMBOLS.find(s => s.emoji === winningEmoji);
+        multiplier = symbolData ? symbolData.multiplier * 2.5 : 0; // Multiplicador x2.5 (Doble)
+        winType = `✨ Coincidencia Doble - Doble ${symbolData.name}`;
     }
-    // Si multiplier sigue siendo 0, es pérdida.
     
-    // 3. Generar y enviar mensaje
-    let finalMessage = `🎰 *TRAGAMONEDAS* 🎰\n\n`;
-    finalMessage += `_Apuesta: ${betAmount} Bs_\n\n`;
-    finalMessage += `   ${r1} | ${r2} | ${r3}\n\n`;
-
-    let earnings = 0;
+    // 3. Generar y enviar mensaje (Mensaje limpio y profesional, sin saldo final)
+    let finalMessage = `🎰 *Resultado de Tragamonedas* 🎰\n`;
+    finalMessage += `\n— — — — — — —\n`;
+    finalMessage += `   ${r1} | ${r2} | ${r3}\n`; 
+    finalMessage += `— — — — — — —\n\n`;
 
     if (multiplier > 0) {
-        earnings = betAmount * (multiplier + 1); // +1 para devolver la apuesta inicial
-        await economy.updateBalance(sender, earnings); 
+        const netGain = Math.floor(betAmount * multiplier); 
+        const totalPayout = betAmount + netGain; 
         
-        const netGain = earnings - betAmount;
-
+        await economy.updateBalance(sender, totalPayout); 
+        
         finalMessage += `${winType}\n`;
-        finalMessage += `🎉 *¡GANASTE ${netGain.toLocaleString('es-VE')} Bs!*`;
+        finalMessage += `*Monto Ganado (Neto):* *${netGain.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n`;
+        finalMessage += `🎉 ¡Felicidades! Se ha acreditado la ganancia.`;
 
         await sock.sendMessage(jid, { react: { text: "🤑", key: m.key } });
     } else {
         finalMessage += `😭 *¡FALLASTE!* 😭\n`;
-        finalMessage += `Perdiste tus *${betAmount} Bs*.`;
+        finalMessage += `Perdiste tu apuesta de *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
 
         await sock.sendMessage(jid, { react: { text: "😢", key: m.key } });
     }
     
-    const newBalance = (await economy.getUser(sender)).money;
-    finalMessage += `\n\n💰 Saldo Actual: *${newBalance.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*`;
-
+    // Solo el resultado, sin el saldo final
     await sock.sendMessage(jid, { text: finalMessage }, { quoted: m });
 }

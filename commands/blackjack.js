@@ -62,19 +62,26 @@ function formatHand(hand, dealerShowAll = false) {
         return `[${hand[0].value}] [?]`; 
     }
     
-    return `${cards} (Puntaje: ${calculateScore(hand)})`;
+    return `${cards} (*${calculateScore(hand)}*)`; // Puntaje en paréntesis y negritas
 }
 
 function formatGame(game, showAll = false) {
-    let msg = `♠️ *BLACKJACK - Apuesta: ${game.bet} Bs* ♣️\n\n`;
+    let msg = `♠️♣️ *BLACKJACK* ♦️♥️\n`;
     
-    msg += `🧑‍💼 *Dealer:* ${formatHand(game.dealerHand, showAll)}\n`;
+	// Separar la apuesta para claridad
+    msg += `----------------------------------\n` 
+    msg += `🪙 *Apuesta:* ${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs\n` 
+    msg += `----------------------------------\n\n`
+	
+    // Presentación del Dealer y Jugador
+    msg += `🧑‍💼 *Dealer:* ${formatHand(game.dealerHand, showAll)}\n\n`;
 
     const pScore = calculateScore(game.playerHand);
     msg += `👤 *Tú:* ${formatHand(game.playerHand, true)}`;
     
     if (showAll) {
-        msg += `\n\n--- FIN DEL JUEGO ---`;
+        // Al final del juego, mostrar los puntajes finales
+        msg += `\n\n*Puntajes Finales:*\nDealer: ${calculateScore(game.dealerHand)} | Tú: ${pScore}`;
     }
     
     return msg;
@@ -86,6 +93,7 @@ const sessions = new Map();
 
 export async function blackjackCommand(sock, m, args) {
     const jid = m.key.remoteJid;
+    // Usar m.key.participant (JID único del usuario en grupo)
     const sender = m.key.participant || m.sender;
     const action = args[0]?.toLowerCase();
 
@@ -106,7 +114,7 @@ export async function blackjackCommand(sock, m, args) {
         
         if (userAccount.money < bet) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${userAccount.money} Bs*\nNecesitas más dinero para esta apuesta.` }, { quoted: m });
+            return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${userAccount.money.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\nNecesitas más dinero para esta apuesta.` }, { quoted: m });
         }
 
         // Descontar apuesta inmediatamente
@@ -123,18 +131,18 @@ export async function blackjackCommand(sock, m, args) {
 
         // Blackjack directo (Jugador)
         if (calculateScore(game.playerHand) === 21) {
-            const winAmount = Math.floor(bet * 2.5); 
+            const winAmount = Math.floor(game.bet * 2.5); 
             await economy.updateBalance(sender, winAmount); 
             await economy.updateField(sender, 'wins', userAccount.wins + 1);
 
-            const msg = formatGame(game, true) + `\n\n🥳 *¡BLACKJACK!* Has ganado *${winAmount} Bs*.`;
+            const msg = formatGame(game, true) + `\n\n🥳 *¡BLACKJACK!* Has ganado *${winAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             sessions.delete(jid);
             await sock.sendMessage(jid, { react: { text: "💰", key: m.key } });
             return sock.sendMessage(jid, { text: msg }, { quoted: m });
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
-        return sock.sendMessage(jid, { text: formatGame(game) + `\n\nEscribe *#bj hit* (Pedir) o *#bj stand* (Plantarse).` }, { quoted: m });
+        return sock.sendMessage(jid, { text: formatGame(game) + `\n\n*Acción:* Escribe *#bj hit* (Pedir) o *#bj stand* (Plantarse).` }, { quoted: m });
     }
 
     // --- Lógica de Juego Activo ---
@@ -151,7 +159,7 @@ export async function blackjackCommand(sock, m, args) {
             sessions.delete(jid);
             await economy.updateField(sender, 'losses', userAccount.losses + 1);
             await sock.sendMessage(jid, { react: { text: "💥", key: m.key } });
-            return sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n💥 *TE PASASTE (Bust - ${score}).* Perdiste tu apuesta de *${game.bet} Bs*.` }, { quoted: m });
+            return sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n💥 *TE PASASTE (Bust - ${score}).* Perdiste tu apuesta de *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.` }, { quoted: m });
         }
         await sock.sendMessage(jid, { react: { text: "⬇️", key: m.key } });
         return sock.sendMessage(jid, { text: formatGame(game) }, { quoted: m });
@@ -173,17 +181,17 @@ export async function blackjackCommand(sock, m, args) {
             const win = game.bet * 2; 
             await economy.updateBalance(sender, win);
             await economy.updateField(sender, 'wins', userAccount.wins + 1);
-            finalMsg = `🎉 *¡GANASTE!* Recibes *${win} Bs*.`;
+            finalMsg = `🎉 *¡GANASTE!* Recibes *${win.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "🥳", key: m.key } });
             
         } else if (dScore === pScore) {
             await economy.updateBalance(sender, game.bet); 
-            finalMsg = `🤝 *EMPATE (Push).* Se te devuelven tus *${game.bet} Bs*.`;
+            finalMsg = `🤝 *EMPATE (Push).* Se te devuelven tus *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "🤝", key: m.key } });
             
         } else {
             await economy.updateField(sender, 'losses', userAccount.losses + 1);
-            finalMsg = `❌ *EL DEALER GANA.* Pierdes *${game.bet} Bs*.`;
+            finalMsg = `❌ *EL DEALER GANA.* Pierdes *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "😭", key: m.key } });
         }
 

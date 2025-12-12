@@ -7,7 +7,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = join(__dirname, '../database/users.json');
 
 // Función para asegurar que el archivo JSON exista.
-// Si el bot se inicia y el archivo no está, lo crea.
 async function initDB() {
     try {
         await fs.access(DB_PATH);
@@ -32,12 +31,19 @@ export const economy = {
             data.users[userId] = {
                 money: 500, // Bono inicial de bienvenida
                 lastDaily: 0,
+                lastEvent: 0,
                 wins: 0,
                 losses: 0
             };
             // Guarda el nuevo usuario
             await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
         }
+        
+        if (data.users[userId].lastEvent === undefined) {
+             data.users[userId].lastEvent = 0;
+             await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
+        }
+        
         return data.users[userId];
     },
 
@@ -61,7 +67,7 @@ export const economy = {
         return user.money;
     },
     
-    // 3. Actualizar un campo específico (útil para lastDaily y estadísticas de juego)
+    // 3. Actualizar un campo específico (útil para lastDaily, lastEvent y estadísticas de juego)
     async updateField(userId, field, value) {
         const data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
         
@@ -73,5 +79,11 @@ export const economy = {
         data.users[userId][field] = value;
         await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
         return data.users[userId];
+    },
+    
+    // 4. Obtener todos los IDs de usuarios (Para uso futuro en rankings o eventos grupales)
+    async getAllUserIds() {
+        const data = JSON.parse(await fs.readFile(DB_PATH, 'utf-8'));
+        return Object.keys(data.users);
     }
 };

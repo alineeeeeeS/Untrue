@@ -27,6 +27,10 @@ import { traducirCommand } from "./traducir.js"; // Traducir textos a multiples 
 import { blackjackCommand } from './blackjack.js'; // Juego de cartas sencillo para el chat
 import { ruletaCommand } from './ruleta.js'; // Juego de ruleta sencillo
 import { slotsCommand } from './slots.js'; // Juego de tragamonedas
+import { dueloHandler } from './duelo.js'; // Juego de dados para 2 jugadores
+import { payCommand } from './pay.js'; // Transferir dinero a otros usuarios
+import { robCommand } from './rob.js'; // Robar dinero a usuarios
+import { eventosCommand } from './eventos.js'; // Eventos aleatorios enfocados en el país
 import { balCommand } from './bal.js'; // Estadísticas del jugador (dinero, partidas ganadas/perdidas...)
 import { dailyCommand } from './daily.js'; // Recompensa diaria para jugadores 
 
@@ -66,9 +70,16 @@ const commands = {
 	ruleta: ruletaCommand,
 	rul: ruletaCommand,
 	slots: slotsCommand,
+	dados: dueloHandler,
+	duelo: dueloHandler,
 	sl: slotsCommand,
 	bal: balCommand,
 	daily: dailyCommand,
+	pagar: payCommand,
+	pm: payCommand,
+	robar: robCommand,
+	rob: robCommand,
+	evento: eventosCommand,
 	
     // UTILIDADES VARIAS
     letra: lyricsCommand,

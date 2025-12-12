@@ -2,6 +2,7 @@ import { economy } from '../services/economy.js';
 
 export async function balCommand(sock, m) {
     const jid = m.key.remoteJid;
+    // Asegurarse de que el sender use el JID del participante para la economía
     const sender = m.key.participant || m.sender; 
     
     await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
@@ -9,11 +10,11 @@ export async function balCommand(sock, m) {
     try {
         const user = await economy.getUser(sender);
         
-        const message = `🏦 *TU CUENTA DE BANCO*\n\n` +
+        const message = `🏦 *ESTADO DE CUENTA*\n\n` + 
                         `👤 Usuario: ${m.pushName || "Desconocido"}\n` +
+                        `----------------------------------------\n` +
                         `💰 Saldo Disponible: *${user.money.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
-                        `📈 Victorias (BJ): ${user.wins}\n` +
-                        `📉 Derrotas (BJ): ${user.losses}`;
+                        `_Usa #perfil para ver tus estadísticas de juego._`; 
 
         await sock.sendMessage(jid, { react: { text: "💰", key: m.key } });
         await sock.sendMessage(jid, { text: message }, { quoted: m });
