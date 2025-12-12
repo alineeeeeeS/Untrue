@@ -1,6 +1,9 @@
 import { economy } from '../services/economy.js';
 import logger from '../services/logger.js';
 
+// Mapa para mantener los juegos activos
+const activeGames = new Map();
+
 // --- UTILERÍAS DE JUEGO (Necesarias) ---
 
 class Card {
@@ -9,13 +12,10 @@ class Card {
         this.value = value;
     }
     toString() {
-        return `${this.value}`;
+        // Muestra la carta como 'A♠️', '10♥️', 'K♣️'
+        return `${this.value}${this.suit}`; 
     }
-    getScoreValue() {
-        if (['J', 'Q', 'K'].includes(this.value)) return 10;
-        if (this.value === 'A') return 11;
-        return parseInt(this.value);
-    }
+    // Se elimina getScoreValue() para que la lógica de As esté centralizada en calculateScore
 }
 
 class Deck {
@@ -39,163 +39,273 @@ class Deck {
         }
     }
     deal() {
-        if (this.cards.length < 10) this.shuffle();
+        if (this.cards.length === 0) {
+            // Recargar mazo (opcional, por simplicidad no lo hacemos, pero es buena práctica)
+            throw new Error("Mazo agotado"); 
+        }
         return this.cards.pop();
     }
 }
 
+/**
+ * Calcula la puntuación de la mano, manejando el valor dinámico del As (11 o 1).
+ * @param {Card[]} hand - El array de cartas.
+ * @returns {number} La puntuación total de la mano.
+ */
 function calculateScore(hand) {
-    let score = hand.reduce((sum, card) => sum + card.getScoreValue(), 0);
-    let aces = hand.filter(card => card.value === 'A').length;
-
-    while (score > 21 && aces > 0) {
-        score -= 10;
-        aces--;
+    let score = 0;
+    let aceCount = 0;
+    
+    // 1. Calcular el score inicial, con J/Q/K como 10 y A como 11
+    for (const card of hand) {
+        if (['J', 'Q', 'K'].includes(card.value)) {
+            score += 10;
+        } else if (card.value === 'A') {
+            score += 11;
+            aceCount++;
+        } else {
+            score += parseInt(card.value);
+        }
     }
+
+    // 2. Ajustar Aces (de 11 a 1) si el score excede 21
+    // La regla es: si con el As valiendo 11 te pasas de 21, el As vale 1.
+    while (score > 21 && aceCount > 0) {
+        score -= 10; // Cambia el valor de un As de 11 a 1 (11 - 10 = 1)
+        aceCount--;
+    }
+    
     return score;
 }
 
-function formatHand(hand, dealerShowAll = false) {
-    const cards = hand.map(c => `[${c.value}]`).join(' ');
-    
-    if (hand.length === 2 && !dealerShowAll) {
-        return `[${hand[0].value}] [?]`; 
+// Clase para encapsular el estado del juego
+class BlackjackGame {
+    constructor(bet) {
+        this.deck = new Deck(1); // Mazo simple
+        this.playerHand = [];
+        this.dealerHand = [];
+        this.bet = bet;
     }
     
-    return `${cards} (*${calculateScore(hand)}*)`; // Puntaje en paréntesis y negritas
+    // Reparto inicial: 2 al jugador, 2 al dealer (1 oculta)
+    start() {
+        this.playerHand.push(this.deck.deal());
+        this.dealerHand.push(this.deck.deal()); // Carta visible del dealer
+        this.playerHand.push(this.deck.deal());
+        this.dealerHand.push(this.deck.deal()); // Carta oculta del dealer
+    }
+    
+    hit() {
+        this.playerHand.push(this.deck.deal());
+    }
 }
 
-function formatGame(game, showAll = false) {
-    let msg = `♠️♣️ *BLACKJACK* ♦️♥️\n`;
-    
-	// Separar la apuesta para claridad
-    msg += `----------------------------------\n` 
-    msg += `🪙 *Apuesta:* ${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs\n` 
-    msg += `----------------------------------\n\n`
-	
-    // Presentación del Dealer y Jugador
-    msg += `🧑‍💼 *Dealer:* ${formatHand(game.dealerHand, showAll)}\n\n`;
-
+// Función de visualización de manos
+function getHandsDisplay(game, revealDealer = false) {
+    const pHand = game.playerHand.map(c => c.toString()).join(' | ');
     const pScore = calculateScore(game.playerHand);
-    msg += `👤 *Tú:* ${formatHand(game.playerHand, true)}`;
     
-    if (showAll) {
-        // Al final del juego, mostrar los puntajes finales
-        msg += `\n\n*Puntajes Finales:*\nDealer: ${calculateScore(game.dealerHand)} | Tú: ${pScore}`;
+    let dHand, dScore;
+    if (revealDealer) {
+        dHand = game.dealerHand.map(c => c.toString()).join(' | ');
+        dScore = calculateScore(game.dealerHand);
+    } else {
+        const dealerVisibleCard = game.dealerHand[0].toString();
+        // Solo mostramos la carta visible del dealer
+        dHand = `${dealerVisibleCard} | ❓`; 
+        // No se muestra el score exacto, solo el valor de la carta visible
+        dScore = calculateScore([game.dealerHand[0]]);
     }
     
-    return msg;
+    return { pHand, pScore, dHand, dScore };
 }
 
-// --- LÓGICA DEL COMANDO ---
 
-const sessions = new Map(); 
-
+/**
+ * Manejador principal para #bj [apuesta], #hit, y #stand
+ */
 export async function blackjackCommand(sock, m, args) {
     const jid = m.key.remoteJid;
-    // Usar m.key.participant (JID único del usuario en grupo)
-    const sender = m.key.participant || m.sender;
-    const action = args[0]?.toLowerCase();
-
-    // Reacciona mientras busca la cuenta
-    await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } }); 
-    const userAccount = await economy.getUser(sender);
-    await sock.sendMessage(jid, { react: { text: "🃏", key: m.key } });
+    const sender = m.sender;
+    const text = m.message.conversation || m.message.extendedTextMessage?.text || '';
+    const command = text.split(' ')[0].toLowerCase();
     
-    if (action === 'start') {
-        if (sessions.has(jid)) {
-            await sock.sendMessage(jid, { react: { text: "⚠️", key: m.key } });
-            return sock.sendMessage(jid, { text: "⚠️ Ya hay un juego activo en este chat. Usa *#bj hit* o *#bj stand*." }, { quoted: m });
+    const game = activeGames.get(sender);
+    const action = command.slice(1); // bj, hit, stand
+
+    // Si el usuario ya tiene un juego activo y no está usando #hit o #stand
+    if (game && (action !== 'hit' && action !== 'stand')) {
+        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        return sock.sendMessage(jid, { 
+            text: `⚠️ Ya tienes un juego de Blackjack activo con una apuesta de *${game.bet} Bs*.\n` +
+                  `Usa *#hit* para pedir otra carta o *#stand* para plantarte.`
+        }, { quoted: m });
+    }
+
+    // --- LÓGICA DE NUEVO JUEGO (#bj) ---
+    if (action === 'bj') {
+        if (game) {
+            // Ya se manejó arriba, pero por seguridad
+            activeGames.delete(sender); 
         }
-        
-        const bet = parseInt(args[1]) || 100;
-        
-        if (isNaN(bet) || bet < 10) return sock.sendMessage(jid, { text: "❌ La apuesta mínima es de *10 Bs*." }, { quoted: m });
-        
-        if (userAccount.money < bet) {
+
+        const betAmount = parseInt(args[0]);
+        if (isNaN(betAmount) || betAmount < 50) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return sock.sendMessage(jid, { text: `❌ *Saldo insuficiente.*\n💰 Tu cuenta: *${userAccount.money.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\nNecesitas más dinero para esta apuesta.` }, { quoted: m });
+            return sock.sendMessage(jid, { 
+                text: '❌ *Uso correcto:* *#bj [apuesta]*\n(Apuesta mínima: 50 Bs)' 
+            }, { quoted: m });
+        }
+        
+        await sock.sendMessage(jid, { react: { text: "🃏", key: m.key } });
+
+        const userAccount = await economy.getUser(sender);
+        if (userAccount.money < betAmount) {
+            await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+            return sock.sendMessage(jid, { text: `❌ Saldo insuficiente. Necesitas *${betAmount.toLocaleString('es-VE')} Bs*.` }, { quoted: m });
+        }
+        
+        // Descontar la apuesta y crear el juego
+        await economy.updateBalance(sender, -betAmount); 
+        
+        const newGame = new BlackjackGame(betAmount);
+        newGame.start();
+        
+        activeGames.set(sender, newGame);
+
+        // Chequeo de Blackjack inicial
+        const pScore = calculateScore(newGame.playerHand);
+        if (pScore === 21) {
+            return await finalizeGame(sock, m, sender, newGame, userAccount, 'blackjack');
         }
 
-        // Descontar apuesta inmediatamente
-        await economy.updateBalance(sender, -bet);
-
-        const deck = new Deck(2); 
-        const game = {
-            playerHand: [deck.deal(), deck.deal()],
-            dealerHand: [deck.deal(), deck.deal()],
-            deck, bet, player: sender
-        };
-
-        sessions.set(jid, game);
-
-        // Blackjack directo (Jugador)
-        if (calculateScore(game.playerHand) === 21) {
-            const winAmount = Math.floor(game.bet * 2.5); 
-            await economy.updateBalance(sender, winAmount); 
-            await economy.updateField(sender, 'wins', userAccount.wins + 1);
-
-            const msg = formatGame(game, true) + `\n\n🥳 *¡BLACKJACK!* Has ganado *${winAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
-            sessions.delete(jid);
-            await sock.sendMessage(jid, { react: { text: "💰", key: m.key } });
-            return sock.sendMessage(jid, { text: msg }, { quoted: m });
-        }
-
+        const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(newGame, false);
+        
+        const message = `♦️ *BLACKJACK* ♦️\n\n` +
+                        `💵 Apuesta: *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
+                        `👤 *Tu Mano* (${newPScore}):\n   ${pHand}\n\n` +
+                        `🤖 *Dealer* (${newDScore} visible):\n   ${dHand}\n\n` +
+                        `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
+                        
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
-        return sock.sendMessage(jid, { text: formatGame(game) + `\n\n*Acción:* Escribe *#bj hit* (Pedir) o *#bj stand* (Plantarse).` }, { quoted: m });
+        await sock.sendMessage(jid, { text: message }, { quoted: m });
+        
+        return;
     }
+    
+    // --- LÓGICA DE CONTINUACIÓN (#hit o #stand) ---
+    if (!game) {
+        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        return sock.sendMessage(jid, { text: "❌ No tienes un juego de Blackjack activo. Usa *#bj [apuesta]* para empezar." }, { quoted: m });
+    }
+    
+    const userAccount = await economy.getUser(sender);
 
-    // --- Lógica de Juego Activo ---
-    
-    const game = sessions.get(jid);
-    if (!game) return sock.sendMessage(jid, { text: "❌ No hay un juego activo. Inicia uno con *#bj start [apuesta]*" }, { quoted: m });
-    if (game.player !== sender) return sock.sendMessage(jid, { text: "❌ Este no es tu juego." }, { quoted: m });
-    
     if (action === 'hit') {
-        game.playerHand.push(game.deck.deal());
-        const score = calculateScore(game.playerHand);
-
-        if (score > 21) {
-            sessions.delete(jid);
-            await economy.updateField(sender, 'losses', userAccount.losses + 1);
-            await sock.sendMessage(jid, { react: { text: "💥", key: m.key } });
-            return sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n💥 *TE PASASTE (Bust - ${score}).* Perdiste tu apuesta de *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.` }, { quoted: m });
+        await sock.sendMessage(jid, { react: { text: "👇", key: m.key } });
+        
+        game.hit();
+        const pScore = calculateScore(game.playerHand);
+        
+        if (pScore > 21) {
+            // Bust (Te pasaste)
+            return await finalizeGame(sock, m, sender, game, userAccount, 'bust');
+            
+        } else {
+            // Juego continúa
+            const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(game, false);
+            
+            const message = `👇 *HIT* (Carta pedida)\n\n` +
+                            `👤 *Tu Mano* (${newPScore}):\n   ${pHand}\n\n` +
+                            `🤖 *Dealer* (${newDScore} visible):\n   ${dHand}\n\n` +
+                            `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
+                            
+            await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
+            await sock.sendMessage(jid, { text: message }, { quoted: m });
         }
-        await sock.sendMessage(jid, { react: { text: "⬇️", key: m.key } });
-        return sock.sendMessage(jid, { text: formatGame(game) }, { quoted: m });
-    }
-
-    if (action === 'stand') {
+        
+    } else if (action === 'stand') {
         await sock.sendMessage(jid, { react: { text: "⬆️", key: m.key } });
+        
+        // Turno del Dealer
         let dScore = calculateScore(game.dealerHand);
         
+        // El dealer pide hasta que su puntuación sea 17 o más
         while (dScore < 17) {
             game.dealerHand.push(game.deck.deal());
             dScore = calculateScore(game.dealerHand);
         }
 
         const pScore = calculateScore(game.playerHand);
-        let finalMsg = "";
+        
+        return await finalizeGame(sock, m, sender, game, userAccount, 'stand');
+    }
+}
 
-        if (dScore > 21 || pScore > dScore) {
-            const win = game.bet * 2; 
+// --- FUNCIÓN PARA FINALIZAR EL JUEGO Y CALCULAR RESULTADOS ---
+async function finalizeGame(sock, m, sender, game, userAccount, endType) {
+    activeGames.delete(sender); // Eliminar el juego activo
+
+    const pScore = calculateScore(game.playerHand);
+    const dScore = calculateScore(game.dealerHand);
+    
+    const { pHand, dHand } = getHandsDisplay(game, true); // Revelar la mano del dealer
+
+    let finalMsg = ``;
+    let win = 0;
+    
+    if (endType === 'bust') {
+        // Jugador se pasó de 21
+        await economy.updateField(sender, 'losses', userAccount.losses + 1);
+        finalMsg = `❌ *¡TE PASASTE!* (${pScore})\nPierdes tu apuesta de *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
+        await sock.sendMessage(jid, { react: { text: "😭", key: m.key } });
+        
+    } else if (endType === 'blackjack') {
+        // Blackjack (21 con las 2 primeras cartas) - Paga 1.5 a 1
+        win = Math.floor(game.bet * 2.5); 
+        await economy.updateBalance(sender, win);
+        await economy.updateField(sender, 'wins', userAccount.wins + 1);
+        finalMsg = `♠️ *¡BLACKJACK!* ♠️\nRecibes *${win.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs* (Ganancia 1.5:1).`;
+        await sock.sendMessage(jid, { react: { text: "🤑", key: m.key } });
+
+    } else if (endType === 'stand') {
+        // Fin normal (Jugador se planta) o fin después del turno del dealer
+        
+        if (dScore > 21) {
+            // Dealer se pasa (Bust)
+            win = game.bet * 2; 
             await economy.updateBalance(sender, win);
             await economy.updateField(sender, 'wins', userAccount.wins + 1);
-            finalMsg = `🎉 *¡GANASTE!* Recibes *${win.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
+            finalMsg = `🎉 *¡DEALER BUST!* (${dScore})\nRecibes *${win.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
+            await sock.sendMessage(jid, { react: { text: "🥳", key: m.key } });
+            
+        } else if (pScore > dScore) {
+            // Jugador gana
+            win = game.bet * 2; 
+            await economy.updateBalance(sender, win);
+            await economy.updateField(sender, 'wins', userAccount.wins + 1);
+            finalMsg = `🎉 *¡GANASTE!* (${pScore} vs ${dScore})\nRecibes *${win.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "🥳", key: m.key } });
             
         } else if (dScore === pScore) {
+            // Empate (Push)
             await economy.updateBalance(sender, game.bet); 
-            finalMsg = `🤝 *EMPATE (Push).* Se te devuelven tus *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
+            finalMsg = `🤝 *EMPATE (Push).* (${pScore} vs ${dScore})\nSe te devuelven tus *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "🤝", key: m.key } });
             
         } else {
+            // Dealer gana
             await economy.updateField(sender, 'losses', userAccount.losses + 1);
-            finalMsg = `❌ *EL DEALER GANA.* Pierdes *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
+            finalMsg = `❌ *EL DEALER GANA.* (${dScore} vs ${pScore})\nPierdes *${game.bet.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*.`;
             await sock.sendMessage(jid, { react: { text: "😭", key: m.key } });
         }
-
-        await sock.sendMessage(jid, { text: formatGame(game, true) + `\n\n${finalMsg}` }, { quoted: m });
-        sessions.delete(jid); 
     }
+    
+    // Mensaje de resumen final
+    const summaryMsg = `\n\n--- *RESULTADO FINAL* ---\n` +
+                       `👤 *Tu Mano* (${pScore}):\n   ${pHand}\n` +
+                       `🤖 *Dealer* (${dScore}):\n   ${dHand}\n\n` +
+                       finalMsg;
+
+    await sock.sendMessage(m.key.remoteJid, { text: summaryMsg }, { quoted: m });
 }
