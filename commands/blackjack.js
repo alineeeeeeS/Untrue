@@ -123,7 +123,7 @@ export async function blackjackCommand(sock, m, args) {
     // CORRECCIÓN CLAVE: Usar m.key.participant para identificar al usuario en grupos
     const sender = m.key.participant || m.sender;
     const action = args[0] ? args[0].toLowerCase() : ''; 
-    const betAmount = parseInt(args[1]);
+    const rawBet = args[1]; // <--- CAMBIO: Capturamos el argumento de la apuesta sin parsear
     
     // Usar el 'sender' corregido para buscar el juego activo
     const game = activeGames.get(sender);
@@ -134,27 +134,43 @@ export async function blackjackCommand(sock, m, args) {
              await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
              return sock.sendMessage(jid, { 
                  text: `⚠️ Ya tienes un juego de Blackjack activo con *${game.bet} Bs*.\n` +
-                       `▸ Usa *#hit* o *#stand* para continuar. `
+                         `▸ Usa *#hit* o *#stand* para continuar. `
              }, { quoted: m });
+        }
+
+        // 1. Obtener el saldo del usuario primero
+        const userAccount = await economy.getUser(sender);
+
+        let betAmount;
+        
+        // 2. CORRECCIÓN CLAVE: Determinar el monto de la apuesta (manejar 'all' y parsear robustamente)
+        if (rawBet && rawBet.toLowerCase() === 'all') {
+            betAmount = userAccount.money; // Apuesta el saldo total
+        } else {
+            // Parseo más robusto: Number() intenta convertir a número y Math.floor() asegura un entero.
+            betAmount = Math.floor(Number(rawBet));
         }
 
         if (isNaN(betAmount) || betAmount < 50) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+            // Mensaje de error actualizado
             return sock.sendMessage(jid, { 
-                text: '❌ *Uso correcto:*\n▸ #bj start _apuesta_\n▸ *Apuesta mínima:* 50 Bs' 
+                text: '❌ *Uso correcto:*\n▸ #bj start _apuesta_ (Mínimo 50 Bs) o _all_\n▸ *Apuesta mínima:* 50 Bs' 
             }, { quoted: m });
         }
         
         await sock.sendMessage(jid, { react: { text: "🃏", key: m.key } });
 
-        // Usar el 'sender' corregido para obtener el saldo
-        const userAccount = await economy.getUser(sender);
+        // 3. Verificación de saldo
         if (userAccount.money < betAmount) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return sock.sendMessage(jid, { text: `❌ Saldo insuficiente. Necesitas *${betAmount.toLocaleString('es-VE')} Bs*.` }, { quoted: m });
+            // Mensaje de error actualizado para mostrar saldo actual
+            return sock.sendMessage(jid, { 
+                text: `❌ Saldo insuficiente. Tu saldo es *${userAccount.money.toLocaleString('es-VE')} Bs*. Necesitas *${betAmount.toLocaleString('es-VE')} Bs*.` 
+            }, { quoted: m });
         }
         
-        // 1. Descontar la apuesta y crear el juego
+        // 4. Descontar la apuesta y crear el juego
         await economy.updateBalance(sender, -betAmount); 
         
         const newGame = new BlackjackGame(betAmount);
@@ -165,19 +181,19 @@ export async function blackjackCommand(sock, m, args) {
 
         const pScore = calculateScore(newGame.playerHand);
         
-        // 2. Chequeo de Blackjack inicial
+        // 5. Chequeo de Blackjack inicial
         if (pScore === 21) {
             return await finalizeGame(sock, m, sender, newGame, userAccount, 'blackjack');
         }
 
-        // 3. Mostrar estado inicial
+        // 6. Mostrar estado inicial
         const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(newGame, false);
         
         const message = `♦️ *BLACKJACK INICIADO* ♦️\n\n` +
-                         `💵 Apuesta: *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
-                         `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
-                         `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
-                         `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
+                        `💵 Apuesta: *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
+                        `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
+                        `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
+                        `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
                         
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
         await sock.sendMessage(jid, { text: message }, { quoted: m });
@@ -211,10 +227,10 @@ export async function blackjackCommand(sock, m, args) {
                 const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(game, false);
                 
                 const message = `👇 *HIT* (Carta pedida)\n\n` +
-                                 `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
-                                 `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
+                                 `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
+                                 `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
                                  `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
-                                
+                                 
                 await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
                 await sock.sendMessage(jid, { text: message }, { quoted: m });
             }
@@ -310,8 +326,8 @@ async function finalizeGame(sock, m, sender, game, userAccount, endType) {
     
     // Mensaje de resumen final
     const summaryMsg = `\n\n--- *RESULTADO FINAL* ---\n` +
-                         `👤 *Tu Mano* (${pScore}):\n    ${pHand}\n` +
-                         `🤖 *Dealer* (${dScore}):\n    ${dHand}\n\n` +
+                         `👤 *Tu Mano* (${pScore}):\n    ${pHand}\n` +
+                         `🤖 *Dealer* (${dScore}):\n    ${dHand}\n\n` +
                          finalMsg;
 
     await sock.sendMessage(jid, { text: summaryMsg }, { quoted: m });
