@@ -21,9 +21,12 @@ import { qrGeneratorCommand } from "./qrGenerator.js"; // Texto/link a QR
 import { iaCommand } from "./ia.js"; // Preguntas a la ia (Groq AI)
 import { toAudioCommand } from "./toAudio.js"; // Extraer el audio de un video
 import { todosCommand } from "./todos.js"; // Mencionar a todos en un grupo
-import { totextCommand } from "./totext.js" // Audio/imagen a texto
-import { toimgCommand } from "./toimg.js" // Documentos docx/xlsx/pdf a imagen
-import { traducirCommand } from "./traducir.js" // Traducir textos a multiples idiomas (es,en,ja,it,fr...)
+import { totextCommand } from "./totext.js"; // Audio/imagen a texto
+import { toimgCommand } from "./toimg.js"; // Documentos docx/xlsx/pdf a imagen
+import { traducirCommand } from "./traducir.js"; // Traducir textos a multiples idiomas (es,en,ja,it,fr...)
+import { blackjackCommand } from './blackjack.js'; // Juego de cartas sencillo para el chat
+import { balCommand } from './bal.js'; // Estadísticas del jugador (dinero, partidas ganadas/perdidas...)
+import { dailyCommand } from './daily.js'; // Recompensa diaria para jugadores
 
 // Importación de variable para recopilar estadísticas de uso de comandos
 import { recordCommandUsage } from "./stats.js";
@@ -55,6 +58,10 @@ const commands = {
 	yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
 	dl: dlCommand,
+
+	// ENTRETENIMIENTO
+	bj: blackjackCommand,
+	blackjack: blackjackCommand,
 
     // UTILIDADES VARIAS
     letra: lyricsCommand,
