@@ -2,7 +2,7 @@ import { economy } from '../services/economy.js';
 
 export async function balCommand(sock, m) {
     const jid = m.key.remoteJid;
-    const sender = m.sender;
+    const sender = m.key.participant || m.sender; 
     
     await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
     

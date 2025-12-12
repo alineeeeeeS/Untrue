@@ -5,7 +5,7 @@ const COOLDOWN_TIME = 24 * 60 * 60 * 1000; // 24 horas
 
 export async function dailyCommand(sock, m) {
     const jid = m.key.remoteJid;
-    const sender = m.sender;
+    const sender = m.key.participant || m.sender;
     
     await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
     

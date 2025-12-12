@@ -86,7 +86,7 @@ const sessions = new Map();
 
 export async function blackjackCommand(sock, m, args) {
     const jid = m.key.remoteJid;
-    const sender = m.sender;
+    const sender = m.key.participant || m.sender;
     const action = args[0]?.toLowerCase();
 
     // Reacciona mientras busca la cuenta
