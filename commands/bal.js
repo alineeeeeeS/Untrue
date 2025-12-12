@@ -13,7 +13,7 @@ export async function balCommand(sock, m) {
         const message = `🏦 *ESTADO DE CUENTA*\n\n` + 
                         `👤 *Usuario:* ${m.pushName || "Desconocido"}\n` +
                         `💰 Saldo Disponible: *${user.money.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
-                        `▸ Usa _#perfil_ para ver tus estadísticas de juego.`; 
+                        `▸ Usa *#perfil* para ver tus estadísticas de juego.`; 
 
         await sock.sendMessage(jid, { react: { text: "💰", key: m.key } });
         await sock.sendMessage(jid, { text: message }, { quoted: m });

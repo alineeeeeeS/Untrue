@@ -1,9 +1,5 @@
 import { economy } from '../services/economy.js';
 
-/**
- * Comando de Pago/Transferencia. Permite transferir dinero a otro usuario.
- * Uso: #pay @usuario [monto]
- */
 export async function payCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     const senderId = m.key.participant || m.sender;
@@ -21,7 +17,7 @@ export async function payCommand(sock, m, args) {
     // Validaciones de formato
     if (!targetId || isNaN(amount) || amount <= 0) {
         return sock.sendMessage(jid, { 
-            text: '❌ *Uso correcto:* Menciona al usuario y la cantidad.\nEjemplo: *#pay @usuario 150*' 
+            text: '❌ *Uso correcto:*\n▸ #pagar _@usuario_ *monto*' 
         }, { quoted: m });
     }
 

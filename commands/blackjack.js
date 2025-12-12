@@ -120,10 +120,12 @@ function getHandsDisplay(game, revealDealer = false) {
  */
 export async function blackjackCommand(sock, m, args) {
     const jid = m.key.remoteJid;
-    const sender = m.sender;
+    // CORRECCIÓN CLAVE: Usar m.key.participant para identificar al usuario en grupos
+    const sender = m.key.participant || m.sender;
     const action = args[0] ? args[0].toLowerCase() : ''; 
     const betAmount = parseInt(args[1]);
     
+    // Usar el 'sender' corregido para buscar el juego activo
     const game = activeGames.get(sender);
     
     // --- LÓGICA DE NUEVO JUEGO (#bj start [monto]) ---
@@ -132,19 +134,20 @@ export async function blackjackCommand(sock, m, args) {
              await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
              return sock.sendMessage(jid, { 
                  text: `⚠️ Ya tienes un juego de Blackjack activo con *${game.bet} Bs*.\n` +
-                       `Usa *#hit* o *#stand* para continuar. `
+                       `▸ Usa *#hit* o *#stand* para continuar. `
              }, { quoted: m });
         }
 
         if (isNaN(betAmount) || betAmount < 50) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
             return sock.sendMessage(jid, { 
-                text: '❌ *Uso correcto:* *#bj start [apuesta]*\n(Apuesta mínima: 50 Bs)' 
+                text: '❌ *Uso correcto:*\n▸ #bj start _apuesta_\n▸ *Apuesta mínima:* 50 Bs' 
             }, { quoted: m });
         }
         
         await sock.sendMessage(jid, { react: { text: "🃏", key: m.key } });
 
+        // Usar el 'sender' corregido para obtener el saldo
         const userAccount = await economy.getUser(sender);
         if (userAccount.money < betAmount) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
@@ -157,6 +160,7 @@ export async function blackjackCommand(sock, m, args) {
         const newGame = new BlackjackGame(betAmount);
         newGame.start();
         
+        // Usar el 'sender' corregido para almacenar el juego
         activeGames.set(sender, newGame);
 
         const pScore = calculateScore(newGame.playerHand);
@@ -170,10 +174,10 @@ export async function blackjackCommand(sock, m, args) {
         const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(newGame, false);
         
         const message = `♦️ *BLACKJACK INICIADO* ♦️\n\n` +
-                        `💵 Apuesta: *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
-                        `👤 *Tu Mano* (${newPScore}):\n   ${pHand}\n\n` +
-                        `🤖 *Dealer* (${newDScore} visible):\n   ${dHand}\n\n` +
-                        `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
+                         `💵 Apuesta: *${betAmount.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs*\n\n` +
+                         `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
+                         `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
+                         `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
                         
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
         await sock.sendMessage(jid, { text: message }, { quoted: m });
@@ -183,11 +187,13 @@ export async function blackjackCommand(sock, m, args) {
     
     // --- LÓGICA DE CONTINUACIÓN (#hit o #stand) ---
     if (action === 'hit' || action === 'stand') {
+        // Usa el 'game' asociado al 'sender' corregido
         if (!game) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return sock.sendMessage(jid, { text: "❌ No tienes un juego de Blackjack activo. Usa *#bj start [apuesta]* para empezar." }, { quoted: m });
+            return sock.sendMessage(jid, { text: "❌ No tienes un juego de Blackjack activo\n▸ Usa *#bj start _apuesta_* para empezar." }, { quoted: m });
         }
         
+        // Usar el 'sender' corregido
         const userAccount = await economy.getUser(sender);
 
         if (action === 'hit') {
@@ -205,9 +211,9 @@ export async function blackjackCommand(sock, m, args) {
                 const { pHand, pScore: newPScore, dHand, dScore: newDScore } = getHandsDisplay(game, false);
                 
                 const message = `👇 *HIT* (Carta pedida)\n\n` +
-                                `👤 *Tu Mano* (${newPScore}):\n   ${pHand}\n\n` +
-                                `🤖 *Dealer* (${newDScore} visible):\n   ${dHand}\n\n` +
-                                `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
+                                 `👤 *Tu Mano* (${newPScore}):\n    ${pHand}\n\n` +
+                                 `🤖 *Dealer* (${newDScore} visible):\n    ${dHand}\n\n` +
+                                 `¿Qué deseas hacer?\n*#hit* (Pedir carta) o *#stand* (Plantarse)`;
                                 
                 await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
                 await sock.sendMessage(jid, { text: message }, { quoted: m });
@@ -230,18 +236,19 @@ export async function blackjackCommand(sock, m, args) {
         }
         
     } else {
-         // Comando mal escrito o acción desconocida
-         await sock.sendMessage(jid, { react: { text: "❓", key: m.key } });
-         return sock.sendMessage(jid, { 
-             text: `❓ *Comando BJ no reconocido.*\n` +
-                   `Usa: *#bj start [apuesta]* para empezar un juego.` 
-         }, { quoted: m });
+           // Comando mal escrito o acción desconocida
+           await sock.sendMessage(jid, { react: { text: "❓", key: m.key } });
+           return sock.sendMessage(jid, { 
+               text: `❓ *Uso correcto:*\n` +
+                     `▸ #bj start _apuesta_` 
+           }, { quoted: m });
     }
 }
 
 // --- FUNCIÓN PARA FINALIZAR EL JUEGO Y CALCULAR RESULTADOS ---
 async function finalizeGame(sock, m, sender, game, userAccount, endType) {
     const jid = m.key.remoteJid;
+    // 'sender' ya está corregido aquí.
     activeGames.delete(sender); // Eliminar el juego activo
 
     const pScore = calculateScore(game.playerHand);
@@ -303,9 +310,9 @@ async function finalizeGame(sock, m, sender, game, userAccount, endType) {
     
     // Mensaje de resumen final
     const summaryMsg = `\n\n--- *RESULTADO FINAL* ---\n` +
-                       `👤 *Tu Mano* (${pScore}):\n   ${pHand}\n` +
-                       `🤖 *Dealer* (${dScore}):\n   ${dHand}\n\n` +
-                       finalMsg;
+                         `👤 *Tu Mano* (${pScore}):\n    ${pHand}\n` +
+                         `🤖 *Dealer* (${dScore}):\n    ${dHand}\n\n` +
+                         finalMsg;
 
     await sock.sendMessage(jid, { text: summaryMsg }, { quoted: m });
 }
