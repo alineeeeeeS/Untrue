@@ -120,10 +120,9 @@ function getHandsDisplay(game, revealDealer = false) {
  */
 export async function blackjackCommand(sock, m, args) {
     const jid = m.key.remoteJid;
-    // CORRECCIÓN CLAVE: Usar m.key.participant para identificar al usuario en grupos
     const sender = m.key.participant || m.sender;
     const action = args[0] ? args[0].toLowerCase() : ''; 
-    const rawBet = args[1]; // <--- CAMBIO: Capturamos el argumento de la apuesta sin parsear
+    const rawBet = args[1];
     
     // Usar el 'sender' corregido para buscar el juego activo
     const game = activeGames.get(sender);
@@ -143,7 +142,7 @@ export async function blackjackCommand(sock, m, args) {
 
         let betAmount;
         
-        // 2. CORRECCIÓN CLAVE: Determinar el monto de la apuesta (manejar 'all' y parsear robustamente)
+        // 2. Determinar el monto de la apuesta (manejar 'all' y parsear robustamente)
         if (rawBet && rawBet.toLowerCase() === 'all') {
             betAmount = userAccount.money; // Apuesta el saldo total
         } else {
