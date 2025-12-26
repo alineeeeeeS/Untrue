@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp'; // Usaremos sharp para optimizar la imagen
+import sharp from 'sharp';
 
 const execPromise = promisify(exec);
 
@@ -26,52 +26,55 @@ export async function scCommand(sock, m, args) {
 
         if (!data) throw new Error("No se encontró la canción.");
 
-        // 2. Descargar Audio (128k para ligereza)
+        // 2. Descargar Audio
         const dlCmd = `yt-dlp -x --audio-format mp3 --audio-quality 128K --ffmpeg-location /usr/bin/ffmpeg -o "${tempFilePath}" "${data.webpage_url}"`;
         await execPromise(dlCmd);
 
-        // 3. Procesar Miniatura con SHARP (Para que WhatsApp no la rechace)
+        // 3. Procesamiento de Miniatura "Ultra-Safe"
         let thumbnailBuffer = null;
         if (data.thumbnail) {
             try {
                 const response = await fetch(data.thumbnail);
                 if (response.ok) {
                     const bufferRaw = Buffer.from(await response.arrayBuffer());
-                    // Redimensionamos a 300x300 y convertimos a JPEG ligero
                     thumbnailBuffer = await sharp(bufferRaw)
-                        .resize(300, 300)
-                        .jpeg({ quality: 70 })
+                        .resize(200, 200) // Tamaño pequeño es más seguro
+                        .flatten({ background: { r: 255, g: 255, b: 255 } }) // Elimina transparencias
+                        .jpeg({ quality: 80, chromaSubsampling: '4:4:4' }) // Perfil de color estándar
                         .toBuffer();
                 }
             } catch (thumbError) {
-                console.warn("[SC] Error procesando miniatura con sharp:", thumbError.message);
+                console.warn("[SC] Falló miniatura, siguiendo sin ella.");
             }
         }
 
-        // 4. Intento de Envío con Embed
+        // 4. ENVÍO CON ESTRUCTURA BLINDADA
+        const audioData = fs.readFileSync(tempFilePath);
+        
         try {
+            // Intentamos envío con miniatura (Embed)
             await sock.sendMessage(remoteJid, {
-                audio: fs.readFileSync(tempFilePath),
+                audio: audioData,
                 mimetype: 'audio/mpeg',
                 fileName: `${data.title}.mp3`,
                 contextInfo: {
                     externalAdReply: {
-                        title: data.title.substring(0, 60),
-                        body: (data.uploader || 'SoundCloud').substring(0, 40),
-                        thumbnail: thumbnailBuffer,
+                        title: data.title.substring(0, 50),
+                        body: 'SoundCloud Music',
+                        thumbnail: thumbnailBuffer, // El buffer optimizado por Sharp
                         sourceUrl: data.webpage_url,
                         mediaType: 1,
                         showAdAttribution: true,
-                        renderLargerThumbnail: true
+                        renderLargerThumbnail: false // Desactivado para evitar errores de carga
                     }
                 }
             }, { quoted: m });
-        } catch (sendError) {
-            console.error("[SC] Error en envío con embed, intentando envío simple...");
-            // Si falla el envío con miniatura, enviamos solo el audio
+        } catch (err) {
+            // FALLBACK: Si WhatsApp rechaza el embed, enviamos el audio solo
             await sock.sendMessage(remoteJid, {
-                audio: fs.readFileSync(tempFilePath),
-                mimetype: 'audio/mpeg'
+                audio: audioData,
+                mimetype: 'audio/mpeg',
+                fileName: `${data.title}.mp3`
             }, { quoted: m });
         }
 
@@ -83,7 +86,7 @@ export async function scCommand(sock, m, args) {
     } catch (error) {
         console.error('[SC] ERROR:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(remoteJid, { text: `❌ Error: ${error.message}` }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text: "❌ No se pudo completar la descarga. Intenta de nuevo." }, { quoted: m });
         if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
     }
 }
