@@ -6,6 +6,7 @@ import { igreelsCommand } from "./igreels.js"; // Descargar reels de instagram
 import { igpostsCommand } from "./igposts.js"; // Descargar posts/carruseles de instagram
 import { facebookCommand } from "./facebook.js"; // Descargar contenido desde facebook
 import { twitterCommand } from "./twitter.js"; // Descargar contenido desde X/Twitter
+import { scCommand } from "./soundcloud.js"; // Descargar música desde SoundCloud
 import { pinterestCommand } from "./pinterest.js" // Descargar contenido desde pinterest
 import { helpCommand } from "./help.js"; // Menú de ayuda
 import { mediaToStickerCommand } from "./mediaToSticker.js"; // Convertir imagen/video a sticker
@@ -63,6 +64,8 @@ const commands = {
 	ytv: youtubeCommand,  
 	yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
+	sc: scCommand,
+	soundcloud: scCommand,
 	dl: dlCommand,
 
 	// ECONOMÍA
