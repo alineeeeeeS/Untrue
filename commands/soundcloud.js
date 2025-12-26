@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp'; // Usaremos sharp para optimizar la imagen
 
 const execPromise = promisify(exec);
 
@@ -16,54 +17,64 @@ export async function scCommand(sock, m, args) {
     const tempFilePath = path.join('./temp', `sc_${tempId}.mp3`);
 
     try {
-        // 1. Reacción de "Procesando" ⌛
         await sock.sendMessage(remoteJid, { react: { text: "⌛", key: m.key } });
 
-        // 2. Obtener Metadatos (Título, Autor, Miniatura, URL)
-        // Usamos --dump-single-json para obtener la info sin descargar aún
+        // 1. Obtener Metadatos
         const metaCmd = `yt-dlp --dump-single-json --no-warnings --no-check-certificate ${input}`;
         const { stdout: metaStdout } = await execPromise(metaCmd);
         const data = isUrl ? JSON.parse(metaStdout) : JSON.parse(metaStdout).entries[0];
 
         if (!data) throw new Error("No se encontró la canción.");
 
-        // 3. Descarga y Conversión a MP3
+        // 2. Descargar Audio (128k para ligereza)
         const dlCmd = `yt-dlp -x --audio-format mp3 --audio-quality 128K --ffmpeg-location /usr/bin/ffmpeg -o "${tempFilePath}" "${data.webpage_url}"`;
         await execPromise(dlCmd);
 
-        // 4. Obtener Miniatura (Thumbnail)
+        // 3. Procesar Miniatura con SHARP (Para que WhatsApp no la rechace)
         let thumbnailBuffer = null;
         if (data.thumbnail) {
             try {
                 const response = await fetch(data.thumbnail);
                 if (response.ok) {
-                    thumbnailBuffer = Buffer.from(await response.arrayBuffer());
+                    const bufferRaw = Buffer.from(await response.arrayBuffer());
+                    // Redimensionamos a 300x300 y convertimos a JPEG ligero
+                    thumbnailBuffer = await sharp(bufferRaw)
+                        .resize(300, 300)
+                        .jpeg({ quality: 70 })
+                        .toBuffer();
                 }
             } catch (thumbError) {
-                console.warn("[SC] Error miniatura:", thumbError.message);
+                console.warn("[SC] Error procesando miniatura con sharp:", thumbError.message);
             }
         }
 
-        // 5. Preparar mensaje de audio con "Embed"
-        const audioMessage = {
-            audio: fs.readFileSync(tempFilePath),
-            mimetype: 'audio/mpeg',
-            fileName: `${data.title}.mp3`,
-            contextInfo: {
-                externalAdReply: {
-                    title: data.title.substring(0, 60),
-                    body: (data.uploader || 'SoundCloud').substring(0, 40),
-                    thumbnail: thumbnailBuffer,
-                    sourceUrl: data.webpage_url,
-                    mediaType: 1,
-                    showAdAttribution: true,
-                    renderLargerThumbnail: true
+        // 4. Intento de Envío con Embed
+        try {
+            await sock.sendMessage(remoteJid, {
+                audio: fs.readFileSync(tempFilePath),
+                mimetype: 'audio/mpeg',
+                fileName: `${data.title}.mp3`,
+                contextInfo: {
+                    externalAdReply: {
+                        title: data.title.substring(0, 60),
+                        body: (data.uploader || 'SoundCloud').substring(0, 40),
+                        thumbnail: thumbnailBuffer,
+                        sourceUrl: data.webpage_url,
+                        mediaType: 1,
+                        showAdAttribution: true,
+                        renderLargerThumbnail: true
+                    }
                 }
-            }
-        };
+            }, { quoted: m });
+        } catch (sendError) {
+            console.error("[SC] Error en envío con embed, intentando envío simple...");
+            // Si falla el envío con miniatura, enviamos solo el audio
+            await sock.sendMessage(remoteJid, {
+                audio: fs.readFileSync(tempFilePath),
+                mimetype: 'audio/mpeg'
+            }, { quoted: m });
+        }
 
-        // 6. Enviar audio y cambiar reacción a ✅
-        await sock.sendMessage(remoteJid, audioMessage, { quoted: m });
         await sock.sendMessage(remoteJid, { react: { text: "✅", key: m.key } });
 
         // Limpieza
@@ -71,19 +82,8 @@ export async function scCommand(sock, m, args) {
 
     } catch (error) {
         console.error('[SC] ERROR:', error);
-        
-        // 7. Reacción de Error ❌ y Mensaje
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
-        
-        let errorMessage = "❌ *Error al descargar de SoundCloud*";
-        if (error.message.includes("No se encontró")) {
-            errorMessage = "❌ *No se encontró ningún resultado para tu búsqueda.*";
-        } else if (error.message.includes("JSON")) {
-            errorMessage = "❌ *Error al obtener información. Verifica el link.*";
-        }
-
-        await sock.sendMessage(remoteJid, { text: errorMessage }, { quoted: m });
-        
+        await sock.sendMessage(remoteJid, { text: `❌ Error: ${error.message}` }, { quoted: m });
         if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
     }
 }
