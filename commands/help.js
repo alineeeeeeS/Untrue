@@ -9,8 +9,8 @@ export async function helpCommand(sock, m) {
 🎥 *DESCARGAS*
   • #tt [link] ▸ Videos/imágenes de TikTok
   • #tta [link] ▸ Audio de un TikTok
-  • #ytv [link/prompt] ▸ Videos de YouTube
-  • #yta [link/prompt] ▸ Audio de YouTube
+  • #ytv [link/búsqueda] ▸ Videos de YouTube
+  • #yta [link/búsqueda] ▸ Audio de YouTube
   • #reel [link] ▸ Reel de Instagram
   • #post [link] ▸ Post específico o carrusel entero de Instagram
   • #fb [link] ▸ Videos de Facebook
@@ -19,7 +19,8 @@ export async function helpCommand(sock, m) {
   • #dl [link] ▸ Distintos tipos de descargas
 
 🎵 *FUNCIONES - MÚSICA*
-  • #music [artista] [canción] ▸ Música desde YouTube
+  • #music [link/búsqueda] ▸ Música desde YouTube
+  • #sc [link/búsqueda] ▸ Música desde SoundCloud
   • #letra [artista] [canción]
 
 🧰 *UTILIDADES*

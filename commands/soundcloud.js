@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
+import axios from 'axios'; 
 
 const execPromise = promisify(exec);
 
@@ -10,41 +11,39 @@ export async function scCommand(sock, m, args) {
 
     if (args.length === 0) {
         return sock.sendMessage(remoteJid, { 
-            text: "🔎 *SoundCloud Downloader*\n\nEscribe el nombre de la canción o pega un link.\nEjemplo: `#sc airbag radiohead` o `#sc [link]`" 
+            text: "🔎 *SoundCloud Downloader*\n\nEscribe el nombre de la canción o pega un link.\nEjemplo: `#sc airbag radiohead`" 
         }, { quoted: m });
     }
 
     const query = args.join(' ');
     const isUrl = query.startsWith('http');
-    // Escapamos la consulta para evitar errores con caracteres especiales
     const input = isUrl ? `"${query}"` : `"scsearch1:${query}"`;
-    
-    // Generamos un nombre de archivo único en la carpeta temp/ que ya existe en tu bot
     const tempFilePath = path.join('./temp', `sc_${Date.now()}`);
 
     try {
-        await sock.sendMessage(remoteJid, { text: "⏳ Buscando y procesando en SoundCloud... Esto puede tardar unos segundos." }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text: "⏳ Buscando y procesando... Por favor espera." }, { quoted: m });
 
-        // 1. Obtener metadatos y descargar al mismo tiempo usando yt-dlp
-        // -x: Extraer audio
-        // --audio-format mp3: Convertir a mp3
-        // --print: Para obtener la info en JSON al final
+        // 1. Descarga y obtención de datos con yt-dlp
         const command = `yt-dlp -x --audio-format mp3 --print-json --no-warnings --no-playlist -o "${tempFilePath}.%(ext)s" ${input}`;
-        
-        console.log(`Ejecutando: ${command}`);
         const { stdout } = await execPromise(command);
         const data = JSON.parse(stdout);
-
         const finalFileName = `${tempFilePath}.mp3`;
 
-        if (!fs.existsSync(finalFileName)) {
-            throw new Error("El archivo de audio no se generó correctamente.");
+        // 2. Descargar la miniatura a un Buffer para evitar errores de entrega
+        let thumbnailBuffer = null;
+        if (data.thumbnail) {
+            try {
+                const res = await axios.get(data.thumbnail, { responseType: 'arraybuffer' });
+                thumbnailBuffer = Buffer.from(res.data, 'binary');
+            } catch (e) {
+                console.error("Error descargando miniatura:", e.message);
+            }
         }
 
-        // 2. Leer el archivo generado
+        // 3. Leer el audio
         const audioBuffer = fs.readFileSync(finalFileName);
 
-        // 3. Enviar a WhatsApp
+        // 4. Enviar a WhatsApp (Estructura optimizada)
         await sock.sendMessage(remoteJid, {
             audio: audioBuffer,
             mimetype: 'audio/mpeg',
@@ -56,24 +55,22 @@ export async function scCommand(sock, m, args) {
                     mediaType: 1,
                     showAdAttribution: true,
                     renderLargerThumbnail: true,
-                    thumbnailUrl: data.thumbnail,
+                    // Si falló la descarga de la miniatura, no enviamos este campo para no romper el mensaje
+                    thumbnail: thumbnailBuffer, 
                     sourceUrl: data.webpage_url
                 }
             }
         }, { quoted: m });
 
-        // 4. Limpieza: Borrar el archivo temporal para no llenar el disco de Railway
-        fs.unlinkSync(finalFileName);
+        // 5. Limpieza
+        if (fs.existsSync(finalFileName)) fs.unlinkSync(finalFileName);
 
     } catch (error) {
-        console.error('❌ Error detallado en SoundCloud:', error);
-        
-        // Limpieza en caso de error si el archivo alcanzó a crearse
-        const errorFile = `${tempFilePath}.mp3`;
-        if (fs.existsSync(errorFile)) fs.unlinkSync(errorFile);
+        console.error('❌ Error en SoundCloud:', error);
+        if (fs.existsSync(`${tempFilePath}.mp3`)) fs.unlinkSync(`${tempFilePath}.mp3`);
 
         await sock.sendMessage(remoteJid, { 
-            text: `❌ No se pudo descargar.\n\n*Causa:* ${error.message.includes('JSON') ? 'No se encontraron resultados' : 'Error en el servidor'}` 
+            text: `❌ Error: No se pudo completar la descarga.` 
         }, { quoted: m });
     }
 }
