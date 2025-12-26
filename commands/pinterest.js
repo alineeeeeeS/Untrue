@@ -12,7 +12,7 @@ export async function pinterestCommand(sock, m, args) {
         // Verificar si hay URL
         if (args.length === 0) {
             await sock.sendMessage(jid, {
-                text: '📌 *Uso correcto:*\n`▸ #pin _link_'
+                text: '❌ *Uso correcto:*\n▸ #pin _link_'
             }, { quoted: m });
             return;
         }
