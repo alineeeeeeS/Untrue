@@ -1,5 +1,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import fs from 'fs';
+import path from 'path';
 
 const execPromise = promisify(exec);
 
@@ -14,33 +16,35 @@ export async function scCommand(sock, m, args) {
 
     const query = args.join(' ');
     const isUrl = query.startsWith('http');
-    // Usamos scsearch1: para obtener solo el primer resultado si es una búsqueda
-    const input = isUrl ? `"${query}"` : ` "scsearch1:${query}"`;
+    // Escapamos la consulta para evitar errores con caracteres especiales
+    const input = isUrl ? `"${query}"` : `"scsearch1:${query}"`;
+    
+    // Generamos un nombre de archivo único en la carpeta temp/ que ya existe en tu bot
+    const tempFilePath = path.join('./temp', `sc_${Date.now()}`);
 
     try {
-        await sock.sendMessage(remoteJid, { text: "⏳ Buscando en SoundCloud..." }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text: "⏳ Buscando y procesando en SoundCloud... Esto puede tardar unos segundos." }, { quoted: m });
 
-        // 1. Obtener metadatos (Título, Uploader, Thumbnail y URL real)
-        const metadataCmd = `yt-dlp --dump-single-json --no-warnings ${input}`;
-        const { stdout: metaStdout } = await execPromise(metadataCmd);
-        const rawData = JSON.parse(metaStdout);
+        // 1. Obtener metadatos y descargar al mismo tiempo usando yt-dlp
+        // -x: Extraer audio
+        // --audio-format mp3: Convertir a mp3
+        // --print: Para obtener la info en JSON al final
+        const command = `yt-dlp -x --audio-format mp3 --print-json --no-warnings --no-playlist -o "${tempFilePath}.%(ext)s" ${input}`;
         
-        // yt-dlp devuelve los datos en 'entries' si es una búsqueda
-        const data = isUrl ? rawData : rawData.entries[0];
+        console.log(`Ejecutando: ${command}`);
+        const { stdout } = await execPromise(command);
+        const data = JSON.parse(stdout);
 
-        if (!data) throw new Error("No se encontró el contenido.");
+        const finalFileName = `${tempFilePath}.mp3`;
 
-        // 2. Descargar el audio y convertirlo a Buffer
-        // Usamos la mejor calidad de audio disponible
-        const downloadCmd = `yt-dlp -f bestaudio -o - "${data.webpage_url}"`;
-        
-        // Ejecutamos la descarga con un buffer máximo mayor para evitar errores en archivos grandes
-        const { stdout: audioBuffer } = await execPromise(downloadCmd, { 
-            encoding: 'buffer', 
-            maxBuffer: 100 * 1024 * 1024 // 100MB
-        });
+        if (!fs.existsSync(finalFileName)) {
+            throw new Error("El archivo de audio no se generó correctamente.");
+        }
 
-        // 3. Enviar el audio con metadatos enriquecidos
+        // 2. Leer el archivo generado
+        const audioBuffer = fs.readFileSync(finalFileName);
+
+        // 3. Enviar a WhatsApp
         await sock.sendMessage(remoteJid, {
             audio: audioBuffer,
             mimetype: 'audio/mpeg',
@@ -58,10 +62,18 @@ export async function scCommand(sock, m, args) {
             }
         }, { quoted: m });
 
+        // 4. Limpieza: Borrar el archivo temporal para no llenar el disco de Railway
+        fs.unlinkSync(finalFileName);
+
     } catch (error) {
-        console.error('❌ Error en SoundCloud:', error);
+        console.error('❌ Error detallado en SoundCloud:', error);
+        
+        // Limpieza en caso de error si el archivo alcanzó a crearse
+        const errorFile = `${tempFilePath}.mp3`;
+        if (fs.existsSync(errorFile)) fs.unlinkSync(errorFile);
+
         await sock.sendMessage(remoteJid, { 
-            text: `❌ Error al procesar SoundCloud.\n\nDetalle: ${error.message}` 
+            text: `❌ No se pudo descargar.\n\n*Causa:* ${error.message.includes('JSON') ? 'No se encontraron resultados' : 'Error en el servidor'}` 
         }, { quoted: m });
     }
 }
