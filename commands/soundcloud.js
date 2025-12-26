@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp';
+import fetch from 'node-fetch';
 
 const execPromise = promisify(exec);
 
@@ -17,67 +17,52 @@ export async function scCommand(sock, m, args) {
     const tempFilePath = path.join('./temp', `sc_${tempId}.mp3`);
 
     try {
+        // 1. Reacción Inicial
         await sock.sendMessage(remoteJid, { react: { text: "⌛", key: m.key } });
 
-        // 1. Obtener Metadatos
-        const metaCmd = `yt-dlp --dump-single-json --no-warnings --no-check-certificate ${input}`;
+        // 2. Obtener Metadatos (Usando la lógica de tu youtubeDownloader)
+        const metaCmd = `yt-dlp --dump-json --no-playlist --no-warnings ${input}`;
         const { stdout: metaStdout } = await execPromise(metaCmd);
         const data = isUrl ? JSON.parse(metaStdout) : JSON.parse(metaStdout).entries[0];
 
         if (!data) throw new Error("No se encontró la canción.");
 
-        // 2. Descargar Audio
+        // 3. Descarga Directa
         const dlCmd = `yt-dlp -x --audio-format mp3 --audio-quality 128K --ffmpeg-location /usr/bin/ffmpeg -o "${tempFilePath}" "${data.webpage_url}"`;
         await execPromise(dlCmd);
 
-        // 3. Procesamiento de Miniatura "Ultra-Safe"
+        // 4. Procesar Miniatura (Copiado de tu lógica de youtubeAudio.js)
         let thumbnailBuffer = null;
         if (data.thumbnail) {
             try {
                 const response = await fetch(data.thumbnail);
-                if (response.ok) {
-                    const bufferRaw = Buffer.from(await response.arrayBuffer());
-                    thumbnailBuffer = await sharp(bufferRaw)
-                        .resize(200, 200) // Tamaño pequeño es más seguro
-                        .flatten({ background: { r: 255, g: 255, b: 255 } }) // Elimina transparencias
-                        .jpeg({ quality: 80, chromaSubsampling: '4:4:4' }) // Perfil de color estándar
-                        .toBuffer();
-                }
-            } catch (thumbError) {
-                console.warn("[SC] Falló miniatura, siguiendo sin ella.");
+                thumbnailBuffer = Buffer.from(await response.arrayBuffer());
+            } catch (thumbnailError) {
+                console.warn("[SC] No se pudo obtener thumbnail:", thumbnailError.message);
             }
         }
 
-        // 4. ENVÍO CON ESTRUCTURA BLINDADA
-        const audioData = fs.readFileSync(tempFilePath);
-        
-        try {
-            // Intentamos envío con miniatura (Embed)
-            await sock.sendMessage(remoteJid, {
-                audio: audioData,
-                mimetype: 'audio/mpeg',
-                fileName: `${data.title}.mp3`,
-                contextInfo: {
-                    externalAdReply: {
-                        title: data.title.substring(0, 50),
-                        body: 'SoundCloud Music',
-                        thumbnail: thumbnailBuffer, // El buffer optimizado por Sharp
-                        sourceUrl: data.webpage_url,
-                        mediaType: 1,
-                        showAdAttribution: true,
-                        renderLargerThumbnail: false // Desactivado para evitar errores de carga
-                    }
+        // 5. Construir el mensaje de Audio (Siguiendo tu estructura de YouTube)
+        const audioBuffer = fs.readFileSync(tempFilePath);
+        const audioMessage = { 
+            audio: audioBuffer,
+            mimetype: 'audio/mpeg',
+            fileName: `${data.title.substring(0, 50)}.mp3`,
+            contextInfo: {
+                externalAdReply: {
+                    title: data.title.substring(0, 60),
+                    body: (data.uploader || 'SoundCloud').substring(0, 40),
+                    thumbnail: thumbnailBuffer,
+                    sourceUrl: data.webpage_url,
+                    mediaType: 1,
+                    showAdAttribution: true,
+                    // Eliminamos renderLargerThumbnail porque a veces causa el error fantasma
                 }
-            }, { quoted: m });
-        } catch (err) {
-            // FALLBACK: Si WhatsApp rechaza el embed, enviamos el audio solo
-            await sock.sendMessage(remoteJid, {
-                audio: audioData,
-                mimetype: 'audio/mpeg',
-                fileName: `${data.title}.mp3`
-            }, { quoted: m });
-        }
+            }
+        };
 
+        // 6. ENVIAR Y REACCIONAR
+        await sock.sendMessage(remoteJid, audioMessage, { quoted: m });
         await sock.sendMessage(remoteJid, { react: { text: "✅", key: m.key } });
 
         // Limpieza
@@ -86,7 +71,12 @@ export async function scCommand(sock, m, args) {
     } catch (error) {
         console.error('[SC] ERROR:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(remoteJid, { text: "❌ No se pudo completar la descarga. Intenta de nuevo." }, { quoted: m });
+        
+        // Mensaje de error para el usuario
+        await sock.sendMessage(remoteJid, { 
+            text: `❌ *ERROR EN SOUNDCLOUD*\n\n${error.message}` 
+        }, { quoted: m });
+
         if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
     }
 }
