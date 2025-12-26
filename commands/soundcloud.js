@@ -6,12 +6,17 @@ import fetch from 'node-fetch';
 
 const execPromise = promisify(exec);
 
-// Ruta exacta según tu Dockerfile
-const YT_DLP_PATH = '/usr/bin/yt-dlp'; 
+const YT_DLP = '/usr/bin/yt-dlp';
 
 export async function scCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
-    if (!args || args.length === 0) return sock.sendMessage(remoteJid, { text: "❌ *Uso correcto:*\n▸ #sc _artista_ *canción*\n▸ #sc _link_" }, { quoted: m });
+
+    // --- MENSAJE DE USO SIMPLE ---
+    if (!args || args.length === 0) {
+        return sock.sendMessage(remoteJid, { 
+            text: "❌ *Uso correcto:*\n▸ #sc _artista_ *canción*\n▸ #sc _link_" 
+        }, { quoted: m });
+    }
 
     const query = args.join(' ');
     const isUrl = query.startsWith('http');
@@ -19,80 +24,53 @@ export async function scCommand(sock, m, args) {
     const tempFilePath = path.join('./temp', `sc_${Date.now()}.mp3`);
 
     try {
-        // 1. Reacción de inicio
+        // 1. Reacción de carga
         await sock.sendMessage(remoteJid, { react: { text: "⌛", key: m.key } });
 
-        // 2. Obtener Metadatos (Sin descargar aún)
-        const { stdout: metaStdout } = await execPromise(`"${YT_DLP_PATH}" --dump-json --no-playlist --no-warnings ${input}`);
-        const rawData = JSON.parse(metaStdout);
-        const data = rawData.entries ? rawData.entries[0] : rawData;
+        // 2. Obtener Metadatos
+        const { stdout: metaStdout } = await execPromise(`"${YT_DLP}" --dump-json --no-playlist --no-warnings ${input}`);
+        const data = JSON.parse(metaStdout).entries ? JSON.parse(metaStdout).entries[0] : JSON.parse(metaStdout);
 
-        if (!data) throw new Error("No se encontró el audio.");
+        // 3. Descarga Directa (Formato compatible con WhatsApp)
+        await execPromise(`"${YT_DLP}" -x --audio-format mp3 --audio-quality 128K --no-check-certificate -o "${tempFilePath}" "${data.webpage_url}"`);
 
-        // 3. Descarga y Conversión (Forzando bitrate estándar de WhatsApp)
-        // Usamos ffmpeg para asegurar que el contenedor sea MP3 puro
-        await execPromise(`"${YT_DLP_PATH}" -x --audio-format mp3 --audio-quality 128K --no-check-certificate -o "${tempFilePath}" "${data.webpage_url}"`);
-
-        if (!fs.existsSync(tempFilePath)) throw new Error("Error en la creación del archivo.");
-
-        // 4. Procesar Miniatura (Lógica exacta de tu youtubeAudio.js)
-        let thumbnailBuffer = null;
+        // 4. Procesar Miniatura (Lógica YouTube)
+        let thumb = null;
         if (data.thumbnail) {
             try {
-                const response = await fetch(data.thumbnail);
-                if (response.ok) {
-                    thumbnailBuffer = Buffer.from(await response.arrayBuffer());
-                }
-            } catch (e) {
-                console.warn("[SC] Error al descargar miniatura:", e.message);
-            }
+                const res = await fetch(data.thumbnail);
+                if (res.ok) thumb = await res.buffer();
+            } catch (e) { console.error("Error thumb ignorado"); }
         }
 
-        // 5. INTENTO DE ENVÍO ROBUSTO
-        const audioBuffer = fs.readFileSync(tempFilePath);
-        const baseOptions = {
-            audio: audioBuffer,
+        // 5. Envío de Audio (Estructura Blindada)
+        await sock.sendMessage(remoteJid, {
+            audio: { url: tempFilePath }, // Envío por ruta para máxima estabilidad
             mimetype: 'audio/mpeg',
-            fileName: `${data.title}.mp3`
-        };
-
-        try {
-            // Intento 1: Con "Embed" (Miniatura y Link)
-            await sock.sendMessage(remoteJid, {
-                ...baseOptions,
-                contextInfo: {
-                    externalAdReply: {
-                        title: data.title.substring(0, 60),
-                        body: (data.uploader || 'SoundCloud').substring(0, 40),
-                        thumbnail: thumbnailBuffer,
-                        sourceUrl: data.webpage_url,
-                        mediaType: 1,
-                        showAdAttribution: true
-                    }
+            fileName: `${data.title}.mp3`,
+            contextInfo: {
+                externalAdReply: {
+                    title: data.title.substring(0, 50),
+                    body: (data.uploader || 'SoundCloud').substring(0, 30),
+                    thumbnail: thumb,
+                    sourceUrl: data.webpage_url,
+                    mediaType: 1,
+                    showAdAttribution: true
                 }
-            }, { quoted: m });
-        } catch (embedError) {
-            console.error("[SC] Error en envío con embed, reintentando envío simple...");
-            // Intento 2: Envío simple (Sin miniatura) si el anterior fue bloqueado
-            await sock.sendMessage(remoteJid, baseOptions, { quoted: m });
-        }
+            }
+        }, { quoted: m });
 
         // 6. Éxito
         await sock.sendMessage(remoteJid, { react: { text: "✅", key: m.key } });
 
     } catch (error) {
-        console.error('[SC] ERROR CRÍTICO:', error);
+        console.error('[SC ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
-        
-        let msg = "❌ *ERROR EN LA DESCARGA*\n\n";
-        if (error.message.includes("JSON")) msg += "No se encontró la canción. Intenta ser más específico.";
-        else msg += "Ocurrió un error técnico al procesar el audio.";
-
-        await sock.sendMessage(remoteJid, { text: msg }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text: "❌ No se encontró la canción o hubo un error en la descarga." }, { quoted: m });
     } finally {
-        // Limpieza garantizada
-        if (fs.existsSync(tempFilePath)) {
-            try { fs.unlinkSync(tempFilePath); } catch (e) {}
-        }
+        // Borrado seguro con delay
+        setTimeout(() => {
+            if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
+        }, 10000);
     }
 }
