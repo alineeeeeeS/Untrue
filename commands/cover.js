@@ -42,8 +42,6 @@ export async function coverCommand(sock, m, args) {
 
         // 5. Formatear información
         const caption = `
-🖼️ *PORTADA ENCONTRADA*
-
 💿 *Álbum:* ${result.collectionName}
 👤 *Artista:* ${result.artistName}
 📅 *Lanzamiento:* ${new Date(result.releaseDate).getFullYear()}
