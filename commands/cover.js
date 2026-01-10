@@ -1,4 +1,4 @@
-// import fetch from 'node-fetch';
+import fetch from 'node-fetch';
 
 export async function coverCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
@@ -9,41 +9,56 @@ export async function coverCommand(sock, m, args) {
         }, { quoted: m });
     }
 
-    const query = args.join(' ').toLowerCase();
+    const query = args.join(' ');
 
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🖼️", key: m.key } });
 
-        // Pedimos 25 resultados para tener un margen amplio de búsqueda, igual que haría un motor de búsqueda web
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=25`;
+        // 1. URL Optimizada: Forzamos la entidad ALBUM y el país US.
+        // Añadimos 'explicit=yes' para evitar que filtros de contenido oculten resultados.
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=10&explicit=yes`;
         
         const response = await fetch(url);
         const data = await response.json();
 
         if (!data.results || data.results.length === 0) {
+            // SEGUNDO INTENTO: Búsqueda general si falla la de álbum
+            const fallbackUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=5&country=us`;
+            const fbRes = await fetch(fallbackUrl);
+            const fbData = await fbRes.json();
+            data.results = fbData.results;
+        }
+
+        if (!data.results || data.results.length === 0) {
             throw new Error("No encontrado");
         }
 
-        // --- LÓGICA DE SELECCIÓN INTELIGENTE ---
-        // Buscamos entre los 25 resultados aquel donde el título del álbum esté contenido en la búsqueda del usuario
-        // Esto evita que si buscas 'Animals' te mande 'Meddle' solo por ser del mismo artista.
-        let result = data.results.find(res => {
-            const albumName = res.collectionName.toLowerCase();
-            const artistName = res.artistName.toLowerCase();
-            // Verificamos si las palabras clave están en el resultado
-            return query.includes(albumName) || albumName.includes(query.replace(artistName, '').trim());
+        // 2. FILTRADO DE PRECISIÓN (ESTILO BEN DODSON)
+        // Buscamos el resultado que mejor encaje con las palabras enviadas.
+        let result = data.results[0];
+        const queryLower = query.toLowerCase();
+
+        // Buscamos un álbum que contenga el nombre del artista Y el álbum en el título/artista.
+        const exactMatch = data.results.find(res => {
+            const collection = (res.collectionName || "").toLowerCase();
+            const artist = (res.artistName || "").toLowerCase();
+            
+            // Si el usuario puso Pink Floyd y Animals, buscamos que AMBOS estén presentes.
+            const terms = queryLower.split(' ');
+            return terms.every(t => collection.includes(t) || artist.includes(t));
         });
 
-        // Si el filtro inteligente no encuentra nada exacto, usamos el primer resultado por defecto
-        if (!result) result = data.results[0];
-        
-        // Calidad máxima 1500x1500bb
-        const hiResUrl = result.artworkUrl100.replace('100x100bb', '1500x1500bb');
+        if (exactMatch) result = exactMatch;
+
+        // 3. CALIDAD MÁXIMA (1500x1500bb)
+        // iTunes almacena las imágenes originales en esta resolución.
+        const imgUrl = result.artworkUrl100 || result.artworkUrl60;
+        const hiResUrl = imgUrl.replace(/100x100bb|60x60bb/, '1500x1500bb');
 
         const caption = `
-💿 *Álbum:* ${result.collectionName}
+💿 *Álbum:* ${result.collectionName || 'N/A'}
 👤 *Artista:* ${result.artistName}
-📅 *Año:* ${new Date(result.releaseDate).getFullYear()}
+📅 *Año:* ${result.releaseDate ? new Date(result.releaseDate).getFullYear() : 'N/A'}
 `.trim();
 
         await sock.sendMessage(remoteJid, {
@@ -57,7 +72,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró la portada. Intenta escribir el nombre del álbum y el artista claramente." 
+            text: "❌ No se encontró la portada exacta. Intenta ser más específico con el nombre del álbum." 
         }, { quoted: m });
     }
 }
