@@ -10,65 +10,62 @@ export async function coverCommand(sock, m, args) {
     }
 
     const query = args.join(' ').toLowerCase().trim();
-    // Separamos la búsqueda en palabras clave (tokens)
     const queryTerms = query.split(/\s+/);
 
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🔍", key: m.key } });
 
-        // 1. SOLICITUD AMPLIA
-        // Pedimos 50 resultados. No confiamos en el #1 de iTunes.
-        // Usamos 'music' general para asegurar que traiga todo y luego filtramos nosotros.
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=album&limit=50&country=us`;
+        // 1. OBTENCIÓN DE CANDIDATOS
+        // Pedimos hasta 100 resultados. Para bandas legendarias como Pink Floyd, 
+        // los álbumes originales a veces están enterrados bajo 50 remasters y tributos.
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=album&limit=100&country=us`;
         
         const response = await fetch(url);
         const data = await response.json();
 
         if (!data.results || data.results.length === 0) {
-             // Fallback: Si no hay álbumes, intentamos con canciones (para sencillos)
-             const songUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=50&country=us`;
-             const songRes = await fetch(songUrl);
-             const songData = await songRes.json();
-             data.results = songData.results || [];
-        }
-
-        if (data.results.length === 0) {
             throw new Error("No encontrado");
         }
 
-        // 2. ALGORITMO DE FILTRADO Y PUNTUACIÓN
-        // Vamos a encontrar el "Candidato Perfecto"
-        const candidates = data.results.filter(item => {
+        // 2. PRIMER FILTRO: COINCIDENCIA DE PALABRAS
+        // Solo aceptamos resultados que contengan TODAS las palabras buscadas
+        // (ya sea en el título del disco o en el nombre del artista)
+        let candidates = data.results.filter(item => {
             const artist = (item.artistName || "").toLowerCase();
             const album = (item.collectionName || item.trackName || "").toLowerCase();
             const fullText = `${artist} ${album}`;
-
-            // CONDICIÓN 1: Todas las palabras buscadas deben estar presentes
-            // (Ej: Si buscas "Pink Floyd Animals", el resultado debe tener "Pink", "Floyd" y "Animals")
             return queryTerms.every(term => fullText.includes(term));
         });
 
-        let bestMatch;
+        // Fallback: Si el filtro estricto elimina todo (ej: errores tipográficos), usamos los resultados crudos
+        if (candidates.length === 0) candidates = data.results;
 
-        if (candidates.length > 0) {
-            // CONDICIÓN 2: Prioridad por longitud exacta (Exactitud)
-            // Ordenamos los candidatos: el que tenga el título más corto suele ser el álbum original
-            // Esto soluciona "Epistolares" vs "Epistolares+" (El más corto gana)
-            // Esto soluciona "Animals" vs "Animals (2018 Remix)" (El más corto gana)
-            candidates.sort((a, b) => {
-                const lenA = (a.collectionName || a.trackName).length;
-                const lenB = (b.collectionName || b.trackName).length;
-                return lenA - lenB;
-            });
-            bestMatch = candidates[0];
-        } else {
-            // Si ninguno cumple con TODAS las palabras, usamos el primero que nos dio iTunes (Fallback)
-            bestMatch = data.results[0];
-        }
+        // 3. ORDENAMIENTO INTELIGENTE (LA SOLUCIÓN FINAL)
+        candidates.sort((a, b) => {
+            const artistA = (a.artistName || "").toLowerCase();
+            const artistB = (b.artistName || "").toLowerCase();
 
-        // 3. EXTRACCIÓN DE ALTA CALIDAD
+            // CRITERIO A: Prioridad de Artista
+            // Verificamos si el artista del resultado está escrito literalmente en la búsqueda.
+            // Si tú escribiste "Pink Floyd", un disco de "Pink Floyd" recibe puntaje 1, uno de "Tribute Band" recibe 0.
+            const artistMatchA = query.includes(artistA) ? 1 : 0;
+            const artistMatchB = query.includes(artistB) ? 1 : 0;
+
+            if (artistMatchA > artistMatchB) return -1; // Gana A
+            if (artistMatchA < artistMatchB) return 1;  // Gana B
+
+            // CRITERIO B: Título más corto (Navaja de Ockham)
+            // Si los artistas son igual de relevantes, preferimos "Animals" (7 letras) sobre "Animals Reimagined..." (30 letras)
+            const lenA = (a.collectionName || a.trackName).length;
+            const lenB = (b.collectionName || b.trackName).length;
+            
+            return lenA - lenB;
+        });
+
+        const bestMatch = candidates[0];
+
+        // 4. EXTRACCIÓN Y ENVÍO
         const imgUrl = bestMatch.artworkUrl100 || bestMatch.artworkUrl60;
-        // Reemplazo seguro usando Regex para capturar cualquier dimensión
         const hiResUrl = imgUrl.replace(/\/\d+x\d+bb/, '/1500x1500bb');
 
         const caption = `
@@ -88,7 +85,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró nada con esos términos exactos." 
+            text: "❌ No se encontró nada con esos términos." 
         }, { quoted: m });
     }
 }
