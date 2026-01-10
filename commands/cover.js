@@ -14,51 +14,37 @@ export async function coverCommand(sock, m, args) {
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🖼️", key: m.key } });
 
-        // 1. URL Optimizada: Forzamos la entidad ALBUM y el país US.
-        // Añadimos 'explicit=yes' para evitar que filtros de contenido oculten resultados.
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=10&explicit=yes`;
+        /**
+         * SECRETO DE PRECISIÓN:
+         * La web de Ben Dodson usa 'entity=album' pero lo combina con 'attribute=albumTerm'.
+         * Al añadir 'attribute=albumTerm', obligamos a la API a que busque las palabras 
+         * del usuario DENTRO de los títulos de los discos, ignorando la "fama" de otros álbumes.
+         */
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&attribute=albumTerm&country=us&limit=1`;
         
         const response = await fetch(url);
         const data = await response.json();
 
-        if (!data.results || data.results.length === 0) {
-            // SEGUNDO INTENTO: Búsqueda general si falla la de álbum
-            const fallbackUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=5&country=us`;
+        // Si el filtro estricto de álbum falla (como puede pasar con artistas nuevos como Akriila),
+        // hacemos un fallback a búsqueda general de álbum sin el atributo estricto.
+        let result = data.results[0];
+
+        if (!result) {
+            const fallbackUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=1`;
             const fbRes = await fetch(fallbackUrl);
             const fbData = await fbRes.json();
-            data.results = fbData.results;
+            result = fbData.results[0];
         }
 
-        if (!data.results || data.results.length === 0) {
-            throw new Error("No encontrado");
-        }
-
-        // 2. FILTRADO DE PRECISIÓN (ESTILO BEN DODSON)
-        // Buscamos el resultado que mejor encaje con las palabras enviadas.
-        let result = data.results[0];
-        const queryLower = query.toLowerCase();
-
-        // Buscamos un álbum que contenga el nombre del artista Y el álbum en el título/artista.
-        const exactMatch = data.results.find(res => {
-            const collection = (res.collectionName || "").toLowerCase();
-            const artist = (res.artistName || "").toLowerCase();
-            
-            // Si el usuario puso Pink Floyd y Animals, buscamos que AMBOS estén presentes.
-            const terms = queryLower.split(' ');
-            return terms.every(t => collection.includes(t) || artist.includes(t));
-        });
-
-        if (exactMatch) result = exactMatch;
-
-        // 3. CALIDAD MÁXIMA (1500x1500bb)
-        // iTunes almacena las imágenes originales en esta resolución.
-        const imgUrl = result.artworkUrl100 || result.artworkUrl60;
-        const hiResUrl = imgUrl.replace(/100x100bb|60x60bb/, '1500x1500bb');
+        if (!result) throw new Error("No encontrado");
+        
+        // Calidad máxima original de iTunes
+        const hiResUrl = result.artworkUrl100.replace('100x100bb', '1500x1500bb');
 
         const caption = `
-💿 *Álbum:* ${result.collectionName || 'N/A'}
+💿 *Álbum:* ${result.collectionName}
 👤 *Artista:* ${result.artistName}
-📅 *Año:* ${result.releaseDate ? new Date(result.releaseDate).getFullYear() : 'N/A'}
+📅 *Año:* ${new Date(result.releaseDate).getFullYear()}
 `.trim();
 
         await sock.sendMessage(remoteJid, {
@@ -72,7 +58,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró la portada exacta. Intenta ser más específico con el nombre del álbum." 
+            text: "❌ No se encontró la portada. Intenta escribir el nombre del álbum." 
         }, { quoted: m });
     }
 }
