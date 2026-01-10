@@ -10,15 +10,16 @@ export async function coverCommand(sock, m, args) {
     }
 
     const query = args.join(' ').toLowerCase().trim();
-    const queryTerms = query.split(/\s+/);
+    // Dividimos la búsqueda en palabras clave (tokens)
+    const queryTokens = query.split(/\s+/);
 
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🔍", key: m.key } });
 
-        // 1. OBTENCIÓN DE CANDIDATOS
-        // Pedimos hasta 100 resultados. Para bandas legendarias como Pink Floyd, 
-        // los álbumes originales a veces están enterrados bajo 50 remasters y tributos.
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=album&limit=100&country=us`;
+        // 1. OBTENCIÓN MASIVA
+        // Pedimos 50 resultados para asegurar que el álbum original esté en la lista
+        // aunque iTunes quiera mostrar primero los "Greatest Hits" o "Remasters".
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=album&limit=50&country=us`;
         
         const response = await fetch(url);
         const data = await response.json();
@@ -27,49 +28,49 @@ export async function coverCommand(sock, m, args) {
             throw new Error("No encontrado");
         }
 
-        // 2. PRIMER FILTRO: COINCIDENCIA DE PALABRAS
-        // Solo aceptamos resultados que contengan TODAS las palabras buscadas
-        // (ya sea en el título del disco o en el nombre del artista)
-        let candidates = data.results.filter(item => {
+        // 2. SISTEMA DE RANKING (PUNTUACIÓN)
+        const scoredResults = data.results.map(item => {
+            let score = 0;
             const artist = (item.artistName || "").toLowerCase();
-            const album = (item.collectionName || item.trackName || "").toLowerCase();
-            const fullText = `${artist} ${album}`;
-            return queryTerms.every(term => fullText.includes(term));
+            const album = (item.collectionName || "").toLowerCase();
+            const combinedText = `${artist} ${album}`;
+
+            // A. PUNTOS POR COINCIDENCIA DE PALABRAS
+            // Por cada palabra tuya que aparezca en el Artista o el Álbum, sumamos puntos.
+            queryTokens.forEach(token => {
+                if (combinedText.includes(token)) {
+                    score += 10;
+                }
+            });
+
+            // B. PUNTOS EXTRA POR COINCIDENCIA EXACTA EN EL TÍTULO
+            // Si el nombre del álbum es casi idéntico a una parte de tu búsqueda, damos prioridad.
+            if (query.includes(album)) score += 5;
+
+            return { item, score, albumLength: album.length };
         });
 
-        // Fallback: Si el filtro estricto elimina todo (ej: errores tipográficos), usamos los resultados crudos
-        if (candidates.length === 0) candidates = data.results;
-
-        // 3. ORDENAMIENTO INTELIGENTE (LA SOLUCIÓN FINAL)
-        candidates.sort((a, b) => {
-            const artistA = (a.artistName || "").toLowerCase();
-            const artistB = (b.artistName || "").toLowerCase();
-
-            // CRITERIO A: Prioridad de Artista
-            // Verificamos si el artista del resultado está escrito literalmente en la búsqueda.
-            // Si tú escribiste "Pink Floyd", un disco de "Pink Floyd" recibe puntaje 1, uno de "Tribute Band" recibe 0.
-            const artistMatchA = query.includes(artistA) ? 1 : 0;
-            const artistMatchB = query.includes(artistB) ? 1 : 0;
-
-            if (artistMatchA > artistMatchB) return -1; // Gana A
-            if (artistMatchA < artistMatchB) return 1;  // Gana B
-
-            // CRITERIO B: Título más corto (Navaja de Ockham)
-            // Si los artistas son igual de relevantes, preferimos "Animals" (7 letras) sobre "Animals Reimagined..." (30 letras)
-            const lenA = (a.collectionName || a.trackName).length;
-            const lenB = (b.collectionName || b.trackName).length;
-            
-            return lenA - lenB;
+        // 3. ORDENAMIENTO FINAL (EL FILTRO DE CALIDAD)
+        scoredResults.sort((a, b) => {
+            // Criterio 1: Mayor Puntuación (Más palabras coincidentes)
+            if (b.score !== a.score) {
+                return b.score - a.score;
+            }
+            // Criterio 2: Desempate por Longitud (El título más corto gana)
+            // Esto hace que "Animals" (7 letras) le gane a "Animals Reimagined" (18 letras)
+            // y que "Epistolares" le gane a "Epistolares+"
+            return a.albumLength - b.albumLength;
         });
 
-        const bestMatch = candidates[0];
+        // El ganador es el primero de la lista ordenada
+        const bestMatch = scoredResults[0].item;
 
-        // 4. EXTRACCIÓN Y ENVÍO
+        // 4. EXTRACCIÓN ALTA CALIDAD
         const imgUrl = bestMatch.artworkUrl100 || bestMatch.artworkUrl60;
-        const hiResUrl = imgUrl.replace(/\/\d+x\d+bb/, '/1500x1500bb');
+        const hiResUrl = imgUrl.replace(/100x100bb|60x60bb/, '1500x1500bb');
 
         const caption = `
-💿 *Título:* ${bestMatch.collectionName || bestMatch.trackName}
+💿 *Álbum:* ${bestMatch.collectionName}
 👤 *Artista:* ${bestMatch.artistName}
 📅 *Año:* ${bestMatch.releaseDate ? new Date(bestMatch.releaseDate).getFullYear() : 'N/A'}
 `.trim();
@@ -85,7 +86,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró nada con esos términos." 
+            text: "❌ No se encontró ningún álbum con esos términos." 
         }, { quoted: m });
     }
 }
