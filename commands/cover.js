@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 
 export async function coverCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
@@ -9,54 +9,35 @@ export async function coverCommand(sock, m, args) {
         }, { quoted: m });
     }
 
-    const query = args.join(' ');
+    const query = args.join(' ').toLowerCase();
 
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🖼️", key: m.key } });
 
-        // Función interna para consultar la API
-        const searchiTunes = async (term) => {
-            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=album&country=us&limit=5`;
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.results;
-        };
+        // Pedimos 25 resultados para tener un margen amplio de búsqueda, igual que haría un motor de búsqueda web
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=25`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
 
-        // INTENTO 1: Búsqueda tal cual envió el usuario
-        let results = await searchiTunes(query);
-
-        // INTENTO 2: Si no hay resultados o es Pink Floyd (que suele fallar), 
-        // invertimos el orden o probamos solo con el álbum
-        if (!results || results.length === 0 || query.toLowerCase().includes('pink floyd')) {
-            const words = args;
-            if (words.length > 1) {
-                // Probamos invirtiendo el orden (ej: "animals pink floyd" -> "pink floyd animals")
-                const reversedQuery = [...words].reverse().join(' ');
-                const secondResults = await searchiTunes(reversedQuery);
-                if (secondResults && secondResults.length > 0) {
-                    results = secondResults;
-                }
-            }
-        }
-
-        if (!results || results.length === 0) {
+        if (!data.results || data.results.length === 0) {
             throw new Error("No encontrado");
         }
 
-        // SELECCIÓN CRÍTICA: 
-        // En lugar de agarrar el [0] a ciegas, buscamos el que tenga el nombre del artista 
-        // si el usuario lo mencionó en su búsqueda.
-        let result = results[0];
-        const lowerQuery = query.toLowerCase();
-        
-        const betterMatch = results.find(r => 
-            lowerQuery.includes(r.artistName.toLowerCase()) || 
-            lowerQuery.includes(r.collectionName.toLowerCase())
-        );
-        
-        if (betterMatch) result = betterMatch;
+        // --- LÓGICA DE SELECCIÓN INTELIGENTE ---
+        // Buscamos entre los 25 resultados aquel donde el título del álbum esté contenido en la búsqueda del usuario
+        // Esto evita que si buscas 'Animals' te mande 'Meddle' solo por ser del mismo artista.
+        let result = data.results.find(res => {
+            const albumName = res.collectionName.toLowerCase();
+            const artistName = res.artistName.toLowerCase();
+            // Verificamos si las palabras clave están en el resultado
+            return query.includes(albumName) || albumName.includes(query.replace(artistName, '').trim());
+        });
 
-        // Calidad máxima: 1500x1500bb
+        // Si el filtro inteligente no encuentra nada exacto, usamos el primer resultado por defecto
+        if (!result) result = data.results[0];
+        
+        // Calidad máxima 1500x1500bb
         const hiResUrl = result.artworkUrl100.replace('100x100bb', '1500x1500bb');
 
         const caption = `
@@ -76,7 +57,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró la portada exacta." 
+            text: "❌ No se encontró la portada. Intenta escribir el nombre del álbum y el artista claramente." 
         }, { quoted: m });
     }
 }
