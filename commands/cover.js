@@ -5,7 +5,7 @@ export async function coverCommand(sock, m, args) {
 
     if (!args || args.length === 0) {
         return sock.sendMessage(remoteJid, { 
-            text: "❌ *Uso correcto:*\n▸ #cover _artista álbum_ o _álbum artista_" 
+            text: "❌ *Uso correcto:*\n▸ #cover _artista álbum_" 
         }, { quoted: m });
     }
 
@@ -14,21 +14,49 @@ export async function coverCommand(sock, m, args) {
     try {
         await sock.sendMessage(remoteJid, { react: { text: "🖼️", key: m.key } });
 
-        // Configuración exacta según la imagen del Artwork Finder:
-        // entity=album (según el primer selector de la imagen)
-        // country=us (según el selector de país de la imagen)
-        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=album&country=us&limit=1`;
-        
-        const response = await fetch(url);
-        const data = await response.json();
+        // Función interna para consultar la API
+        const searchiTunes = async (term) => {
+            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=album&country=us&limit=5`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.results;
+        };
 
-        if (!data.results || data.results.length === 0) {
+        // INTENTO 1: Búsqueda tal cual envió el usuario
+        let results = await searchiTunes(query);
+
+        // INTENTO 2: Si no hay resultados o es Pink Floyd (que suele fallar), 
+        // invertimos el orden o probamos solo con el álbum
+        if (!results || results.length === 0 || query.toLowerCase().includes('pink floyd')) {
+            const words = args;
+            if (words.length > 1) {
+                // Probamos invirtiendo el orden (ej: "animals pink floyd" -> "pink floyd animals")
+                const reversedQuery = [...words].reverse().join(' ');
+                const secondResults = await searchiTunes(reversedQuery);
+                if (secondResults && secondResults.length > 0) {
+                    results = secondResults;
+                }
+            }
+        }
+
+        if (!results || results.length === 0) {
             throw new Error("No encontrado");
         }
 
-        const result = data.results[0];
+        // SELECCIÓN CRÍTICA: 
+        // En lugar de agarrar el [0] a ciegas, buscamos el que tenga el nombre del artista 
+        // si el usuario lo mencionó en su búsqueda.
+        let result = results[0];
+        const lowerQuery = query.toLowerCase();
         
-        // Calidad 1500x1500bb para que sea "Uncompressed High Resolution" como en la web
+        const betterMatch = results.find(r => 
+            lowerQuery.includes(r.artistName.toLowerCase()) || 
+            lowerQuery.includes(r.collectionName.toLowerCase())
+        );
+        
+        if (betterMatch) result = betterMatch;
+
+        // Calidad máxima: 1500x1500bb
         const hiResUrl = result.artworkUrl100.replace('100x100bb', '1500x1500bb');
 
         const caption = `
@@ -48,7 +76,7 @@ export async function coverCommand(sock, m, args) {
         console.error('[COVER ERROR]:', error);
         await sock.sendMessage(remoteJid, { react: { text: "❌", key: m.key } });
         await sock.sendMessage(remoteJid, { 
-            text: "❌ No se encontró la portada. Intenta escribir el nombre tal cual aparece en iTunes." 
+            text: "❌ No se encontró la portada exacta." 
         }, { quoted: m });
     }
 }
