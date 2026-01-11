@@ -3,30 +3,20 @@ import https from 'https';
 
 class InstagramPostsService {
     constructor() {
-        // Creamos un agente para ignorar errores de certificado (como el de itzpire)
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-        
         this.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
         };
 
-        // 🔄 APIS ACTUALIZADAS Y TESTEADAS (11/01/2026)
-        this.apis = [
-            {
-                name: 'fast_dl',
-                url: 'https://api.fastdl.app/api/convert', // API de alto tráfico
-                method: 'POST'
-            },
-            {
-                name: 'agatz',
-                url: 'https://api.agatz.xyz/api/instagram', // Volvió a estar online con nueva IP
-                method: 'GET'
-            },
-            {
-                name: 'skizo',
-                url: 'https://skizo.tech/api/igdl', // Muy estable para desarrolladores
-                method: 'GET'
-            }
+        // 🔄 ESPEJOS DE COBALT VERIFICADOS (Enero 2026)
+        // Estos servidores son independientes y tienen mucha mayor estabilidad
+        this.mirrors = [
+            'https://cobalt-api.v06.me/api/json',
+            'https://api.cobalt.tools/api/json',
+            'https://cobalt.perennialte.ch/api/json',
+            'https://cobalt.miz.xyz/api/json'
         ];
     }
 
@@ -37,65 +27,54 @@ class InstagramPostsService {
 
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
-        console.log(`🚀 Intentando descarga robusta: ${cleanUrl}`);
+        console.log(`🚀 Iniciando descarga en red de espejos: ${cleanUrl}`);
 
-        for (const api of this.apis) {
+        for (const mirror of this.mirrors) {
             try {
-                console.log(`📡 Probando con: ${api.name}`);
-                let response;
+                console.log(`📡 Intentando espejo: ${mirror}`);
+                const response = await axios.post(mirror, {
+                    url: cleanUrl,
+                    vQuality: "720",
+                    filenamePattern: "basic",
+                    isAudioOnly: false
+                }, {
+                    headers: this.headers,
+                    timeout: 12000,
+                    httpsAgent: this.httpsAgent
+                });
 
-                if (api.method === 'POST') {
-                    response = await axios.post(api.url, { url: cleanUrl }, {
-                        headers: this.headers,
-                        timeout: 15000,
-                        httpsAgent: this.httpsAgent
-                    });
-                } else {
-                    response = await axios.get(`${api.url}?url=${encodeURIComponent(cleanUrl)}`, {
-                        headers: this.headers,
-                        timeout: 15000,
-                        httpsAgent: this.httpsAgent
-                    });
-                }
-
-                const result = this.parseResponse(api.name, response.data);
-                if (result && result.mediaItems.length > 0) {
-                    return result;
+                const data = response.data;
+                
+                // Cobalt responde con 'picker' para carruseles o 'url' para archivos únicos
+                if (data.status === 'picker') {
+                    return {
+                        mediaItems: data.picker.map(item => ({
+                            url: item.url,
+                            type: item.type === 'video' ? 'video' : 'image'
+                        })),
+                        total: data.picker.length
+                    };
+                } else if (data.url) {
+                    return {
+                        mediaItems: [{
+                            url: data.url,
+                            type: (data.url.includes('.mp4') || data.status === 'stream') ? 'video' : 'image'
+                        }],
+                        total: 1
+                    };
                 }
             } catch (error) {
-                console.log(`⚠️ ${api.name} falló: ${error.message}`);
+                console.log(`⚠️ Espejo fallido (${mirror}): ${error.message}`);
                 continue;
             }
         }
-        throw new Error('Sin respuesta de los servidores. Instagram podría estar bloqueando el post o es privado.');
-    }
-
-    parseResponse(name, data) {
-        let items = [];
-        // Normalizamos la respuesta según la API
-        const raw = data.data || data.result || data;
-        
-        if (name === 'fast_dl' && data.urls) {
-            items = data.urls.map(u => ({ url: u.url, type: u.type === 'video' ? 'video' : 'image' }));
-        } else if (Array.isArray(raw)) {
-            items = raw.map(i => ({
-                url: i.url || i.download_url || i,
-                type: (i.url || i).includes('.mp4') ? 'video' : 'image'
-            }));
-        } else if (raw.url) {
-            items.push({ url: raw.url, type: raw.url.includes('.mp4') ? 'video' : 'image' });
-        }
-
-        return {
-            mediaItems: items.filter(i => i.url && i.url.startsWith('http')),
-            total: items.length
-        };
+        throw new Error('RED_TIMEOUT: Todos los nodos de descarga están saturados. Intenta de nuevo en 1 minuto.');
     }
 
     async getBuffer(url) {
         const res = await axios.get(url, { 
-            responseType: 'arraybuffer', 
-            headers: this.headers,
+            responseType: 'arraybuffer',
+            headers: { 'User-Agent': this.headers['User-Agent'] },
             httpsAgent: this.httpsAgent 
         });
         return Buffer.from(res.data);
@@ -126,7 +105,7 @@ export async function igpostsCommand(sock, m, args) {
             
             await sock.sendMessage(jid, {
                 [item.type]: buffer,
-                caption: i === 0 ? `✅ Descargado (${i+1}/${data.total})` : ""
+                caption: i === 0 ? `✅ Descargado con éxito (${data.total} elementos)` : ""
             }, { quoted: m });
 
             if (data.total > 1) await new Promise(r => setTimeout(r, 1500));
@@ -135,7 +114,7 @@ export async function igpostsCommand(sock, m, args) {
 
     } catch (e) {
         console.error(e);
-        await sock.sendMessage(jid, { text: `❌ Falló la descarga.\nMotivo: ${e.message}` });
+        await sock.sendMessage(jid, { text: `❌ Error crítico: ${e.message}` });
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
     }
 }
