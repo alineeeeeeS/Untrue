@@ -16,7 +16,6 @@ import { dlCommand } from './downloader.js'; // Descargas de cualquier tipo de l
 import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sticker a imagen/video
 import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
 import { coverCommand } from "./cover.js"; // Buscar portada de álbum/sencillo
-import { bpmCommand } from "./bpm.js"; // Detectar el BPM y key de una canción
 import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
 import { usdtCommand } from "./usdt.js"; // Consultar precio promedio del USDT desde el p2p de Binance
 import { calcCommand } from "./calc.js"; // Conversión de monedas utilizando las tasas
@@ -98,8 +97,6 @@ const commands = {
     traducir: traducirCommand,
     trans: traducirCommand,
 	ia: iaCommand,
-	bpm: bpmCommand,
-	key: bpmCommand,
 
     // COMANDOS DE CONVERSIÓN
     s: mediaToStickerCommand,

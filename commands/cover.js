@@ -5,7 +5,7 @@ export async function coverCommand(sock, m, args) {
 
     if (!args || args.length === 0) {
         return sock.sendMessage(remoteJid, { 
-            text: "❌ *Uso correcto:*\n▸ #cover _artista álbum_" 
+            text: "❌ *Uso correcto:*\n▸ #cover *artista* _álbum_\n▸ #cover _álbum_ *artista*\n▸ #cover *artista* _sencillo_\n▸ #cover _sencillo_ *artista*" 
         }, { quoted: m });
     }
 

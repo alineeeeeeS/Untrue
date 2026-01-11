@@ -22,6 +22,7 @@ export async function helpCommand(sock, m) {
   • #music [link/búsqueda] ▸ Música desde YouTube
   • #sc [link/búsqueda] ▸ Música desde SoundCloud
   • #letra [artista] [canción]
+  • #cover [álbum/sencillo] ▸ Portada de algún proyecto
 
 🧰 *UTILIDADES*
   • #ia [prompt] ▸ Consultar con la IA
