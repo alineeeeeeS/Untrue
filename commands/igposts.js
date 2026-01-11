@@ -2,86 +2,76 @@ import axios from 'axios';
 
 class InstagramPostsService {
     constructor() {
+        // Headers de simulación de App móvil (los más difíciles de bloquear)
         this.headers = {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3',
+            'User-Agent': 'Instagram 311.0.0.32.118 Android (33/13; 480dpi; 1080x2254; Samsung; SM-G998B; q2q; qcom; en_US; 542718501)'
         };
 
-        // 🔄 APIS DE ALTA DISPONIBILIDAD (Enero 2026)
+        // 🚀 APIS DE ALTO RENDIMIENTO (Enero 2026)
+        // Estas APIs procesan el buffer internamente, lo que las hace muy rápidas.
         this.apis = [
-            // 1. SocialDownload (Endpoint de alto rendimiento)
             {
-                name: 'social_dl',
-                url: 'https://api.socialdownload.cc/instagram',
+                name: 'laxic',
+                url: 'https://api.laxic.xyz/api/v1/igdl',
                 method: 'GET'
             },
-            // 2. SnapInsta Mirror (Scraper interno)
             {
-                name: 'snapinsta',
-                url: 'https://api.snapinsta.io/v1/download',
-                method: 'POST'
+                name: 'aovve',
+                url: 'https://api.aovve.com/v1/instagram/download',
+                method: 'GET'
             },
-            // 3. Imgur/Rapid (Fallback de emergencia)
             {
-                name: 'rapid_ig',
-                url: 'https://ig-downloader.guru/api/v1/fetch',
+                name: 'ryzen',
+                url: 'https://api.ryzendesu.vip/api/downloader/igdl',
                 method: 'GET'
             }
         ];
     }
 
     cleanUrl(url) {
-        // Instagram a veces bloquea si la URL lleva el código de compartido ?igsh=
+        // Extraemos solo el ID del post para evitar errores de parámetros largos
         const match = url.match(/(https?:\/\/(www\.)?instagram\.com\/(p|reel|tv|stories)\/[A-Za-z0-9_-]+)/);
-        return match ? match[0] : url.split('?')[0];
+        return match ? match[0] : url;
     }
 
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
-        console.log(`🚀 Iniciando descarga robusta: ${cleanUrl}`);
+        console.log(`📡 Solicitando descarga rápida: ${cleanUrl}`);
 
         for (const api of this.apis) {
             try {
-                console.log(`📡 Conectando a espejo: ${api.name}...`);
-                const result = await this.tryAPI(api, cleanUrl);
-                
+                const response = await axios.get(`${api.url}?url=${encodeURIComponent(cleanUrl)}`, {
+                    timeout: 10000,
+                    headers: this.headers
+                });
+
+                const result = this.parseResponse(api.name, response.data);
                 if (result && result.mediaItems.length > 0) {
+                    console.log(`✅ API ${api.name} respondió con éxito.`);
                     return result;
                 }
             } catch (error) {
-                console.log(`❌ Espejo ${api.name} fuera de servicio: ${error.message}`);
+                console.log(`⚠️ ${api.name} falló: ${error.message}`);
                 continue;
             }
         }
-        throw new Error('IG_SHIELD_BLOCK: Instagram ha bloqueado la sesión temporalmente.');
+        throw new Error('No se pudo obtener una respuesta válida de los servidores de descarga.');
     }
 
-    async tryAPI(api, url) {
-        let response;
-        const config = { timeout: 12000, headers: this.headers };
-
-        if (api.method === 'POST') {
-            response = await axios.post(api.url, { url: url }, config);
-        } else {
-            response = await axios.get(`${api.url}?url=${encodeURIComponent(url)}`, config);
-        }
-
-        return this.parseResponse(api.name, response.data);
-    }
-
-    parseResponse(name, data) {
+    parseResponse(apiName, data) {
         let items = [];
-        // Lógica de extracción adaptativa según el JSON de la API
-        const rawItems = data.result || data.data || data.links || (data.urls ? data.urls : []);
-        
-        if (Array.isArray(rawItems)) {
-            items = rawItems.map(item => ({
-                url: item.url || item.download_url || item,
-                type: (item.type === 'video' || (item.url && item.url.includes('.mp4'))) ? 'video' : 'image'
-            }));
-        } else if (data.url) {
-            items.push({ url: data.url, type: data.url.includes('.mp4') ? 'video' : 'image' });
+        // Adaptación a las diferentes estructuras JSON de 2026
+        const rawData = data.result || data.data || data;
+        const links = Array.isArray(rawData) ? rawData : (rawData.links || rawData.url_list || [rawData.url]);
+
+        if (Array.isArray(links)) {
+            items = links.map(link => {
+                const finalUrl = typeof link === 'string' ? link : (link.url || link.download_url);
+                return {
+                    url: finalUrl,
+                    type: (finalUrl.includes('.mp4') || (link.type && link.type === 'video')) ? 'video' : 'image'
+                };
+            });
         }
 
         return {
@@ -90,51 +80,49 @@ class InstagramPostsService {
         };
     }
 
-    async getBuffer(url) {
-        const res = await axios.get(url, { 
-            responseType: 'arraybuffer',
-            headers: this.headers
-        });
+    async downloadBuffer(url) {
+        const res = await axios.get(url, { responseType: 'arraybuffer', headers: this.headers });
         return Buffer.from(res.data);
     }
 }
 
-const igService = new InstagramPostsService();
+const service = new InstagramPostsService();
 
 export async function igpostsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
         let url = args[0];
-        // Soporte para responder a un mensaje que tenga el link
+        
+        // Soporte para reply
         if (!url && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
-            const txt = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || m.message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage?.text;
+            const txt = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
+                        m.message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage?.text;
             url = txt?.match(/https?:\/\/www\.instagram\.com\/[^\s]+/)?.[0];
         }
 
-        if (!url) return sock.sendMessage(jid, { text: "📌 Responde a un link o pégalo: `#post link`" });
+        if (!url) return sock.sendMessage(jid, { text: "📍 Envíe o responda a un link de Instagram." });
 
-        await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
+        await sock.sendMessage(jid, { react: { text: "⚡", key: m.key } });
 
-        const data = await igService.downloadPost(url);
-        
+        const data = await service.downloadPost(url);
+
         for (let i = 0; i < data.mediaItems.length; i++) {
             const item = data.mediaItems[i];
-            const buffer = await igService.getBuffer(item.url);
+            const buffer = await service.downloadBuffer(item.url);
             
             await sock.sendMessage(jid, {
                 [item.type]: buffer,
-                caption: i === 0 ? `✅ Contenido de Instagram (${i+1}/${data.total})` : ""
+                caption: i === 0 ? `🔥 *Instagram Downloader*\nTotal: ${data.total} archivo(s)` : ""
             }, { quoted: m });
 
-            // Delay anti-ban de WhatsApp
-            if (data.total > 1) await new Promise(r => setTimeout(r, 2000));
+            // Delay mínimo de seguridad
+            if (data.total > 1) await new Promise(r => setTimeout(r, 800));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
         console.error(e);
-        await sock.sendMessage(jid, { text: "⚠️ Instagram rechazó la conexión. Intenta con otro link o espera 5 min." });
-        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        await sock.sendMessage(jid, { text: "❌ Error: Las APIs de Instagram están saturadas. Intenta en un momento." }, { quoted: m });
     }
 }
