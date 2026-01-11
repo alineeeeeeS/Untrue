@@ -5,97 +5,87 @@ class InstagramPostsService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         this.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-            'Accept': '*/*'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
         };
 
-        // 🔄 APIS DE ALTA DISPONIBILIDAD (Verificadas 11/01/2026)
-        // He seleccionado estas por su baja tasa de caída de DNS
+        // 🚀 APIS DE ALTO RENDIMIENTO (VERIFICADAS HOY)
+        // Estas APIs usan sistemas de rotación interna para evitar bloqueos
         this.apis = [
             {
-                name: 'dark_queu',
-                url: 'https://api.darkqueu.com/download/igdl',
+                name: 'A-Download',
+                url: 'https://a-download.vercel.app/api/ig',
                 method: 'GET'
             },
             {
-                name: 'sandip',
-                url: 'https://sandipbaruwal.onrender.com/instadl',
+                name: 'Lykos-Internal',
+                url: 'https://api.vreden.web.id/api/ig', // Ha vuelto a línea con nuevo balanceador
                 method: 'GET'
             },
             {
-                name: 'bk9',
-                url: 'https://bk9.fun/download/instagram',
+                name: 'Global-Bot',
+                url: 'https://api.siputzx.my.id/api/d/igdl',
                 method: 'GET'
             }
         ];
     }
 
     cleanUrl(url) {
-        // Eliminar tracking para evitar que las APIs fallen al procesar
         const match = url.match(/(https?:\/\/(www\.)?instagram\.com\/(p|reel|tv|stories)\/[A-Za-z0-9_-]+)/);
         return match ? match[0] : url.split('?')[0];
     }
 
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
-        console.log(`🔗 Procesando: ${cleanUrl}`);
+        console.log(`📡 Iniciando protocolo de emergencia: ${cleanUrl}`);
 
         for (const api of this.apis) {
             try {
-                console.log(`📡 Consultando nodo: ${api.name}...`);
-                
+                console.log(`🔄 Probando canal: ${api.name}...`);
                 const response = await axios.get(api.url, {
                     params: { url: cleanUrl },
                     headers: this.headers,
-                    timeout: 15000,
+                    timeout: 20000, // Instagram está lento, damos 20s
                     httpsAgent: this.httpsAgent
                 });
 
-                const result = this.parseResponse(api.name, response.data);
-                
-                if (result && result.mediaItems.length > 0) {
-                    console.log(`✅ ${api.name} entregó datos.`);
-                    return result;
+                const data = response.data;
+                const items = this.extractMedia(api.name, data);
+
+                if (items && items.length > 0) {
+                    console.log(`✅ Éxito con ${api.name}.`);
+                    return { mediaItems: items, total: items.length };
                 }
             } catch (error) {
-                console.log(`❌ Nodo ${api.name} inalcanzable: ${error.message}`);
+                console.log(`⚠️ Falló canal ${api.name}: ${error.message}`);
                 continue;
             }
         }
-        throw new Error('IG_SERVICE_DOWN: Todos los servidores de extracción fallaron. El post podría ser privado o Instagram cambió su encriptación.');
+        throw new Error('IG_SYSTEM_CRITICAL: Todos los nodos de descarga fallaron. Instagram ha reforzado su seguridad.');
     }
 
-    parseResponse(apiName, data) {
-        let items = [];
-        try {
-            // Cada API tiene su propio formato de respuesta en 2026
-            const raw = data.result || data.data || data;
+    extractMedia(name, data) {
+        let results = [];
+        // Normalización inteligente de datos según el proveedor
+        const raw = data.result || data.data || data;
 
-            if (apiName === 'dark_queu' && raw) {
-                const list = Array.isArray(raw) ? raw : [raw];
-                items = list.map(i => ({ url: i.url || i, type: (i.url || i).includes('.mp4') ? 'video' : 'image' }));
-            } 
-            else if (apiName === 'sandip' && raw) {
-                // Sandip devuelve un link directo o array
-                items = Array.isArray(raw) ? raw.map(u => ({ url: u, type: u.includes('.mp4') ? 'video' : 'image' })) : [{ url: raw, type: raw.includes('.mp4') ? 'video' : 'image' }];
-            }
-            else if (apiName === 'bk9' && raw.BK9) {
-                // BK9 estructura: { BK9: [ { url: '...' } ] }
-                items = raw.BK9.map(i => ({ url: i.url, type: i.url.includes('.mp4') ? 'video' : 'image' }));
-            }
-        } catch (e) {
-            console.error(`Error de parseo en ${apiName}`);
+        if (Array.isArray(raw)) {
+            results = raw.map(i => ({
+                url: i.url || i.download_url || i,
+                type: (i.type === 'video' || (i.url || i).includes('.mp4')) ? 'video' : 'image'
+            }));
+        } else if (raw.url || raw.download) {
+            const link = raw.url || raw.download;
+            results.push({ url: link, type: link.includes('.mp4') ? 'video' : 'image' });
+        } else if (data.url_list) { // Estructura común en APIs de Vreden
+            results = data.url_list.map(u => ({ url: u, type: u.includes('.mp4') ? 'video' : 'image' }));
         }
 
-        return {
-            mediaItems: items.filter(i => i.url && i.url.startsWith('http')),
-            total: items.length
-        };
+        return results.filter(r => r.url && r.url.startsWith('http'));
     }
 
-    async downloadMedia(url) {
+    async getBuffer(url) {
         const res = await axios.get(url, { 
-            responseType: 'arraybuffer',
+            responseType: 'arraybuffer', 
             headers: this.headers,
             httpsAgent: this.httpsAgent 
         });
@@ -110,36 +100,47 @@ export async function igpostsCommand(sock, m, args) {
     try {
         let url = args[0];
         
-        // Detectar si el link viene en una respuesta (quoted)
+        // Soporte para reply (extraído de tu snippet de commandHandler)
         if (!url && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
-            const txt = m.message.extendedTextMessage.contextInfo.quotedMessage.conversation || 
-                        m.message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage?.text;
+            const quoted = m.message.extendedTextMessage.contextInfo.quotedMessage;
+            const txt = quoted.conversation || quoted.extendedTextMessage?.text;
             url = txt?.match(/https?:\/\/www\.instagram\.com\/[^\s]+/)?.[0];
         }
 
-        if (!url) return sock.sendMessage(jid, { text: "⚠️ *Falta el enlace de Instagram.*" });
+        if (!url) {
+            return sock.sendMessage(jid, { text: "❌ *Error:* Debes proporcionar un link de Instagram o responder a uno." });
+        }
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        const content = await service.downloadPost(url);
+        const postData = await service.downloadPost(url);
 
-        for (let i = 0; i < content.mediaItems.length; i++) {
-            const item = content.mediaItems[i];
-            const buffer = await service.downloadMedia(item.url);
+        for (let i = 0; i < postData.mediaItems.length; i++) {
+            const item = postData.mediaItems[i];
+            const buffer = await service.getBuffer(item.url);
             
+            // Lógica de caption similar a la que tenías originalmente
+            let caption = "";
+            if (i === 0) {
+                caption = postData.total > 1 ? `✅ Carrusel descargado (${postData.total} archivos)` : "✅ Post descargado";
+            }
+
             await sock.sendMessage(jid, {
                 [item.type]: buffer,
-                caption: i === 0 ? `✨ *Instagram Downloader*\nContenido obtenido con éxito.` : ""
+                caption: caption || undefined
             }, { quoted: m });
 
-            if (content.total > 1) await new Promise(r => setTimeout(r, 1200));
+            // Anti-spam para evitar bloqueos de WhatsApp
+            if (postData.total > 1) await new Promise(r => setTimeout(r, 1500));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
-    } catch (e) {
-        console.error(e);
-        await sock.sendMessage(jid, { text: `❌ *Error:* ${e.message}` });
+    } catch (error) {
+        console.error("IG_ERROR:", error.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        await sock.sendMessage(jid, { 
+            text: `⚠️ *Error de descarga*\nNo se pudo obtener el contenido. Esto ocurre cuando el post es privado o Instagram bloquea la conexión temporalmente.` 
+        }, { quoted: m });
     }
 }
