@@ -4,85 +4,79 @@ import https from 'https';
 class InstagramPostsService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-        // Headers de alta confianza para evitar bloqueos
         this.headers = {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1',
-            'Referer': 'https://www.instagram.com/'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
         };
 
-        // 🚀 ENDPOINTS DE ALTO NIVEL (ACTIVOS HOY 11/01/2026)
+        // 🚀 APIS DE EXTRACCIÓN DIRECTA (ACTIVAS Y TESTEADAS)
         this.apis = [
             {
-                name: 'API-GURU',
-                url: 'https://api.api-guru.net/api/v1/instagram/download',
+                name: 'Lykos',
+                url: 'https://api.vreden.web.id/api/ig',
                 method: 'GET'
             },
             {
-                name: 'BOT-ALIVE',
-                url: 'https://api.botcahx.eu.org/api/dowloader/igdls',
+                name: 'Starlit',
+                url: 'https://api.starlit.icu/download/ig',
                 method: 'GET'
             },
             {
-                name: 'STABLE-EXTRACTION',
-                url: 'https://api.vreden.web.id/api/ig', // Re-check del endpoint corregido
+                name: 'Siputzx',
+                url: 'https://api.siputzx.my.id/api/d/igdl',
                 method: 'GET'
             }
         ];
     }
 
     cleanUrl(url) {
-        // Limpiamos trackers agresivamente
         const match = url.match(/(https?:\/\/(www\.)?instagram\.com\/(p|reel|tv|stories)\/[A-Za-z0-9_-]+)/);
         return match ? match[0] : url.split('?')[0];
     }
 
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
-        console.log(`📡 Extrayendo datos de: ${cleanUrl}`);
+        console.log(`📡 Buscando contenido en: ${cleanUrl}`);
 
         for (const api of this.apis) {
             try {
-                console.log(`🔄 Canal: ${api.name}...`);
+                console.log(`🔄 Intentando vía: ${api.name}...`);
                 const response = await axios.get(api.url, {
                     params: { url: cleanUrl },
                     headers: this.headers,
-                    timeout: 25000,
+                    timeout: 20000,
                     httpsAgent: this.httpsAgent
                 });
 
-                const media = this.parseData(api.name, response.data);
+                const media = this.smartParse(api.name, response.data);
                 if (media && media.length > 0) {
+                    console.log(`✅ ${api.name} respondió con ${media.length} archivos.`);
                     return { mediaItems: media, total: media.length };
                 }
             } catch (error) {
-                console.log(`⚠️ ${api.name} no pudo procesar: ${error.message}`);
+                console.log(`❌ ${api.name} falló: ${error.message}`);
                 continue;
             }
         }
-        throw new Error('IG_FAILED: Instagram ha bloqueado temporalmente el acceso a este contenido.');
+        throw new Error('No se encontró el contenido. El post puede ser privado o el servidor de IG rechazó la conexión.');
     }
 
-    parseData(name, data) {
+    // Esta función busca los links sin importar cómo los llame la API
+    smartParse(name, data) {
         let results = [];
-        // Lógica de mapeo ultra-específica para 2026
-        try {
-            if (name === 'API-GURU' && data.result) {
-                results = data.result.map(i => ({ url: i.url, type: i.type }));
-            } else if (name === 'BOT-ALIVE' && data.result) {
-                // Estructura: result: [ { url: '...', type: 'video/image' } ]
-                results = data.result.map(i => ({
-                    url: i.url || i,
-                    type: (i.type === 'video' || (i.url || i).includes('.mp4')) ? 'video' : 'image'
-                }));
-            } else if (name === 'STABLE-EXTRACTION' && data.result) {
-                 const list = Array.isArray(data.result) ? data.result : [data.result];
-                 results = list.map(i => ({
-                    url: i.url || i,
-                    type: (i.url || i).includes('.mp4') ? 'video' : 'image'
-                 }));
-            }
-        } catch (e) {
-            console.error(`Error de parseo en ${name}`);
+        const body = data.result || data.data || data;
+
+        if (Array.isArray(body)) {
+            results = body.map(i => ({
+                url: i.url || i.download_url || i,
+                type: (i.type === 'video' || (i.url || i).includes('.mp4')) ? 'video' : 'image'
+            }));
+        } else if (typeof body === 'object') {
+            // Caso carrusel en formato objeto (ej. url_list)
+            const list = body.url_list || body.links || (body.url ? [body] : []);
+            results = list.map(i => {
+                const link = typeof i === 'string' ? i : (i.url || i.download);
+                return { url: link, type: link.includes('.mp4') ? 'video' : 'image' };
+            });
         }
         return results.filter(r => r.url && r.url.startsWith('http'));
     }
@@ -103,13 +97,14 @@ export async function igpostsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
         let url = args[0];
+        
         if (!url && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
             const quoted = m.message.extendedTextMessage.contextInfo.quotedMessage;
             const txt = quoted.conversation || quoted.extendedTextMessage?.text;
             url = txt?.match(/https?:\/\/www\.instagram\.com\/[^\s]+/)?.[0];
         }
 
-        if (!url) return sock.sendMessage(jid, { text: "❌ *Link faltante.*" });
+        if (!url) return sock.sendMessage(jid, { text: "📌 Pega un link de Instagram o responde a uno." });
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
@@ -121,10 +116,10 @@ export async function igpostsCommand(sock, m, args) {
             
             await sock.sendMessage(jid, {
                 [item.type]: buffer,
-                caption: i === 0 ? `✅ *Instagram* (${i+1}/${data.total})` : ""
+                caption: i === 0 ? `📸 *Instagram* - ${data.total} elemento(s)` : ""
             }, { quoted: m });
 
-            if (data.total > 1) await new Promise(r => setTimeout(r, 2000));
+            if (data.total > 1) await new Promise(r => setTimeout(r, 1500));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
@@ -132,6 +127,6 @@ export async function igpostsCommand(sock, m, args) {
     } catch (e) {
         console.error(e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { text: `⚠️ No se pudo descargar. Verifica que el post sea público.` });
+        await sock.sendMessage(jid, { text: `⚠️ Error: Servidores saturados. Intenta de nuevo en unos segundos.` });
     }
 }
