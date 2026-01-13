@@ -118,7 +118,7 @@ export async function getBCVPrice() {
         console.log('ℹ️ Página del BCV cargada correctamente');
         
         // --- 1. EXTRACCIÓN DEL DÓLAR (USD) ---
-        const dollarPriceElement = $('#dolar strong'); 
+        const dollarPriceElement = $('#dolar .field-content .row recuadrotsmc .col-sm-6 col-xs-6 centrado strong'); 
         let usdPrice = "N/A Bs";
 
         if (dollarPriceElement.length > 0) {
@@ -129,7 +129,7 @@ export async function getBCVPrice() {
         }
         
         // --- 2. EXTRACCIÓN DEL EURO (EUR) ---
-        const euroPriceElement = $('#euro strong');
+        const euroPriceElement = $('#euro .field-content .row recuadrotsmc .col-sm-6 col-xs-6 centrado strong');
         let eurPrice = "N/A Bs";
 
         if (euroPriceElement.length > 0) {
