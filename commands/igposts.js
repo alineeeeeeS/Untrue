@@ -1,121 +1,119 @@
 import axios from 'axios';
 import https from 'https';
 
-class CobaltService {
+class BK9InstagramService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         
-        // Nodos actualizados 2026
-        this.nodes = [
-            'https://api.cobalt.tools',
-            'https://cobalt.smate.sh',
-            'https://api.cobalt.run'
+        // Endpoints oficiales de BK9 según tu documentación
+        this.apis = [
+            'https://api.bk9.dev/download/instagram',
+            'https://api.bk9.dev/download/instagram2'
         ];
-
-        // CONFIGURACIÓN DE PROXY (Opcional pero recomendada para Railway)
-        // Si tienes un proxy, colócalo aquí. Si no, el código intentará saltar el bloqueo con headers rotativos.
-        this.proxy = null; 
     }
 
-    async download(url) {
-        const cleanUrl = url.split('?')[0];
+    /**
+     * Limpia la URL eliminando tokens de rastreo que confunden a los servidores
+     */
+    cleanUrl(url) {
+        return url.split('?')[0];
+    }
+
+    /**
+     * Lógica de descarga usando BK9
+     */
+    async downloadPost(rawUrl) {
+        const cleanUrl = this.cleanUrl(rawUrl);
         
-        for (const node of this.nodes) {
+        // Filtro preventivo para Reels
+        if (cleanUrl.includes('/reel/')) throw new Error('REEL_DETECTED');
+
+        for (const apiUrl of this.apis) {
             try {
-                console.log(`📡 [Cobalt] Intentando nodo: ${node}`);
+                console.log(`📡 [BK9] Intentando con: ${apiUrl}`);
                 
-                const response = await axios({
-                    method: 'post',
-                    url: node,
-                    data: {
-                        url: cleanUrl,
-                        videoQuality: '720',
-                        downloadMode: 'default'
-                    },
-                    headers: {
-                        'accept': 'application/json',
-                        'content-type': 'application/json',
-                        'referer': 'https://cobalt.tools/',
-                        'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
-                    },
-                    timeout: 15000,
-                    httpsAgent: this.httpsAgent,
-                    // Si tienes proxy configurado, axios lo usará automáticamente
-                    proxy: this.proxy 
+                const response = await axios.get(apiUrl, {
+                    params: { url: cleanUrl },
+                    timeout: 20000,
+                    httpsAgent: this.httpsAgent
                 });
 
-                const data = response.data;
-
-                if (data.status === 'picker') {
-                    return data.picker.map(item => ({
-                        url: item.url,
-                        type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
-                    }));
+                // BK9 suele responder con { status: true, BK9: [ { url: '...', type: '...' } ] }
+                if (response.data && response.data.status) {
+                    const results = response.data.BK9;
+                    
+                    if (Array.isArray(results) && results.length > 0) {
+                        console.log(`✅ Éxito con BK9. Elementos: ${results.length}`);
+                        return results.map(item => ({
+                            url: item.url,
+                            // BK9 a veces usa 'video'/'image', validamos por extensión también
+                            type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
+                        }));
+                    }
                 }
-
-                if (data.status === 'redirect' || data.status === 'stream') {
-                    return [{
-                        url: data.url,
-                        type: cleanUrl.includes('/p/') ? 'image' : 'video'
-                    }];
-                }
-
             } catch (error) {
-                // Log detallado para entender el bloqueo
-                console.log(`❌ Fallo en ${node}: ${error.response?.status || error.message}`);
-                continue; 
+                console.log(`⚠️ Fallo en endpoint ${apiUrl}: ${error.message}`);
+                continue; // Probar el siguiente endpoint (instagram2)
             }
         }
-        throw new Error('BLOQUEO_IP_DETECTADO');
+        throw new Error('BK9_ALL_FAILED');
     }
 
     async getBuffer(url) {
         const res = await axios.get(url, { 
             responseType: 'arraybuffer',
             httpsAgent: this.httpsAgent,
-            headers: { 'User-Agent': 'Mozilla/5.0' }
+            timeout: 15000 
         });
         return Buffer.from(res.data);
     }
 }
 
-const cobalt = new CobaltService();
+const bk9 = new BK9InstagramService();
 
 export async function igpostsCommand(sock, m, args) {
-    const jid = m.remoteJid || m.key.remoteJid;
+    const jid = m.key.remoteJid;
     try {
+        // Obtener URL del comando o de un mensaje citado
         let url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
-        if (!url) return;
-        if (url.includes('/reel/')) return; 
+        if (!url || !url.includes('instagram.com')) return;
+        if (url.includes('/reel/')) return;
 
-        await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
+        await sock.sendMessage(jid, { react: { text: "📸", key: m.key } });
 
-        const items = await cobalt.download(url);
+        const mediaItems = await bk9.downloadPost(url);
 
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            const buffer = await cobalt.getBuffer(item.url);
-            
-            await sock.sendMessage(jid, {
-                [item.type]: buffer,
-                caption: i === 0 ? `✅ *IG Download* (${i + 1}/${items.length})` : ""
-            }, { quoted: m });
+        // Enviar carrusel o post único
+        for (let i = 0; i < mediaItems.length; i++) {
+            const item = mediaItems[i];
+            try {
+                const buffer = await bk9.getBuffer(item.url);
+                
+                // Caption solo en el primer elemento
+                const caption = i === 0 ? `✨ *Instagram Post* (${i + 1}/${mediaItems.length})\n\n_Vía BK9 API_` : "";
 
-            if (items.length > 1) await new Promise(r => setTimeout(r, 1500));
+                await sock.sendMessage(jid, {
+                    [item.type]: buffer,
+                    caption: caption
+                }, { quoted: m });
+
+                // Delay para evitar colapso de subida en Railway
+                if (mediaItems.length > 1) await new Promise(r => setTimeout(r, 1500));
+
+            } catch (err) {
+                console.error(`Error enviando elemento ${i}:`, err.message);
+            }
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("Error IG:", e.message);
-        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        if (e.message === 'REEL_DETECTED') return;
         
-        if (e.message === 'BLOQUEO_IP_DETECTADO') {
-            await sock.sendMessage(jid, { 
-                text: "⚠️ *Error de Conexión:* Instagram ha bloqueado la dirección IP del servidor del bot. Intenta de nuevo en unos minutos o usa un link diferente." 
-            }, { quoted: m });
-        } else {
-            await sock.sendMessage(jid, { text: "⚠️ Error inesperado al procesar el post." }, { quoted: m });
-        }
+        console.error("BK9 Error Final:", e.message);
+        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
+        await sock.sendMessage(jid, { 
+            text: "⚠️ *Error con BK9:* No se pudo descargar el contenido. Asegúrate de que el post sea público." 
+        }, { quoted: m });
     }
 }
