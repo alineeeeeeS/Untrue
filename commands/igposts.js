@@ -1,167 +1,111 @@
 import axios from 'axios';
 import https from 'https';
 
-class InstagramPostsService {
+class CobaltService {
     constructor() {
-        // Agente para ignorar certificados SSL vencidos (común en APIs gratuitas)
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         
-        this.headers = {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
-            'Accept': 'application/json, text/plain, */*'
-        };
-
-        // 🚀 LISTA DE APIS BASADAS EN VERCEL/RENDER (Más estables)
-        this.apis = [
-            {
-                name: 'Delirius-Official', // API muy estable alojada en Vercel
-                url: 'https://delirius-api-oficial.vercel.app/api/ig', 
-                method: 'GET',
-                param: 'url'
-            },
-            {
-                name: 'Siputzx-V2', // Versión actualizada de Siputzx
-                url: 'https://api.siputzx.my.id/api/d/igdl',
-                method: 'GET',
-                param: 'url'
-            },
-            {
-                name: 'Alya-Chan', // Alternativa robusta
-                url: 'https://api.alyachan.dev/api/ig',
-                method: 'GET',
-                param: 'url'
-            }
+        // Lista de instancias de alto rendimiento (Verificadas 2026)
+        // Nota: Estas URLs son ENDPOINTS de API, no necesariamente páginas visuales.
+        this.nodes = [
+            'https://api.cobalt.tools',
+            'https://cobalt.smate.sh',
+            'https://api.cobalt.run'
         ];
     }
 
-    cleanUrl(url) {
-        const match = url.match(/(https?:\/\/(www\.)?instagram\.com\/(p|reel|tv|stories)\/[A-Za-z0-9_-]+)/);
-        return match ? match[0] : url.split('?')[0];
-    }
-
-    async downloadPost(rawUrl) {
-        const cleanUrl = this.cleanUrl(rawUrl);
-
-        // Filtro de Reels (para que no choquen con tu otro comando)
-        if (cleanUrl.includes('/reel/') || cleanUrl.includes('/reels/')) {
-            throw new Error('REEL_DETECTED'); 
-        }
-
-        console.log(`📡 [IG] Procesando: ${cleanUrl}`);
-
-        for (const api of this.apis) {
+    async download(url) {
+        const cleanUrl = url.split('?')[0];
+        
+        // Iteramos por los nodos hasta que uno responda
+        for (const node of this.nodes) {
             try {
-                console.log(`🔄 Intentando con: ${api.name}...`);
+                console.log(`📡 [Cobalt] Intentando conexión con nodo: ${node}`);
                 
-                const response = await axios.get(api.url, {
-                    params: { [api.param]: cleanUrl },
-                    headers: this.headers,
-                    timeout: 20000,
-                    httpsAgent: this.httpsAgent
+                const response = await axios.post(node, {
+                    url: cleanUrl,
+                    videoQuality: '720',
+                    downloadMode: 'default'
+                }, {
+                    headers: {
+                        'accept': 'application/json',
+                        'content-type': 'application/json',
+                        'referer': 'https://cobalt.tools/'
+                    },
+                    timeout: 15000 // Si no responde en 15s, saltamos al siguiente
                 });
 
-                // Si la API devuelve HTML en vez de JSON (error común), saltamos
-                if (typeof response.data === 'string' && response.data.includes('<!DOCTYPE html>')) {
-                    throw new Error('API devolvió HTML (Error 500/Cloudflare)');
+                const data = response.data;
+
+                // Interpretación del formato de Cobalt (basado en tu captura JSON)
+                if (data.status === 'picker') {
+                    // Es un carrusel: extraemos todas las URLs
+                    return data.picker.map(item => ({
+                        url: item.url,
+                        type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
+                    }));
                 }
 
-                const media = this.smartParser(api.name, response.data);
-                
-                if (media && media.length > 0) {
-                    console.log(`✅ Éxito con ${api.name}. Encontrados: ${media.length}`);
-                    return media;
-                } else {
-                    console.log(`⚠️ ${api.name} respondió pero sin archivos válidos.`);
+                if (data.status === 'redirect' || data.status === 'stream') {
+                    // Es un solo archivo (foto o video único)
+                    return [{
+                        url: data.url,
+                        type: cleanUrl.includes('/p/') ? 'image' : 'video'
+                    }];
                 }
 
             } catch (error) {
-                // Log detallado para saber si es 404, 500 o DNS
-                const status = error.response ? error.response.status : 'DNS/Red';
-                console.log(`❌ Falló ${api.name} (${status}): ${error.message}`);
-                continue;
+                console.log(`❌ Nodo ${node} no disponible o bloqueado.`);
+                continue; // Probar el siguiente nodo de la lista
             }
         }
-        throw new Error('IG_ALL_FAILED');
-    }
-
-    smartParser(apiName, data) {
-        let results = [];
-        try {
-            // Normalización de respuestas JSON (Delirius, Siputzx, etc)
-            const json = data.data || data.result || data;
-
-            if (Array.isArray(json)) {
-                results = json.map(i => ({ 
-                    url: i.url || i.download_url || i, 
-                    type: (i.type === 'video' || (i.url || i).includes('.mp4')) ? 'video' : 'image' 
-                }));
-            } else if (typeof json === 'object') {
-                // Algunas APIs devuelven un solo objeto si es 1 foto, o 'url_list' si son varias
-                if (json.url || json.download) {
-                    const u = json.url || json.download;
-                    results.push({ url: u, type: u.includes('.mp4') ? 'video' : 'image' });
-                } else if (json.url_list) {
-                     results = json.url_list.map(u => ({ url: u, type: u.includes('.mp4') ? 'video' : 'image' }));
-                }
-            }
-        } catch (e) {
-            console.error('Error parseando JSON:', e);
-        }
-        return results.filter(r => r.url && r.url.startsWith('http'));
+        throw new Error('TODOS_LOS_SERVIDORES_SATURADOS');
     }
 
     async getBuffer(url) {
         const res = await axios.get(url, { 
-            responseType: 'arraybuffer', 
-            headers: this.headers,
+            responseType: 'arraybuffer',
             httpsAgent: this.httpsAgent,
-            timeout: 15000 
+            headers: { 'User-Agent': 'Mozilla/5.0' }
         });
         return Buffer.from(res.data);
     }
 }
 
-const service = new InstagramPostsService();
+const cobalt = new CobaltService();
 
 export async function igpostsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        let url = args[0];
-        if (!url && m.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
-            const quoted = m.message.extendedTextMessage.contextInfo.quotedMessage;
-            url = (quoted.conversation || quoted.extendedTextMessage?.text)?.match(/https?:\/\/www\.instagram\.com\/[^\s]+/)?.[0];
-        }
-
+        let url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
         if (!url) return;
-        if (url.includes('/reel/') || url.includes('/reels/')) return;
+        if (url.includes('/reel/')) return; 
 
-        await sock.sendMessage(jid, { react: { text: "📸", key: m.key } });
+        await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        const mediaItems = await service.downloadPost(url);
+        const items = await cobalt.download(url);
 
-        for (let i = 0; i < mediaItems.length; i++) {
-            const item = mediaItems[i];
-            try {
-                const buffer = await service.getBuffer(item.url);
-                
-                await sock.sendMessage(jid, {
-                    [item.type]: buffer,
-                    caption: i === 0 ? `✨ *Post descargado* (${i + 1}/${mediaItems.length})` : ""
-                }, { quoted: m });
+        // Procesar y enviar cada elemento encontrado
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const buffer = await cobalt.getBuffer(item.url);
+            
+            await sock.sendMessage(jid, {
+                [item.type]: buffer,
+                caption: i === 0 ? `✅ *Contenido extraído* (${i + 1}/${items.length})` : ""
+            }, { quoted: m });
 
-                if (mediaItems.length > 1) await new Promise(r => setTimeout(r, 1000));
-
-            } catch (err) {
-                console.error(`Error enviando archivo ${i}:`, err.message);
-                continue;
-            }
+            // Pequeña pausa para no saturar la subida de Railway
+            if (items.length > 1) await new Promise(r => setTimeout(r, 1200));
         }
+
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        if (e.message === 'REEL_DETECTED') return;
-        console.error("IG Comando Error:", e.message);
+        console.error("Error General IG:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { text: "⚠️ No se pudo descargar. Intenta de nuevo." }, { quoted: m });
+        await sock.sendMessage(jid, { 
+            text: "⚠️ *Servicio temporalmente fuera de línea.*\n\nInstagram ha actualizado sus medidas de seguridad. Estamos trabajando en nuevos puentes de conexión." 
+        }, { quoted: m });
     }
 }
