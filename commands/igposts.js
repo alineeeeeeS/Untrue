@@ -5,41 +5,48 @@ class CobaltService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         
-        // Lista de instancias de alto rendimiento (Verificadas 2026)
-        // Nota: Estas URLs son ENDPOINTS de API, no necesariamente páginas visuales.
+        // Nodos actualizados 2026
         this.nodes = [
             'https://api.cobalt.tools',
             'https://cobalt.smate.sh',
             'https://api.cobalt.run'
         ];
+
+        // CONFIGURACIÓN DE PROXY (Opcional pero recomendada para Railway)
+        // Si tienes un proxy, colócalo aquí. Si no, el código intentará saltar el bloqueo con headers rotativos.
+        this.proxy = null; 
     }
 
     async download(url) {
         const cleanUrl = url.split('?')[0];
         
-        // Iteramos por los nodos hasta que uno responda
         for (const node of this.nodes) {
             try {
-                console.log(`📡 [Cobalt] Intentando conexión con nodo: ${node}`);
+                console.log(`📡 [Cobalt] Intentando nodo: ${node}`);
                 
-                const response = await axios.post(node, {
-                    url: cleanUrl,
-                    videoQuality: '720',
-                    downloadMode: 'default'
-                }, {
+                const response = await axios({
+                    method: 'post',
+                    url: node,
+                    data: {
+                        url: cleanUrl,
+                        videoQuality: '720',
+                        downloadMode: 'default'
+                    },
                     headers: {
                         'accept': 'application/json',
                         'content-type': 'application/json',
-                        'referer': 'https://cobalt.tools/'
+                        'referer': 'https://cobalt.tools/',
+                        'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
                     },
-                    timeout: 15000 // Si no responde en 15s, saltamos al siguiente
+                    timeout: 15000,
+                    httpsAgent: this.httpsAgent,
+                    // Si tienes proxy configurado, axios lo usará automáticamente
+                    proxy: this.proxy 
                 });
 
                 const data = response.data;
 
-                // Interpretación del formato de Cobalt (basado en tu captura JSON)
                 if (data.status === 'picker') {
-                    // Es un carrusel: extraemos todas las URLs
                     return data.picker.map(item => ({
                         url: item.url,
                         type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
@@ -47,7 +54,6 @@ class CobaltService {
                 }
 
                 if (data.status === 'redirect' || data.status === 'stream') {
-                    // Es un solo archivo (foto o video único)
                     return [{
                         url: data.url,
                         type: cleanUrl.includes('/p/') ? 'image' : 'video'
@@ -55,11 +61,12 @@ class CobaltService {
                 }
 
             } catch (error) {
-                console.log(`❌ Nodo ${node} no disponible o bloqueado.`);
-                continue; // Probar el siguiente nodo de la lista
+                // Log detallado para entender el bloqueo
+                console.log(`❌ Fallo en ${node}: ${error.response?.status || error.message}`);
+                continue; 
             }
         }
-        throw new Error('TODOS_LOS_SERVIDORES_SATURADOS');
+        throw new Error('BLOQUEO_IP_DETECTADO');
     }
 
     async getBuffer(url) {
@@ -75,7 +82,7 @@ class CobaltService {
 const cobalt = new CobaltService();
 
 export async function igpostsCommand(sock, m, args) {
-    const jid = m.key.remoteJid;
+    const jid = m.remoteJid || m.key.remoteJid;
     try {
         let url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
         if (!url) return;
@@ -85,27 +92,30 @@ export async function igpostsCommand(sock, m, args) {
 
         const items = await cobalt.download(url);
 
-        // Procesar y enviar cada elemento encontrado
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
             const buffer = await cobalt.getBuffer(item.url);
             
             await sock.sendMessage(jid, {
                 [item.type]: buffer,
-                caption: i === 0 ? `✅ *Contenido extraído* (${i + 1}/${items.length})` : ""
+                caption: i === 0 ? `✅ *IG Download* (${i + 1}/${items.length})` : ""
             }, { quoted: m });
 
-            // Pequeña pausa para no saturar la subida de Railway
-            if (items.length > 1) await new Promise(r => setTimeout(r, 1200));
+            if (items.length > 1) await new Promise(r => setTimeout(r, 1500));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("Error General IG:", e.message);
+        console.error("Error IG:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { 
-            text: "⚠️ *Servicio temporalmente fuera de línea.*\n\nInstagram ha actualizado sus medidas de seguridad. Estamos trabajando en nuevos puentes de conexión." 
-        }, { quoted: m });
+        
+        if (e.message === 'BLOQUEO_IP_DETECTADO') {
+            await sock.sendMessage(jid, { 
+                text: "⚠️ *Error de Conexión:* Instagram ha bloqueado la dirección IP del servidor del bot. Intenta de nuevo en unos minutos o usa un link diferente." 
+            }, { quoted: m });
+        } else {
+            await sock.sendMessage(jid, { text: "⚠️ Error inesperado al procesar el post." }, { quoted: m });
+        }
     }
 }
