@@ -10,6 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const HISTORIAL_FILE = join(__dirname, '../services/bcvTasas.json');
 
+// --- CÓDIGO PARA EL COMANDO BCV ---
+
 export async function bcvCommand(sock, m, args) {
     try {
         const jid = m.key.remoteJid;
@@ -44,9 +46,6 @@ export async function bcvCommand(sock, m, args) {
 
 export async function getBCVPrice() { 
     const maxRetries = 3;
-    let lastError = null;
-
-    // Agentes de usuario para rotar y parecer un navegador real
     const userAgents = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
@@ -55,35 +54,27 @@ export async function getBCVPrice() {
 
     for (let i = 0; i < maxRetries; i++) {
         try {
-            console.log(`ℹ️ Consultando BCV desde Railway (Intento ${i + 1})...`);
-            
-            const agent = new https.Agent({ 
-                rejectUnauthorized: false,
-                keepAlive: true 
-            });
+            const agent = new https.Agent({ rejectUnauthorized: false, keepAlive: true });
 
             const response = await axios.get('https://www.bcv.org.ve', {
-                timeout: 35000, // Timeout extendido para conexiones internacionales
+                timeout: 35000,
                 httpsAgent: agent,
                 headers: {
                     'User-Agent': userAgents[i],
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
                     'Accept-Language': 'es-ES,es;q=0.9',
-                    'Cache-Control': 'no-cache',
                     'Referer': 'https://www.google.com/'
                 }
             });
 
-            if (response.status !== 200) throw new Error(`Status ${response.status}`);
-
             const $ = cheerio.load(response.data);
             
-            // Selectores simplificados y directos
             const usdPrice = formatPrice($('#dolar strong').text().trim()) || "N/A Bs";
             const eurPrice = formatPrice($('#euro strong').text().trim()) || "N/A Bs";
             
-            const dateText = $('.pull-right.dinpro.center .date-display-single').text().trim();
-            const bcvDate = dateText ? transformarFechaBCV(dateText) : new Date().toLocaleDateString('es-VE');
+            // Extracción de fecha con el selector 
+            const rawDate = $('.pull-right.dinpro.center .date-display-single').text().trim();
+            const bcvDate = transformarFechaBCV(rawDate);
 
             if (usdPrice === "N/A Bs") throw new Error("No se pudo extraer el precio");
 
@@ -96,47 +87,51 @@ export async function getBCVPrice() {
             };
 
         } catch (error) {
-            lastError = error;
             console.log(`⚠️ Intento ${i + 1} fallido: ${error.message}`);
             if (i < maxRetries - 1) await new Promise(r => setTimeout(r, 3000));
         }
     }
 
-    // Si fallan todos los reintentos, devolvemos el último valor del historial para que el comando no muera
-    console.error('❌ BCV inaccesible después de reintentos.');
-    return {
-        usdPrice: "No disponible",
-        eurPrice: "No disponible",
-        date: "Servidor BCV bloqueado",
-        fechacorta: null,
-        error: true
-    };
+    return { usdPrice: "Error", eurPrice: "Error", date: "No disponible", historical: false, error: true };
 }
 
-// Funciones de utilidad (Mantener igual que tu archivo original)
-function formatPrice(priceText) {
-    priceText = priceText.replace(/[^\d,.]/g, '').replace(',', '.');
-    if (priceText && !isNaN(parseFloat(priceText))) {
-        const priceFloat = parseFloat(priceText).toFixed(4);
-        return `${priceFloat} Bs`;
-    }
-    return null;
-}
-
+/**
+ * LÓGICA DE CONVERSIÓN (Día, Mes y Año completo)
+ */
 function transformarFechaBCV(fechaBCV) {
+    if (!fechaBCV) return new Date().toLocaleDateString('es-VE');
+
     const meses = {
         'enero': '01', 'febrero': '02', 'marzo': '03', 'abril': '04',
         'mayo': '05', 'junio': '06', 'julio': '07', 'agosto': '08',
         'septiembre': '09', 'octubre': '10', 'noviembre': '11', 'diciembre': '12'
     };
-    const partes = fechaBCV.replace(/^[^,]+, /, '').trim().split(' ');
-    if (partes.length >= 3) {
-        const dia = partes[0].padStart(2, '0');
-        const mes = meses[partes[1].toLowerCase()];
-        const año = partes[2];
-        return `${dia}/${mes}/${año}`;
+
+    // 1. Limpiamos comas y espacios múltiples
+    // "Miércoles, 14 Enero 2026" -> "Miércoles 14 Enero 2026"
+    let limpia = fechaBCV.replace(/,/g, '').replace(/\s+/g, ' ').trim();
+    
+    // 2. Separamos por espacio
+    let partes = limpia.split(' ');
+
+    // Buscamos los componentes. El BCV suele enviar: [DíaSemana, NumDía, Mes, Año]
+    // Pero a veces falta el DíaSemana. Por eso filtramos por contenido:
+    let dia = partes.find(p => /^\d{1,2}$/.test(p)); // Busca el número del día (1 o 2 dígitos)
+    let año = partes.find(p => /^\d{4}$/.test(p));   // Busca el número del año (4 dígitos)
+    let mesTexto = partes.find(p => meses[p.toLowerCase()]); // Busca el nombre del mes
+
+    if (dia && mesTexto && año) {
+        return `${dia.padStart(2, '0')}/${meses[mesTexto.toLowerCase()]}/${año}`;
     }
+
+    // Fallback si la estructura cambia radicalmente
     return fechaBCV;
+}
+
+function formatPrice(priceText) {
+    if (!priceText) return null;
+    let p = priceText.replace(/[^\d,.]/g, '').replace(',', '.');
+    return isNaN(parseFloat(p)) ? null : `${parseFloat(p).toFixed(4)} Bs`;
 }
 
 async function cargarHistorial() {
