@@ -111,11 +111,11 @@ export async function igpostsCommand(sock, m, args) {
                 // Texto estético
                 let caption = "";
                 if (pos !== null) {
-                    caption = `✅ *Post descargado!*`;
+                    caption = `*Post descargado!*`;
                 } else {
                     caption = itemsToSend.length > 1 
-                        ? `✨ *Carrusel descargado!* (${i + 1}/${itemsToSend.length})`
-                        : `✨ *Post descargado!*`;
+                        ? `*Carrusel descargado!* (${i + 1}/${itemsToSend.length})`
+                        : `*Post descargado!*`;
                 }
 
                 await sock.sendMessage(jid, {
