@@ -4,59 +4,54 @@ import https from 'https';
 class BK9InstagramService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-        
-        // Endpoints oficiales de BK9 según tu documentación
         this.apis = [
             'https://api.bk9.dev/download/instagram',
             'https://api.bk9.dev/download/instagram2'
         ];
     }
 
-    /**
-     * Limpia la URL eliminando tokens de rastreo que confunden a los servidores
-     */
     cleanUrl(url) {
         return url.split('?')[0];
     }
 
-    /**
-     * Lógica de descarga usando BK9
-     */
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
         
-        // Filtro preventivo para Reels
-        if (cleanUrl.includes('/reel/')) throw new Error('REEL_DETECTED');
-
         for (const apiUrl of this.apis) {
             try {
-                console.log(`📡 [BK9] Intentando con: ${apiUrl}`);
-                
                 const response = await axios.get(apiUrl, {
                     params: { url: cleanUrl },
                     timeout: 20000,
                     httpsAgent: this.httpsAgent
                 });
 
-                // BK9 suele responder con { status: true, BK9: [ { url: '...', type: '...' } ] }
                 if (response.data && response.data.status) {
-                    const results = response.data.BK9;
+                    let results = response.data.BK9;
                     
-                    if (Array.isArray(results) && results.length > 0) {
-                        console.log(`✅ Éxito con BK9. Elementos: ${results.length}`);
-                        return results.map(item => ({
-                            url: item.url,
-                            // BK9 a veces usa 'video'/'image', validamos por extensión también
-                            type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
-                        }));
-                    }
+                    // VALIDACIÓN ANTI-DUPLICADOS:
+                    // BK9 a veces devuelve objetos repetidos o con la misma URL.
+                    // Usamos un Set para filtrar por URL única.
+                    const uniqueUrls = new Set();
+                    const filteredResults = [];
+
+                    results.forEach(item => {
+                        if (!uniqueUrls.has(item.url)) {
+                            uniqueUrls.add(item.url);
+                            filteredResults.push({
+                                url: item.url,
+                                type: (item.type === 'video' || item.url.includes('.mp4')) ? 'video' : 'image'
+                            });
+                        }
+                    });
+
+                    if (filteredResults.length > 0) return filteredResults;
                 }
             } catch (error) {
-                console.log(`⚠️ Fallo en endpoint ${apiUrl}: ${error.message}`);
-                continue; // Probar el siguiente endpoint (instagram2)
+                console.log(`⚠️ Fallo en BK9: ${error.message}`);
+                continue;
             }
         }
-        throw new Error('BK9_ALL_FAILED');
+        throw new Error('FAILED');
     }
 
     async getBuffer(url) {
@@ -74,46 +69,79 @@ const bk9 = new BK9InstagramService();
 export async function igpostsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        // Obtener URL del comando o de un mensaje citado
-        let url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
+        // --- 1. LÓGICA DE ARGUMENTOS (Posición + Link) ---
+        let pos = null;
+        let url = null;
+
+        if (args.length >= 2 && !isNaN(args[0])) {
+            // Caso: #post 2 [link]
+            pos = parseInt(args[0]);
+            url = args[1];
+        } else {
+            // Caso: #post [link]
+            url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
+        }
+
         if (!url || !url.includes('instagram.com')) return;
         if (url.includes('/reel/')) return;
 
-        await sock.sendMessage(jid, { react: { text: "📸", key: m.key } });
+        // --- 2. REACCIÓN INICIAL (Procesando) ---
+        await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
         const mediaItems = await bk9.downloadPost(url);
 
-        // Enviar carrusel o post único
-        for (let i = 0; i < mediaItems.length; i++) {
-            const item = mediaItems[i];
+        // --- 3. FILTRADO POR POSICIÓN ---
+        let itemsToSend = mediaItems;
+        if (pos !== null) {
+            // Si el usuario pide la posición 2, es el índice 1 del array
+            const index = pos - 1;
+            if (mediaItems[index]) {
+                itemsToSend = [mediaItems[index]];
+            } else {
+                throw new Error('POSITION_NOT_FOUND');
+            }
+        }
+
+        // --- 4. ENVÍO DE CONTENIDO ---
+        for (let i = 0; i < itemsToSend.length; i++) {
+            const item = itemsToSend[i];
             try {
                 const buffer = await bk9.getBuffer(item.url);
                 
-                // Caption solo en el primer elemento
-                const caption = i === 0 ? `✨ *Instagram Post* (${i + 1}/${mediaItems.length})\n\n_Vía BK9 API_` : "";
+                // Texto estético
+                let caption = "";
+                if (pos !== null) {
+                    caption = `✅ *Post descargado!*`;
+                } else {
+                    caption = itemsToSend.length > 1 
+                        ? `✨ *Carrusel descargado!* (${i + 1}/${itemsToSend.length})`
+                        : `✨ *Post descargado!*`;
+                }
 
                 await sock.sendMessage(jid, {
                     [item.type]: buffer,
                     caption: caption
                 }, { quoted: m });
 
-                // Delay para evitar colapso de subida en Railway
-                if (mediaItems.length > 1) await new Promise(r => setTimeout(r, 1500));
+                if (itemsToSend.length > 1) await new Promise(r => setTimeout(r, 1500));
 
             } catch (err) {
-                console.error(`Error enviando elemento ${i}:`, err.message);
+                console.error(`Error enviando elemento:`, err.message);
             }
         }
 
+        // --- 5. REACCIÓN FINAL (Éxito) ---
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        if (e.message === 'REEL_DETECTED') return;
-        
-        console.error("BK9 Error Final:", e.message);
+        console.error("Error Post:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { 
-            text: "⚠️ *Error con BK9:* No se pudo descargar el contenido. Asegúrate de que el post sea público." 
-        }, { quoted: m });
+        
+        let errorMsg = "⚠️ *Error:* No se pudo descargar el contenido.";
+        if (e.message === 'POSITION_NOT_FOUND') {
+            errorMsg = "⚠️ *Error:* La posición solicitada no existe en este carrusel.";
+        }
+        
+        await sock.sendMessage(jid, { text: errorMsg }, { quoted: m });
     }
 }
