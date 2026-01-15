@@ -51,7 +51,7 @@ export async function bcvCommand(sock, m) {
             });
 
             // Mensaje ajustado con 4 decimales y "Bs"
-            const mensaje = `*Tasas de cambio BCV*\n\n` +
+            const mensaje = `*▸ Tasas de cambio BCV ◂*\n\n` +
                           `💵 *Dólar (USD):* ${usdRate.toFixed(4)} Bs\n` +
                           `💶 *Euro (EUR):* ${eurRate.toFixed(4)} Bs\n` +
                           `📅 *Fecha:* ${fechaFormateada}\n` +
