@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const HISTORIAL_FILE = join(__dirname, '../services/bcvTasas.json');
 
-// API Key de exchangerate-api.com 
-const API_KEY = '286aebb9a67d895fc12f91fc';
+// API Key de exchangerate-api.com
 const API_KEY = process.env.EXCHANGERATE_API_KEY || '286aebb9a67d895fc12f91fc';
+const BASE_URL = 'https://v6.exchangerate-api.com/v6';
 
 // Tasa de respaldo en caso de que la API falle (se actualiza manualmente)
 const TASA_RESPALDO = {
