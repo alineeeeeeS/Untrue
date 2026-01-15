@@ -6,27 +6,26 @@ import path from 'path';
 const API_KEY = '286aebb9a67d895fc12f91fc';
 const BASE_URL = 'https://v6.exchangerate-api.com/v6';
 
+/**
+ * Función para obtener el precio del historial local (usada por ping)
+ */
 export function getBCVPrice() {
     try {
         const filePath = path.resolve('./services/bcvTasas.json');
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         
-        // Obtenemos la última entrada del historial
         const fechas = Object.keys(data);
         const ultimaFecha = fechas[fechas.length - 1];
         const registro = data[ultimaFecha];
 
-        // Retornamos el precio formateado (limpiando el " Bs" si lo tiene)
-        return registro.usdPrice.replace(' Bs', '').trim();
+        // Retornamos el precio formateado (limpiando " Bs" o comas si las hay)
+        return registro.usdPrice.replace(' Bs', '').replace(',', '.').trim();
     } catch (error) {
         console.error("Error en getBCVPrice:", error.message);
         return "0.0000";
     }
 }
 
-/**
- * Función adicional por si algún otro comando usa el nombre antiguo
- */
 export const getBCVFromHistorial = getBCVPrice;
 
 export async function bcvCommand(sock, m) {
@@ -35,7 +34,6 @@ export async function bcvCommand(sock, m) {
     try {
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        // Consultas en paralelo a ExchangeRate-API
         const [resUsd, resEur] = await Promise.all([
             axios.get(`${BASE_URL}/${API_KEY}/latest/USD`),
             axios.get(`${BASE_URL}/${API_KEY}/latest/EUR`)
@@ -52,11 +50,11 @@ export async function bcvCommand(sock, m) {
                 year: 'numeric'
             });
 
-            // Mensaje con precisión de 4 decimales
+            // Mensaje ajustado con 4 decimales y "Bs"
             const mensaje = `*Tasas de cambio BCV*\n\n` +
-                          `💵 *Dólar (USD):* ${usdRate.toFixed(2)} VES\n` +
-                          `💶 *Euro (EUR):* ${eurRate.toFixed(2)} VES\n` +
-						  `📅 *Fecha:* ${fechaFormateada}\n` +
+                          `💵 *Dólar (USD):* ${usdRate.toFixed(4)} Bs\n` +
+                          `💶 *Euro (EUR):* ${eurRate.toFixed(4)} Bs\n` +
+                          `📅 *Fecha:* ${fechaFormateada}\n` +
                           `\n_www.bcv.org.ve/_`;
 
             await sock.sendMessage(jid, { text: mensaje }, { quoted: m });
@@ -70,10 +68,9 @@ export async function bcvCommand(sock, m) {
         console.error("Error en BCV API:", error.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
         
-        // Fallback usando el historial local si la API falla
         const precioLocal = getBCVPrice();
         await sock.sendMessage(jid, { 
-            text: `⚠️ *Servidor de tasas no disponible.*\nÚltimo precio registrado: *${precioLocal} VES*` 
+            text: `⚠️ *Servidor de tasas no disponible.*\nÚltimo precio registrado: *${precioLocal} Bs*` 
         }, { quoted: m });
     }
 }
