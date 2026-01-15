@@ -1,5 +1,3 @@
-[file name]: bcv.js
-[file content begin]
 import axios from 'axios';
 import logger from '../services/logger.js';
 import { promises as fs } from 'fs';
