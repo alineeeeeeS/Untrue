@@ -114,8 +114,8 @@ export async function igpostsCommand(sock, m, args) {
                     caption = `*Post descargado!*`;
                 } else {
                     caption = itemsToSend.length > 1 
-                        ? `*Carrusel descargado!* (${i + 1}/${itemsToSend.length})`
-                        : `*Post descargado!*`;
+                        ? `Carrusel descargado! _(${i + 1}/${itemsToSend.length})_`
+                        : `Post descargado!`;
                 }
 
                 await sock.sendMessage(jid, {
