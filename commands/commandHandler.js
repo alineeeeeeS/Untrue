@@ -4,6 +4,7 @@ import { tiktokCommand } from "./tiktok.js"; // Descargar un tiktok
 import { tiktokAudioCommand } from "./tiktokAudio.js"; // Descargar solo audio de un tiktok
 import { igreelsCommand } from "./igreels.js"; // Descargar reels de instagram
 import { igpostsCommand } from "./igposts.js"; // Descargar posts/carruseles de instagram
+import { igstorysCommand } from "./igstorys.js"; // Descargar historias de instagram
 import { facebookCommand } from "./facebook.js"; // Descargar contenido desde facebook
 import { twitterCommand } from "./twitter.js"; // Descargar contenido desde X/Twitter
 import { scCommand } from "./soundcloud.js"; // Descargar música desde SoundCloud
@@ -57,6 +58,8 @@ const commands = {
 	r: igreelsCommand,
     post: igpostsCommand,
 	p: igpostsCommand,
+	story: igstorysCommand,
+	st: igstorysCommand,
     fb: facebookCommand,
     tw: twitterCommand,
     pin: pinterestCommand,

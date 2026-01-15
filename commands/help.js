@@ -13,6 +13,7 @@ export async function helpCommand(sock, m) {
   • #yta [link/búsqueda] ▸ Audio de YouTube
   • #reel [link] ▸ Reel de Instagram
   • #post [link] ▸ Post específico o carrusel entero de Instagram
+  • #story [usuario] ▸ Historias de Instagram
   • #fb [link] ▸ Videos de Facebook
   • #pin [link] ▸ Contenido de Pinterest
   • #tw [link] ▸ Videos de X/Twitter
