@@ -8,14 +8,11 @@ class BK9StoryService {
     }
 
     /**
-     * Paso 1: Obtener la lista limpia de historias
+     * Obtiene historias usando un filtro de ID para evitar duplicados y pérdidas
      */
     async fetchStories(username) {
         const cleanUsername = username.replace('@', '').trim();
-
         try {
-            console.log(`📡 [BK9] Buscando historias de: ${cleanUsername}`);
-            
             const response = await axios.get(this.apiUrl, {
                 params: { username: cleanUsername },
                 timeout: 20000,
@@ -24,64 +21,61 @@ class BK9StoryService {
 
             if (response.data && response.data.status && Array.isArray(response.data.BK9)) {
                 const results = response.data.BK9;
-                
-                // --- FILTRO ANTI-DUPLICADOS (Corrección de lógica) ---
                 const uniqueStories = [];
-                const seenUrls = new Set();
+                const seenIds = new Set();
 
                 for (const item of results) {
                     if (!item.url) continue;
 
-                    // Normalizamos la URL para evitar duplicados por parámetros extra
-                    // (A veces la firma cambia pero el ID base es el mismo)
-                    // Usaremos la URL completa por seguridad, pero con Set
-                    if (seenUrls.has(item.url)) continue;
-                    seenUrls.add(item.url);
+                    // Extraemos un ID único de la URL para evitar duplicados reales
+                    // Las URLs de Instagram suelen tener un ID largo entre barras
+                    const fileId = item.url.split('/').pop().split('?')[0];
 
-                    // Detección ESTRICTA de tipo
-                    const isVideo = item.type === 'video' || item.url.includes('.mp4');
-
-                    uniqueStories.push({
-                        url: item.url,
-                        type: isVideo ? 'video' : 'image',
-                        // Forzamos el mimetype aquí mismo para no depender de la descarga
-                        mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
-                    });
+                    if (!seenIds.has(fileId)) {
+                        seenIds.add(fileId);
+                        const isVideo = item.url.includes('.mp4') || item.type === 'video';
+                        uniqueStories.push({
+                            url: item.url,
+                            type: isVideo ? 'video' : 'image',
+                            mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
+                        });
+                    }
                 }
-
-                if (uniqueStories.length > 0) {
-                    console.log(`✅ Encontradas ${uniqueStories.length} historias únicas.`);
-                    return uniqueStories;
-                }
+                return uniqueStories;
             }
-            
             throw new Error('NO_STORIES');
         } catch (error) {
-            if (error.response?.status === 404 || error.message === 'NO_STORIES') {
-                throw new Error('NOT_FOUND_OR_PRIVATE');
-            }
             throw error;
         }
     }
 
     /**
-     * Paso 2: Descargar el archivo al búfer
+     * DESCARGA ROBUSTA: Simula una sesión de navegador para evitar el "archivo corrupto"
      */
     async getBuffer(url) {
         try {
-            const res = await axios.get(url, { 
+            const response = await axios({
+                method: 'get',
+                url: url,
                 responseType: 'arraybuffer',
                 httpsAgent: this.httpsAgent,
+                timeout: 30000,
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Referer': 'https://www.instagram.com/'
-                },
-                timeout: 30000 
+                    'Accept': '*/*',
+                    'Accept-Encoding': 'identity',
+                    'Referer': 'https://www.instagram.com/',
+                    'Origin': 'https://www.instagram.com'
+                }
             });
-            return Buffer.from(res.data);
+
+            // Si el buffer es muy pequeño (menos de 100 bytes), es un error de Instagram
+            if (response.data.byteLength < 100) throw new Error('EMPTY_BUFFER');
+
+            return Buffer.from(response.data);
         } catch (e) {
-            console.error("❌ Error descargando buffer:", e.message);
-            throw new Error('DOWNLOAD_FAILED');
+            console.error("❌ Error en descarga de buffer:", e.message);
+            throw e;
         }
     }
 }
@@ -91,7 +85,6 @@ const storyService = new BK9StoryService();
 export async function igstorysCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        // --- 1. MENSAJE DE AYUDA ---
         if (!args[0]) {
             await sock.sendMessage(jid, { react: { text: "❓", key: m.key } });
             return await sock.sendMessage(jid, { 
@@ -101,8 +94,6 @@ export async function igstorysCommand(sock, m, args) {
 
         let pos = null;
         let username = null;
-
-        // Detectar si pide una posición específica (#story 1 usuario)
         if (args.length >= 2 && !isNaN(args[0])) {
             pos = parseInt(args[0]);
             username = args[1];
@@ -112,10 +103,8 @@ export async function igstorysCommand(sock, m, args) {
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        // Obtener lista
         const allStories = await storyService.fetchStories(username);
 
-        // --- 2. FILTRAR HISTORIAS A ENVIAR ---
         let storiesToSend = allStories;
         if (pos !== null) {
             const index = pos - 1;
@@ -126,57 +115,36 @@ export async function igstorysCommand(sock, m, args) {
             }
         }
 
-        console.log(`📤 Preparando envío de ${storiesToSend.length} historias...`);
-
-        // --- 3. BUCLE DE ENVÍO ---
         for (let i = 0; i < storiesToSend.length; i++) {
             const story = storiesToSend[i];
-            
             try {
-                // Descarga
                 const buffer = await storyService.getBuffer(story.url);
                 
-                // Caption
-                let caption = "";
-                if (pos !== null) {
-                    caption = `✅ *Historia #${pos} de @${username}*`;
-                } else {
-                    caption = `📸 *Historia de @${username}* (${i + 1}/${allStories.length})`;
-                }
+                const caption = pos !== null 
+                    ? `Historia #${pos} de _@${username}_`
+                    : `Historias de _@${username}_ (${i + 1}/${allStories.length})`;
 
-                console.log(`📤 Enviando historia ${i+1}/${storiesToSend.length} (${story.type})...`);
-
-                // ENVÍO BLINDADO:
-                // Usamos la llave dinámica [story.type] (video o image)
-                // Y forzamos el mimetype que definimos en fetchStories
+                // ENVÍO CON VALIDACIÓN DE TIPO
                 await sock.sendMessage(jid, {
                     [story.type]: buffer,
                     caption: caption,
-                    mimetype: story.mimetype 
+                    mimetype: story.mimetype,
+                    fileName: `story.${story.type === 'video' ? 'mp4' : 'jpg'}`
                 }, { quoted: m });
 
-                // Delay entre mensajes
                 if (storiesToSend.length > 1) await new Promise(r => setTimeout(r, 2000));
 
             } catch (err) {
-                console.error(`⚠️ Fallo al enviar historia ${i + 1}:`, err.message);
-                continue; // Saltamos a la siguiente si una falla
+                console.error(`Error enviando historia:`, err.message);
             }
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("Story Error Fatal:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-
         let msg = "⚠️ *Error:* No se pudieron obtener las historias.";
-        if (e.message === 'NOT_FOUND_OR_PRIVATE') {
-            msg = "⚠️ *Error:* Usuario no encontrado, es privado o no tiene historias las últimas 24h.";
-        } else if (e.message === 'POSITION_NOT_FOUND') {
-            msg = `⚠️ *Error:* La posición solicitada no existe.`;
-        }
-
+        if (e.message === 'POSITION_NOT_FOUND') msg = "⚠️ *Error:* Esa posición no existe.";
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
 }
