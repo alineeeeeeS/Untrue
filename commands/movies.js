@@ -1,16 +1,37 @@
 import axios from 'axios';
 
-// Función auxiliar para calcular la similitud (Puntuación de coincidencia)
-function calculateSimilarity(str1, str2) {
-    const words1 = str1.toLowerCase().split(/\s+/);
-    const words2 = str2.toLowerCase().split(/\s+/);
-    let matches = 0;
-    
-    words1.forEach(word => {
-        if (words2.includes(word)) matches++;
-    });
-    
-    return matches / Math.max(words1.length, words2.length);
+// Algoritmo de similitud mejorado (Levenshtein simplificado)
+function getSimilarity(s1, s2) {
+    let longer = s1.toLowerCase();
+    let shorter = s2.toLowerCase();
+    if (s1.length < s2.length) {
+        longer = s2;
+        shorter = s1;
+    }
+    let longerLength = longer.length;
+    if (longerLength === 0) return 1.0;
+    return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
+
+function editDistance(s1, s2) {
+    let costs = new Array();
+    for (let i = 0; i <= s1.length; i++) {
+        let lastValue = i;
+        for (let j = 0; j <= s2.length; j++) {
+            if (i == 0) costs[j] = j;
+            else {
+                if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+        }
+        if (i > 0) costs[s2.length] = lastValue;
+    }
+    return costs[s2.length];
 }
 
 export async function movieCommand(sock, m, args) {
@@ -18,7 +39,7 @@ export async function movieCommand(sock, m, args) {
     const query = args.join(" ");
 
     if (!query) {
-        return await sock.sendMessage(jid, { text: "🎬 *Escribe el nombre de la película.*" }, { quoted: m });
+        return await sock.sendMessage(jid, { text: "🎬 *Escribe el nombre de la película para buscar.*" }, { quoted: m });
     }
 
     try {
@@ -26,36 +47,34 @@ export async function movieCommand(sock, m, args) {
 
         const response = await axios.get(`https://api.dorratz.com/v2/pelis-search`, {
             params: { q: query },
-            timeout: 15000
+            timeout: 10000
         });
 
-        const results = response.data;
+        // Verificamos si la respuesta es un array o si los datos están en .results / .data
+        const rawResults = Array.isArray(response.data) ? response.data : (response.data.results || response.data.data || []);
 
-        if (!results || results.length === 0) {
+        if (rawResults.length === 0) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return await sock.sendMessage(jid, { text: "🚫 No encontré resultados." }, { quoted: m });
+            return await sock.sendMessage(jid, { text: "🚫 No encontré resultados para tu búsqueda." }, { quoted: m });
         }
 
-        // --- LÓGICA DE EXACTITUD ---
-        // Ordenamos los resultados por puntuación de similitud
-        const bestMatches = results.map(item => ({
+        // --- FILTRO DE EXACTITUD ---
+        // Calculamos la similitud de cada título con lo que escribió el usuario
+        const scoredResults = rawResults.map(item => ({
             ...item,
-            score: calculateSimilarity(query, item.title)
-        })).sort((a, b) => b.score - a.score);
+            similarity: getSimilarity(query, item.title)
+        }));
 
-        // Tomamos el que tenga mayor puntuación
-        const movie = bestMatches[0];
+        // Ordenamos: Mayor similitud primero
+        scoredResults.sort((a, b) => b.similarity - a.similarity);
 
-        // Opcional: Si el score es muy bajo (0), significa que no se parece nada
-        if (movie.score === 0 && results.length > 0) {
-            // Si no hay coincidencia exacta de palabras, nos quedamos con el primer resultado de la API
-            // pero avisamos que podría no ser exacto.
-        }
+        const movie = scoredResults[0];
 
         const movieMsg = `*▸ PELÍCULA ENCONTRADA ◂*\n\n` +
                          `📌 *Título:* ${movie.title}\n` +
                          `🔗 *Link:* ${movie.link}\n\n`;
 
+        // Enviamos la carátula con la info
         await sock.sendMessage(jid, {
             image: { url: movie.image },
             caption: movieMsg
@@ -64,7 +83,11 @@ export async function movieCommand(sock, m, args) {
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
+        console.error("❌ Error Movie API:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { text: "⚠️ Error al conectar con la API." }, { quoted: m });
+        
+        await sock.sendMessage(jid, { 
+            text: "⚠️ *Error:* No se pudo obtener información de la API. Intenta más tarde." 
+        }, { quoted: m });
     }
 }
