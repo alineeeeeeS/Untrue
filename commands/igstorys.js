@@ -5,28 +5,48 @@ class BK9StoryService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         this.apiUrl = 'https://api.bk9.dev/download/igs';
+        // Estas cabeceras hacen creer a la API que somos un navegador Chrome real
+        this.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'es-ES,es;q=0.9',
+            'Referer': 'https://bk9.dev/'
+        };
     }
 
     async fetchStories(username) {
         const cleanUsername = username.replace('@', '').trim();
         try {
-            console.log(`📡 [BK9] Consultando historias de: ${cleanUsername}`);
+            console.log(`📡 [BK9] Consultando historias de: ${cleanUsername}...`);
+            
+            // Hacemos la petición con los Headers de navegador
             const response = await axios.get(this.apiUrl, {
                 params: { username: cleanUsername },
+                headers: this.headers,
                 timeout: 20000,
                 httpsAgent: this.httpsAgent
             });
 
+            // --- LOG DE DEPURACIÓN (Verás esto en tu consola) ---
+            // Esto nos dirá si la API responde éxito, fallo o array vacío
+            console.log(`🔍 Respuesta API Status: ${response.data?.status}`);
+            console.log(`🔍 Cantidad encontrada: ${response.data?.BK9?.length || 0}`);
+
             if (response.data && response.data.status && Array.isArray(response.data.BK9)) {
                 const results = response.data.BK9;
+                
+                if (results.length === 0) throw new Error('NO_STORIES');
+
                 const uniqueStories = [];
                 const seenUrls = new Set();
 
                 for (const item of results) {
-                    // Usamos la URL como identificador único para no perder ninguna historia activa
                     if (item.url && !seenUrls.has(item.url)) {
                         seenUrls.add(item.url);
+                        
+                        // Detección segura de video vs imagen
                         const isVideo = item.url.includes('.mp4') || item.type === 'video';
+                        
                         uniqueStories.push({
                             url: item.url,
                             type: isVideo ? 'video' : 'image',
@@ -36,8 +56,12 @@ class BK9StoryService {
                 }
                 return uniqueStories;
             }
+            
             throw new Error('NO_STORIES');
         } catch (error) {
+            console.error(`❌ Error Fetching: ${error.message}`);
+            // Si hay un error de respuesta detallado, lo mostramos
+            if (error.response) console.error("Data error:", error.response.data);
             throw error;
         }
     }
@@ -68,6 +92,7 @@ export async function igstorysCommand(sock, m, args) {
 
         const allStories = await storyService.fetchStories(username);
 
+        // --- SELECCIÓN DE HISTORIAS ---
         let storiesToSend = allStories;
         if (pos !== null) {
             const index = pos - 1;
@@ -78,6 +103,7 @@ export async function igstorysCommand(sock, m, args) {
             }
         }
 
+        // --- ENVÍO DIRECTO (Sin descarga local) ---
         for (let i = 0; i < storiesToSend.length; i++) {
             const story = storiesToSend[i];
             
@@ -86,20 +112,18 @@ export async function igstorysCommand(sock, m, args) {
                 : `Historia de _@${username}_ (${i + 1}/${allStories.length})`;
 
             try {
-                // MÉTODO CLAVE: Enviamos la URL directamente a WhatsApp.
-                // Esto soluciona el icono de la cámara porque WhatsApp descarga el archivo 
-                // usando sus propias cabeceras oficiales de Facebook/Instagram.
+                // Pasamos la URL directamente a WhatsApp
+                // Esto evita que tu servidor dañe el archivo
                 await sock.sendMessage(jid, {
                     [story.type]: { url: story.url },
                     caption: caption,
-                    mimetype: story.mimetype,
-                    fileName: `story_${i}.${story.type === 'video' ? 'mp4' : 'jpg'}`
+                    mimetype: story.mimetype
                 }, { quoted: m });
 
                 if (storiesToSend.length > 1) await new Promise(r => setTimeout(r, 2000));
 
             } catch (err) {
-                console.error("Error enviando historia:", err.message);
+                console.error("Error envío:", err.message);
             }
         }
 
@@ -107,10 +131,11 @@ export async function igstorysCommand(sock, m, args) {
 
     } catch (e) {
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        let msg = "⚠️ *Error:* No se pudieron obtener las historias.";
-        if (e.message === 'POSITION_NOT_FOUND') msg = `⚠️ *Error:* Esa posición no existe (Total: ${allStories?.length || 0}).`;
-        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* No hay historias o la cuenta es privada.";
         
+        let msg = "⚠️ *Error:* No se encontraron historias.";
+        if (e.message === 'NO_STORIES') msg = "⚠️ *Sin resultados:* La cuenta es privada, no tiene historias o la API no pudo acceder.";
+        if (e.message === 'POSITION_NOT_FOUND') msg = `⚠️ *Error:* Esa posición no existe.`;
+
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
 }
