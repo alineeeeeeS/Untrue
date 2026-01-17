@@ -6,7 +6,7 @@ export async function igstorysCommand(sock, m, args) {
     try {
         if (!args[0]) {
             return await sock.sendMessage(jid, { 
-                text: "❌ *Uso correcto:*\n▸ #story _usuario_\n▸ #story *número* _usuario_"
+                text: "❌ *Uso:* #story _usuario_" 
             }, { quoted: m });
         }
 
@@ -16,77 +16,77 @@ export async function igstorysCommand(sock, m, args) {
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        // --- CONFIGURACIÓN DE LA PETICIÓN SEGÚN TU HTML ---
         const formData = new URLSearchParams();
         formData.append('url', `https://www.instagram.com/${username}/`);
-        // Nota: Añadimos el submit para imitar el clic del botón
-        formData.append('submit', ''); 
 
         console.log(`📡 [DOWNLOADGRAM] Solicitando historias de: ${username}`);
 
-        const response = await axios.post('https://api.downloadgram.org/story', formData, {
+        // Usamos la URL principal en lugar de la sub-api para evitar el bloqueo de "No Stories"
+        const response = await axios.post('https://downloadgram.org/story-downloader.php', formData, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': 'https://downloadgram.org/story-downloader.php',
-                'Origin': 'https://downloadgram.org',
-                'Accept': 'text/plain, */*; q=0.01'
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                'accept-language': 'es-ES,es;q=0.9',
+                'cache-control': 'max-age=0',
+                'content-type': 'application/x-www-form-urlencoded',
+                'origin': 'https://downloadgram.org',
+                'referer': 'https://downloadgram.org/story-downloader.php',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             },
             timeout: 30000
         });
 
-        // --- EXTRACCIÓN MEDIANTE SELECTORES QUE ME PASASTE ---
         const $ = cheerio.load(response.data);
         const stories = [];
 
-        // Buscamos dentro de la ID que identificaste: #downloadhere
-        $('#downloadhere .row').each((i, el) => {
-            const downloadLink = $(el).find('a[href]').attr('href');
-            
-            if (downloadLink) {
-                // El CDN de downloadgram usa tokens JWT. 
-                // Si la URL contiene "force=true" o "mp4" suele ser video.
-                const isVideo = downloadLink.includes('mp4') || downloadLink.includes('video') || downloadLink.includes('force=true');
-                
+        // BUSQUEDA FLEXIBLE: Buscamos cualquier link que contenga "cdn.downloadgram" 
+        // o que esté dentro de la sección de descarga
+        $('a').each((i, el) => {
+            const link = $(el).attr('href');
+            if (link && (link.includes('cdn.downloadgram.org') || link.includes('token='))) {
+                const isVideo = link.includes('.mp4') || link.includes('force=true');
                 stories.push({
-                    url: downloadLink,
+                    url: link,
                     type: isVideo ? 'video' : 'image',
                     mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
                 });
             }
         });
 
-        if (stories.length === 0) throw new Error('NO_STORIES');
+        // Eliminar duplicados (a veces la web pone el link en la imagen y en el botón)
+        const uniqueStories = Array.from(new Set(stories.map(s => s.url)))
+            .map(url => stories.find(s => s.url === url));
 
-        // --- SELECCIÓN Y ENVÍO ---
-        let toSend = pos ? [stories[pos - 1]] : stories;
+        if (uniqueStories.length === 0) {
+            // Log para depuración: ver qué respondió la web si falla
+            console.log("⚠️ Respuesta vacía. Longitud HTML:", response.data.length);
+            throw new Error('NO_STORIES');
+        }
+
+        let toSend = pos ? [uniqueStories[pos - 1]] : uniqueStories;
         if (!toSend[0]) throw new Error('POS_ERROR');
 
         for (let i = 0; i < toSend.length; i++) {
             const s = toSend[i];
-            const caption = `Historia descargada! _@${username}_ ${pos || (i + 1)}/${stories.length}`;
+            const caption = `📸 *IG Story:* @${username}\n🔢 #${pos || (i + 1)}/${uniqueStories.length}`;
 
-            // IMPORTANTE: Enviamos la URL con el Token JWT directamente
             await sock.sendMessage(jid, {
                 [s.type]: { url: s.url },
                 caption: caption,
-                mimetype: s.mimetype,
-                fileName: `ig_story_${username}.${s.type === 'video' ? 'mp4' : 'jpg'}`
+                mimetype: s.mimetype
             }, { quoted: m });
 
-            // Pequeño delay para no saturar la conexión de WhatsApp
-            if (toSend.length > 1) await new Promise(r => setTimeout(r, 1500));
+            if (toSend.length > 1) await new Promise(r => setTimeout(r, 2000));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("❌ Error en Scraper:", e.message);
+        console.error("❌ Error Detallado:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
         
-        let msg = "⚠️ *Error:* No se pudo conectar con el servidor de descargas.";
-        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* El usuario no tiene historias o es cuenta privada.";
-        if (e.message === 'POS_ERROR') msg = `⚠️ *Error:* La historia #${pos} no existe.`;
+        let msg = "⚠️ *Error:* No se encontraron historias públicas.";
+        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* La web no devolvió resultados. Intenta de nuevo o verifica el usuario.";
+        if (e.message === 'POS_ERROR') msg = "⚠️ *Error:* Esa posición no existe.";
         
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
