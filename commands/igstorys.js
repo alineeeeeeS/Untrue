@@ -1,157 +1,93 @@
 import axios from 'axios';
-import https from 'https';
-
-class BK9StoryService {
-    constructor() {
-        this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-        this.apiUrl = 'https://api.bk9.dev/download/igs';
-        this.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'application/json, text/plain, */*',
-            'Referer': 'https://bk9.dev/'
-        };
-    }
-
-    async fetchStories(username) {
-        const cleanUsername = username.replace('@', '').trim();
-        try {
-            console.log(`📡 [BK9] Consultando historias de: ${cleanUsername}...`);
-            
-            const response = await axios.get(this.apiUrl, {
-                params: { username: cleanUsername },
-                headers: this.headers,
-                timeout: 20000,
-                httpsAgent: this.httpsAgent
-            });
-
-            const data = response.data;
-            
-            // LOG DIAGNÓSTICO: Veremos qué está respondiendo realmente la API
-            console.log(`🔍 Status API: ${data?.status}`);
-            
-            if (data && data.status && Array.isArray(data.BK9)) {
-                const results = data.BK9;
-                console.log(`🔍 Items recibidos brutos: ${results.length}`);
-
-                // Imprimimos el primer item para ver su estructura real en consola
-                if (results.length > 0) {
-                    console.log('📋 Estructura del primer item:', JSON.stringify(results[0]));
-                }
-
-                const uniqueStories = [];
-                const seenUrls = new Set();
-
-                for (const item of results) {
-                    // EXTRACTOR UNIVERSAL:
-                    // Buscamos el link en cualquier propiedad posible
-                    const fileUrl = item.url || item.link || item.media_url || item.original_url;
-
-                    if (fileUrl && !seenUrls.has(fileUrl)) {
-                        seenUrls.add(fileUrl);
-                        
-                        // Detección de tipo más permisiva
-                        // Si no tiene propiedad 'type', adivinamos por la extensión
-                        let type = item.type;
-                        if (!type) {
-                            type = (fileUrl.includes('.mp4') || fileUrl.includes('.avi')) ? 'video' : 'image';
-                        }
-                        
-                        // Normalizamos 'video' e 'image' (a veces llega 'GraphImage')
-                        if (type.toLowerCase().includes('video')) type = 'video';
-                        else type = 'image';
-
-                        uniqueStories.push({
-                            url: fileUrl,
-                            type: type,
-                            mimetype: type === 'video' ? 'video/mp4' : 'image/jpeg'
-                        });
-                    }
-                }
-
-                if (uniqueStories.length > 0) {
-                    console.log(`✅ Historias procesadas listas para enviar: ${uniqueStories.length}`);
-                    return uniqueStories;
-                } else {
-                    console.log("⚠️ Se recibieron items pero ninguno tenía URL válida.");
-                }
-            }
-            
-            throw new Error('NO_STORIES');
-        } catch (error) {
-            console.error(`❌ Error Fetching Detallado:`, error.message);
-            throw error;
-        }
-    }
-}
-
-const storyService = new BK9StoryService();
+import * as cheerio from 'cheerio';
 
 export async function igstorysCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
         if (!args[0]) {
-            await sock.sendMessage(jid, { react: { text: "❓", key: m.key } });
             return await sock.sendMessage(jid, { 
-                text: "❌ *Uso correcto:*\n▸ #story _usuario_\n▸ #story *número* _usuario_" 
+                text: "❌ *Uso correcto:*\n▸ #story _usuario_\n▸ #story *número* _usuario_"
             }, { quoted: m });
         }
 
-        let pos = null;
-        let username = null;
-        if (args.length >= 2 && !isNaN(args[0])) {
-            pos = parseInt(args[0]);
-            username = args[1];
-        } else {
-            username = args[0];
-        }
+        let pos = (args.length >= 2 && !isNaN(args[0])) ? parseInt(args[0]) : null;
+        let username = pos ? args[1] : args[0];
+        username = username.replace('@', '').trim();
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        const allStories = await storyService.fetchStories(username);
+        // --- CONFIGURACIÓN DE LA PETICIÓN SEGÚN TU HTML ---
+        const formData = new URLSearchParams();
+        formData.append('url', `https://www.instagram.com/${username}/`);
+        // Nota: Añadimos el submit para imitar el clic del botón
+        formData.append('submit', ''); 
 
-        // --- SELECCIÓN ---
-        let storiesToSend = allStories;
-        if (pos !== null) {
-            const index = pos - 1;
-            if (allStories[index]) {
-                storiesToSend = [allStories[index]];
-            } else {
-                throw new Error('POSITION_NOT_FOUND');
-            }
-        }
+        console.log(`📡 [DOWNLOADGRAM] Solicitando historias de: ${username}`);
 
-        // --- ENVÍO ---
-        for (let i = 0; i < storiesToSend.length; i++) {
-            const story = storiesToSend[i];
+        const response = await axios.post('https://api.downloadgram.org/story', formData, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Referer': 'https://downloadgram.org/story-downloader.php',
+                'Origin': 'https://downloadgram.org',
+                'Accept': 'text/plain, */*; q=0.01'
+            },
+            timeout: 30000
+        });
+
+        // --- EXTRACCIÓN MEDIANTE SELECTORES QUE ME PASASTE ---
+        const $ = cheerio.load(response.data);
+        const stories = [];
+
+        // Buscamos dentro de la ID que identificaste: #downloadhere
+        $('#downloadhere .row').each((i, el) => {
+            const downloadLink = $(el).find('a[href]').attr('href');
             
-            const caption = pos !== null 
-                ? `Historia #${pos} de _@${username}_`
-                : `Historia de _@${username}_ (${i + 1}/${allStories.length})`;
-
-            try {
-                // Usamos el método de URL directa que arregló la corrupción
-                await sock.sendMessage(jid, {
-                    [story.type]: { url: story.url },
-                    caption: caption,
-                    mimetype: story.mimetype
-                }, { quoted: m });
-
-                if (storiesToSend.length > 1) await new Promise(r => setTimeout(r, 2000));
-
-            } catch (err) {
-                console.error("Error envío:", err.message);
+            if (downloadLink) {
+                // El CDN de downloadgram usa tokens JWT. 
+                // Si la URL contiene "force=true" o "mp4" suele ser video.
+                const isVideo = downloadLink.includes('mp4') || downloadLink.includes('video') || downloadLink.includes('force=true');
+                
+                stories.push({
+                    url: downloadLink,
+                    type: isVideo ? 'video' : 'image',
+                    mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
+                });
             }
+        });
+
+        if (stories.length === 0) throw new Error('NO_STORIES');
+
+        // --- SELECCIÓN Y ENVÍO ---
+        let toSend = pos ? [stories[pos - 1]] : stories;
+        if (!toSend[0]) throw new Error('POS_ERROR');
+
+        for (let i = 0; i < toSend.length; i++) {
+            const s = toSend[i];
+            const caption = `Historia descargada! _@${username}_ ${pos || (i + 1)}/${stories.length}`;
+
+            // IMPORTANTE: Enviamos la URL con el Token JWT directamente
+            await sock.sendMessage(jid, {
+                [s.type]: { url: s.url },
+                caption: caption,
+                mimetype: s.mimetype,
+                fileName: `ig_story_${username}.${s.type === 'video' ? 'mp4' : 'jpg'}`
+            }, { quoted: m });
+
+            // Pequeño delay para no saturar la conexión de WhatsApp
+            if (toSend.length > 1) await new Promise(r => setTimeout(r, 1500));
         }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
+        console.error("❌ Error en Scraper:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
         
-        let msg = "⚠️ *Error:* No se encontraron historias.";
-        if (e.message === 'NO_STORIES') msg = "⚠️ *Sin historias:* El usuario no tiene historias activas (o la API devolvió datos vacíos).";
-        if (e.message === 'POSITION_NOT_FOUND') msg = `⚠️ *Error:* Esa posición no existe (Total encontradas: ${allStories?.length || 0}).`;
-
+        let msg = "⚠️ *Error:* No se pudo conectar con el servidor de descargas.";
+        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* El usuario no tiene historias o es cuenta privada.";
+        if (e.message === 'POS_ERROR') msg = `⚠️ *Error:* La historia #${pos} no existe.`;
+        
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
 }
