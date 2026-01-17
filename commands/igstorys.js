@@ -5,11 +5,9 @@ class BK9StoryService {
     constructor() {
         this.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         this.apiUrl = 'https://api.bk9.dev/download/igs';
-        // Estas cabeceras hacen creer a la API que somos un navegador Chrome real
         this.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'es-ES,es;q=0.9',
             'Referer': 'https://bk9.dev/'
         };
     }
@@ -19,7 +17,6 @@ class BK9StoryService {
         try {
             console.log(`📡 [BK9] Consultando historias de: ${cleanUsername}...`);
             
-            // Hacemos la petición con los Headers de navegador
             const response = await axios.get(this.apiUrl, {
                 params: { username: cleanUsername },
                 headers: this.headers,
@@ -27,41 +24,61 @@ class BK9StoryService {
                 httpsAgent: this.httpsAgent
             });
 
-            // --- LOG DE DEPURACIÓN (Verás esto en tu consola) ---
-            // Esto nos dirá si la API responde éxito, fallo o array vacío
-            console.log(`🔍 Respuesta API Status: ${response.data?.status}`);
-            console.log(`🔍 Cantidad encontrada: ${response.data?.BK9?.length || 0}`);
+            const data = response.data;
+            
+            // LOG DIAGNÓSTICO: Veremos qué está respondiendo realmente la API
+            console.log(`🔍 Status API: ${data?.status}`);
+            
+            if (data && data.status && Array.isArray(data.BK9)) {
+                const results = data.BK9;
+                console.log(`🔍 Items recibidos brutos: ${results.length}`);
 
-            if (response.data && response.data.status && Array.isArray(response.data.BK9)) {
-                const results = response.data.BK9;
-                
-                if (results.length === 0) throw new Error('NO_STORIES');
+                // Imprimimos el primer item para ver su estructura real en consola
+                if (results.length > 0) {
+                    console.log('📋 Estructura del primer item:', JSON.stringify(results[0]));
+                }
 
                 const uniqueStories = [];
                 const seenUrls = new Set();
 
                 for (const item of results) {
-                    if (item.url && !seenUrls.has(item.url)) {
-                        seenUrls.add(item.url);
+                    // EXTRACTOR UNIVERSAL:
+                    // Buscamos el link en cualquier propiedad posible
+                    const fileUrl = item.url || item.link || item.media_url || item.original_url;
+
+                    if (fileUrl && !seenUrls.has(fileUrl)) {
+                        seenUrls.add(fileUrl);
                         
-                        // Detección segura de video vs imagen
-                        const isVideo = item.url.includes('.mp4') || item.type === 'video';
+                        // Detección de tipo más permisiva
+                        // Si no tiene propiedad 'type', adivinamos por la extensión
+                        let type = item.type;
+                        if (!type) {
+                            type = (fileUrl.includes('.mp4') || fileUrl.includes('.avi')) ? 'video' : 'image';
+                        }
                         
+                        // Normalizamos 'video' e 'image' (a veces llega 'GraphImage')
+                        if (type.toLowerCase().includes('video')) type = 'video';
+                        else type = 'image';
+
                         uniqueStories.push({
-                            url: item.url,
-                            type: isVideo ? 'video' : 'image',
-                            mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
+                            url: fileUrl,
+                            type: type,
+                            mimetype: type === 'video' ? 'video/mp4' : 'image/jpeg'
                         });
                     }
                 }
-                return uniqueStories;
+
+                if (uniqueStories.length > 0) {
+                    console.log(`✅ Historias procesadas listas para enviar: ${uniqueStories.length}`);
+                    return uniqueStories;
+                } else {
+                    console.log("⚠️ Se recibieron items pero ninguno tenía URL válida.");
+                }
             }
             
             throw new Error('NO_STORIES');
         } catch (error) {
-            console.error(`❌ Error Fetching: ${error.message}`);
-            // Si hay un error de respuesta detallado, lo mostramos
-            if (error.response) console.error("Data error:", error.response.data);
+            console.error(`❌ Error Fetching Detallado:`, error.message);
             throw error;
         }
     }
@@ -92,7 +109,7 @@ export async function igstorysCommand(sock, m, args) {
 
         const allStories = await storyService.fetchStories(username);
 
-        // --- SELECCIÓN DE HISTORIAS ---
+        // --- SELECCIÓN ---
         let storiesToSend = allStories;
         if (pos !== null) {
             const index = pos - 1;
@@ -103,7 +120,7 @@ export async function igstorysCommand(sock, m, args) {
             }
         }
 
-        // --- ENVÍO DIRECTO (Sin descarga local) ---
+        // --- ENVÍO ---
         for (let i = 0; i < storiesToSend.length; i++) {
             const story = storiesToSend[i];
             
@@ -112,8 +129,7 @@ export async function igstorysCommand(sock, m, args) {
                 : `Historia de _@${username}_ (${i + 1}/${allStories.length})`;
 
             try {
-                // Pasamos la URL directamente a WhatsApp
-                // Esto evita que tu servidor dañe el archivo
+                // Usamos el método de URL directa que arregló la corrupción
                 await sock.sendMessage(jid, {
                     [story.type]: { url: story.url },
                     caption: caption,
@@ -133,8 +149,8 @@ export async function igstorysCommand(sock, m, args) {
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
         
         let msg = "⚠️ *Error:* No se encontraron historias.";
-        if (e.message === 'NO_STORIES') msg = "⚠️ *Sin resultados:* La cuenta es privada, no tiene historias o la API no pudo acceder.";
-        if (e.message === 'POSITION_NOT_FOUND') msg = `⚠️ *Error:* Esa posición no existe.`;
+        if (e.message === 'NO_STORIES') msg = "⚠️ *Sin historias:* El usuario no tiene historias activas (o la API devolvió datos vacíos).";
+        if (e.message === 'POSITION_NOT_FOUND') msg = `⚠️ *Error:* Esa posición no existe (Total encontradas: ${allStories?.length || 0}).`;
 
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
