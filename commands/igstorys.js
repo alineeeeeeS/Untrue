@@ -4,11 +4,7 @@ import * as cheerio from 'cheerio';
 export async function igstorysCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        if (!args[0]) {
-            return await sock.sendMessage(jid, { 
-                text: "❌ *Uso:* #story _usuario_" 
-            }, { quoted: m });
-        }
+        if (!args[0]) return;
 
         let pos = (args.length >= 2 && !isNaN(args[0])) ? parseInt(args[0]) : null;
         let username = pos ? args[1] : args[0];
@@ -16,49 +12,52 @@ export async function igstorysCommand(sock, m, args) {
 
         await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
 
-        const formData = new URLSearchParams();
-        formData.append('url', `https://www.instagram.com/${username}/`);
+        // Preparamos los datos del formulario
+        const params = new URLSearchParams();
+        params.append('url', `https://www.instagram.com/${username}/`);
+        params.append('submit', ''); // Añadimos el valor del botón por si el PHP lo valida
 
-        console.log(`📡 [DOWNLOADGRAM] Solicitando historias de: ${username}`);
+        console.log(`📡 [DOWNLOADGRAM] Procesando descarga en /download para: ${username}`);
 
-        // Usamos la URL principal en lugar de la sub-api para evitar el bloqueo de "No Stories"
-        const response = await axios.post('https://downloadgram.org/story-downloader.php', formData, {
+        // Hacemos el POST a la URL de destino que me indicaste
+        const response = await axios.post('https://downloadgram.org/download', params, {
             headers: {
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
                 'accept-language': 'es-ES,es;q=0.9',
-                'cache-control': 'max-age=0',
                 'content-type': 'application/x-www-form-urlencoded',
                 'origin': 'https://downloadgram.org',
                 'referer': 'https://downloadgram.org/story-downloader.php',
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'upgrade-insecure-requests': '1'
             },
-            timeout: 30000
+            maxRedirects: 5, // Por si la web hace saltos
+            timeout: 35000
         });
 
         const $ = cheerio.load(response.data);
         const stories = [];
 
-        // BUSQUEDA FLEXIBLE: Buscamos cualquier link que contenga "cdn.downloadgram" 
-        // o que esté dentro de la sección de descarga
+        // Buscamos los enlaces de descarga en la nueva página de resultados
+        // Filtramos por links que contengan el token que vimos en tus etiquetas
         $('a').each((i, el) => {
-            const link = $(el).attr('href');
-            if (link && (link.includes('cdn.downloadgram.org') || link.includes('token='))) {
-                const isVideo = link.includes('.mp4') || link.includes('force=true');
+            const href = $(el).attr('href');
+            if (href && (href.includes('token=') || href.includes('cdn.downloadgram.org'))) {
+                // Si el link tiene 'force=true' o termina en .mp4 lo tratamos como video
+                const isVideo = href.includes('force=true') || href.includes('.mp4');
                 stories.push({
-                    url: link,
+                    url: href,
                     type: isVideo ? 'video' : 'image',
                     mimetype: isVideo ? 'video/mp4' : 'image/jpeg'
                 });
             }
         });
 
-        // Eliminar duplicados (a veces la web pone el link en la imagen y en el botón)
+        // Eliminar posibles duplicados
         const uniqueStories = Array.from(new Set(stories.map(s => s.url)))
             .map(url => stories.find(s => s.url === url));
 
         if (uniqueStories.length === 0) {
-            // Log para depuración: ver qué respondió la web si falla
-            console.log("⚠️ Respuesta vacía. Longitud HTML:", response.data.length);
+            console.log("⚠️ No se hallaron links. Longitud HTML recibido:", response.data.length);
             throw new Error('NO_STORIES');
         }
 
@@ -81,12 +80,12 @@ export async function igstorysCommand(sock, m, args) {
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("❌ Error Detallado:", e.message);
+        console.error("❌ Error en Scraper:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
         
-        let msg = "⚠️ *Error:* No se encontraron historias públicas.";
-        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* La web no devolvió resultados. Intenta de nuevo o verifica el usuario.";
-        if (e.message === 'POS_ERROR') msg = "⚠️ *Error:* Esa posición no existe.";
+        let msg = "⚠️ *Error:* No se pudieron cargar las historias de este usuario.";
+        if (e.message === 'NO_STORIES') msg = "⚠️ *Error:* La web no devolvió resultados (puede que el perfil sea privado).";
+        if (e.message === 'POS_ERROR') msg = "⚠️ *Error:* Esa posición de historia no existe.";
         
         await sock.sendMessage(jid, { text: msg }, { quoted: m });
     }
