@@ -13,17 +13,17 @@ class BK9StoryService {
             console.log(`📡 [BK9] Consultando historias de: ${cleanUsername}`);
             const response = await axios.get(this.apiUrl, {
                 params: { username: cleanUsername },
-                timeout: 15000,
+                timeout: 20000,
                 httpsAgent: this.httpsAgent
             });
 
             if (response.data && response.data.status && Array.isArray(response.data.BK9)) {
-                // Filtramos solo por URL única para no perder ninguna historia
                 const results = response.data.BK9;
                 const uniqueStories = [];
                 const seenUrls = new Set();
 
                 for (const item of results) {
+                    // Usamos la URL como identificador único para no perder ninguna historia activa
                     if (item.url && !seenUrls.has(item.url)) {
                         seenUrls.add(item.url);
                         const isVideo = item.url.includes('.mp4') || item.type === 'video';
@@ -48,11 +48,10 @@ const storyService = new BK9StoryService();
 export async function igstorysCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        // --- 1. AYUDA DE USO ---
         if (!args[0]) {
             await sock.sendMessage(jid, { react: { text: "❓", key: m.key } });
             return await sock.sendMessage(jid, { 
-                text: "❌ *Uso correcto:*\n▸ #story _usuario_\n▸ #story _número_ _usuario_\n\n*Ejemplo:* #story akribb" 
+                text: "❌ *Uso correcto:*\n▸ #story _usuario_\n▸ #story *número* _usuario_" 
             }, { quoted: m });
         }
 
@@ -69,7 +68,6 @@ export async function igstorysCommand(sock, m, args) {
 
         const allStories = await storyService.fetchStories(username);
 
-        // --- 2. SELECCIÓN ---
         let storiesToSend = allStories;
         if (pos !== null) {
             const index = pos - 1;
@@ -80,27 +78,28 @@ export async function igstorysCommand(sock, m, args) {
             }
         }
 
-        // --- 3. ENVÍO MEDIANTE URL (Evita bloqueo de Railway y corrupción) ---
         for (let i = 0; i < storiesToSend.length; i++) {
             const story = storiesToSend[i];
             
             const caption = pos !== null 
-                ? `✅ *Historia #${pos} de @${username}*`
-                : `📸 *Historia de @${username}* (${i + 1}/${allStories.length})`;
+                ? `Historia #${pos} de _@${username}_`
+                : `Historia de _@${username}_ (${i + 1}/${allStories.length})`;
 
             try {
-                // Pasamos la URL directamente. Baileys se encarga de la descarga.
-                // Esto garantiza que el archivo NO llegue corrupto.
+                // MÉTODO CLAVE: Enviamos la URL directamente a WhatsApp.
+                // Esto soluciona el icono de la cámara porque WhatsApp descarga el archivo 
+                // usando sus propias cabeceras oficiales de Facebook/Instagram.
                 await sock.sendMessage(jid, {
                     [story.type]: { url: story.url },
                     caption: caption,
-                    mimetype: story.mimetype
+                    mimetype: story.mimetype,
+                    fileName: `story_${i}.${story.type === 'video' ? 'mp4' : 'jpg'}`
                 }, { quoted: m });
 
                 if (storiesToSend.length > 1) await new Promise(r => setTimeout(r, 2000));
 
             } catch (err) {
-                console.error("Error enviando:", err.message);
+                console.error("Error enviando historia:", err.message);
             }
         }
 
