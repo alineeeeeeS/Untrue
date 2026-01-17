@@ -8,6 +8,7 @@ import { igstorysCommand } from "./igstorys.js"; // Descargar historias de insta
 import { facebookCommand } from "./facebook.js"; // Descargar contenido desde facebook
 import { twitterCommand } from "./twitter.js"; // Descargar contenido desde X/Twitter
 import { scCommand } from "./soundcloud.js"; // Descargar música desde SoundCloud
+import { movieCommand } from "./movies.js";
 import { pinterestCommand } from "./pinterest.js" // Descargar contenido desde pinterest
 import { helpCommand } from "./help.js"; // Menú de ayuda
 import { mediaToStickerCommand } from "./mediaToSticker.js"; // Convertir imagen/video a sticker
@@ -72,7 +73,9 @@ const commands = {
 	soundcloud: scCommand,
 	dl: dlCommand,
 	cover: coverCommand,
-
+	mv: movieCommand,
+	movie: movieCommand,
+	
 	// ECONOMÍA
 	bj: blackjackCommand,
 	ruleta: ruletaCommand,

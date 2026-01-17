@@ -19,7 +19,8 @@ export async function helpCommand(sock, m) {
   • #tw [link] ▸ Videos de X/Twitter
   • #dl [link] ▸ Distintos tipos de descargas
 
-🎵 *FUNCIONES - MÚSICA*
+🎵 *ENTRETENIMIENTO*
+  • #movie [búsqueda] ▸ Películas para descargar
   • #music [link/búsqueda] ▸ Música desde YouTube
   • #sc [link/búsqueda] ▸ Música desde SoundCloud
   • #letra [artista] [canción]
