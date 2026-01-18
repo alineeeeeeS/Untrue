@@ -1,11 +1,17 @@
 import axios from 'axios';
 
-// Función de similitud simple y rápida
-function getSimpleScore(query, target) {
-    const q = query.toLowerCase();
-    const t = target.toLowerCase();
-    if (t.includes(q)) return 100; // Si el título contiene la búsqueda completa, puntuación máxima
-    return 0;
+// Función para limpiar y comparar títulos (Filtro de exactitud)
+function getExactMatch(query, list) {
+    const q = query.toLowerCase().trim();
+    return list.sort((a, b) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        
+        // Si el título empieza exactamente con la búsqueda, tiene prioridad
+        if (titleA.startsWith(q) && !titleB.startsWith(q)) return -1;
+        if (!titleA.startsWith(q) && titleB.startsWith(q)) return 1;
+        return 0;
+    });
 }
 
 export async function movieCommand(sock, m, args) {
@@ -19,50 +25,67 @@ export async function movieCommand(sock, m, args) {
     try {
         await sock.sendMessage(jid, { react: { text: "🔍", key: m.key } });
 
-        // IMPORTANTE: encodeURIComponent asegura que "la la land" viaje como "la%20la%20land"
+        // URL Codificada
         const apiUrl = `https://api.dorratz.com/v2/pelis-search?q=${encodeURIComponent(query)}`;
         
         console.log(`📡 [MOVIE] Consultando: ${apiUrl}`);
         
-        const response = await axios.get(apiUrl, { timeout: 10000 });
+        const response = await axios.get(apiUrl, {
+            timeout: 15000,
+            headers: {
+                // Estos headers hacen que la API crea que somos un navegador Chrome real
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*',
+                'Accept-Language': 'es-ES,es;q=0.9',
+                'Referer': 'https://api.dorratz.com/'
+            }
+        });
 
-        // Verificamos si la API devolvió un array directamente
+        // Depuración en consola para que veas qué llega realmente
+        console.log("📦 [DEBUG] Respuesta API:", JSON.stringify(response.data).substring(0, 100));
+
         let results = [];
         if (Array.isArray(response.data)) {
             results = response.data;
         } else if (response.data && response.data.results) {
             results = response.data.results;
+        } else if (response.data && typeof response.data === 'object') {
+            // Caso especial: si la API devuelve un solo objeto en lugar de un array
+            results = [response.data];
         }
 
-        if (results.length === 0) {
+        if (results.length === 0 || !results[0].title) {
             await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-            return await sock.sendMessage(jid, { text: "🚫 No encontré resultados para esa película en la API." }, { quoted: m });
+            return await sock.sendMessage(jid, { text: "🚫 No encontré resultados. Intenta con un nombre más corto." }, { quoted: m });
         }
 
-        // --- FILTRO DE EXACTITUD ---
-        // Ordenamos los resultados: los que CONTENGAN las palabras buscadas van primero
-        const sorted = results.sort((a, b) => {
-            const scoreA = getSimpleScore(query, a.title);
-            const scoreB = getSimpleScore(query, b.title);
-            return scoreB - scoreA;
-        });
-
-        const movie = sorted[0];
+        // Aplicamos el orden por exactitud
+        const sortedResults = getExactMatch(query, results);
+        const movie = sortedResults[0];
 
         const movieMsg = `*▸ PELÍCULA ENCONTRADA ◂*\n\n` +
                          `📌 *Título:* ${movie.title}\n` +
                          `🔗 *Link:* ${movie.link}\n\n`;
-        // Enviamos la carátula
-        await sock.sendMessage(jid, {
-            image: { url: movie.image },
-            caption: movieMsg
-        }, { quoted: m });
+
+        // Si la imagen existe, la enviamos; si no, solo texto
+        if (movie.image) {
+            await sock.sendMessage(jid, {
+                image: { url: movie.image },
+                caption: movieMsg
+            }, { quoted: m });
+        } else {
+            await sock.sendMessage(jid, { text: movieMsg }, { quoted: m });
+        }
 
         await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
-        console.error("❌ Error Detallado:", e.message);
+        console.error("❌ Error API:", e.message);
         await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        await sock.sendMessage(jid, { text: "⚠️ Hubo un fallo al conectar con la base de datos." }, { quoted: m });
+        
+        let errorMsg = "⚠️ No se pudo conectar con el buscador de películas.";
+        if (e.response && e.response.status === 403) errorMsg = "⚠️ Acceso denegado por la API (Bloqueo de IP).";
+        
+        await sock.sendMessage(jid, { text: errorMsg }, { quoted: m });
     }
 }
