@@ -4,15 +4,11 @@ import qrcode from 'qrcode-terminal';
 let isConnected = false;
 let currentSocket = null;
 
-// ==========================================
-// 🎯 CONEXIÓN SIMPLE Y EFICIENTE
-// ==========================================
-
 export async function connectToWhatsApp() {
     try {
         console.log('🔧 Iniciando conexión WhatsApp...');
 
-        const { state, saveCreds } = await useMultiFileAuthState('./sessions');
+        const { state, saveCreds } = await useMultiFileAuthState('/app/sessions');
         const { version } = await fetchLatestBaileysVersion();
 
         const sock = makeWASocket({
@@ -54,10 +50,7 @@ export async function connectToWhatsApp() {
 
         sock.ev.on('creds.update', saveCreds);
 
-        // ==========================================
-        // 🎯 MANEJADOR DE MENSAJES OPTIMIZADO
-        // ==========================================
-
+    
         sock.ev.on('messages.upsert', async (m) => {
             try {
                 const message = m.messages[0];
@@ -66,7 +59,7 @@ export async function connectToWhatsApp() {
                 const user = message.key.remoteJid;
                 console.log(`📩 Mensaje de: ${user}`);
 
-                // Extraer texto del mensaje
+            
                 let text = '';
                 if (message.message?.conversation) {
                     text = message.message.conversation;
@@ -79,8 +72,7 @@ export async function connectToWhatsApp() {
                 }
 
                 console.log(`🔍 Texto: ${text}`);
-
-                // Procesar solo comandos que empiezan con #
+                
                 if (text.startsWith('#')) {
                     const args = text.trim().split(' ');
                     const commandName = args[0].toLowerCase().replace('#', '');
@@ -112,10 +104,6 @@ export async function connectToWhatsApp() {
         setTimeout(connectToWhatsApp, 10000);
     }
 }
-
-// ==========================================
-// 🎯 MANEJO DE SEÑALES
-// ==========================================
 
 process.on('SIGINT', () => {
     console.log('\n🛑 Cerrando bot...');
