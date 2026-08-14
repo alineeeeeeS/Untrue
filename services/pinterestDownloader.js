@@ -5,14 +5,9 @@ import axios from 'axios';
 import ffmpeg from 'fluent-ffmpeg';
 import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
 
-// Configurar FFmpeg
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-/**
- * Servicio mejorado para descargar de Pinterest con procesamiento de video
- */
 export class PinterestDownloader {
-
     constructor() {
         this.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -29,9 +24,6 @@ export class PinterestDownloader {
         };
     }
 
-    /**
-     * Expande URLs cortas de pin.it
-     */
     async expandShortUrl(url) {
         if (!url.includes('pin.it/')) {
             return url;
@@ -46,60 +38,54 @@ export class PinterestDownloader {
             });
 
             if (response.status >= 300 && response.status < 400 && response.headers.location) {
-                console.log('🔗 URL expandida:', response.headers.location);
+                console.log('URL expandida:', response.headers.location);
                 return response.headers.location;
             }
         } catch (error) {
-            console.log('⚠️ No se pudo expandir URL corta, usando original');
+            console.log('No se pudo expandir URL corta, usando original');
         }
 
         return url;
     }
 
-    /**
-     * Procesa video para hacerlo compatible con WhatsApp
-     */
     async processVideo(inputPath, outputPath) {
         return new Promise((resolve, reject) => {
-            console.log('🎬 Procesando video para WhatsApp...');
+            console.log('Procesando video...');
 
             ffmpeg(inputPath)
                 .outputOptions([
-                    '-c:v', 'libx264',        // Codec de video H.264
-                    '-c:a', 'aac',           // Codec de audio AAC
-                    '-movflags', '+faststart', // Optimizar para streaming
-                    '-preset', 'fast',       // Balance entre velocidad y calidad
-                    '-crf', '23',            // Calidad (23 es buen balance)
-                    '-r', '30',              // 30 FPS
-                    '-pix_fmt', 'yuv420p'    // Formato de pixel compatible
+                    '-c:v', 'libx264',
+                    '-c:a', 'aac',
+                    '-movflags', '+faststart',
+                    '-preset', 'fast',
+                    '-crf', '23',
+                    '-r', '30',
+                    '-pix_fmt', 'yuv420p'
                 ])
                 .output(outputPath)
-                .on('start', (commandLine) => {
-                    console.log('🚀 Iniciando procesamiento de video...');
+                .on('start', () => {
+                    console.log('Iniciando procesamiento de video...');
                 })
                 .on('progress', (progress) => {
                     if (progress.percent) {
-                        console.log(`📊 Progreso: ${Math.round(progress.percent)}%`);
+                        console.log(`Progreso: ${Math.round(progress.percent)}%`);
                     }
                 })
                 .on('end', () => {
-                    console.log('✅ Video procesado correctamente');
+                    console.log('Video procesado correctamente');
                     resolve(outputPath);
                 })
                 .on('error', (error) => {
-                    console.error('❌ Error procesando video:', error.message);
+                    console.error('Error procesando video:', error.message);
                     reject(error);
                 })
                 .run();
         });
     }
 
-    /**
-     * Extrae datos de Pinterest usando múltiples métodos
-     */
     async extractPinData(url) {
         try {
-            console.log('🔍 Extrayendo datos del pin...');
+            console.log('Extrayendo datos del pin...');
 
             const expandedUrl = await this.expandShortUrl(url);
             const response = await axios.get(expandedUrl, {
@@ -108,50 +94,41 @@ export class PinterestDownloader {
             });
 
             const html = response.data;
-
-            // Método 1: Buscar en JSON embebido
             const jsonMatch = html.match(/<script id="__PWS_DATA__" type="application\/json">(.*?)<\/script>/);
+
             if (jsonMatch) {
                 try {
                     const jsonData = JSON.parse(jsonMatch[1]);
-                    console.log('✅ Datos encontrados via PWS_DATA');
+                    console.log('Datos encontrados via PWS_DATA');
                     return this.parsePWSData(jsonData);
                 } catch (e) {
-                    console.log('❌ Error parseando PWS_DATA');
+                    console.log('Error parseando PWS_DATA');
                 }
             }
 
-            // Método 2: Buscar en meta tags
             const metaData = this.extractFromMetaTags(html);
             if (metaData.mediaUrl) {
-                console.log('✅ Datos encontrados via meta tags');
+                console.log('Datos encontrados via meta tags');
                 return metaData;
             }
 
-            // Método 3: Buscar URLs directas en el HTML
             const directUrls = this.extractDirectUrls(html);
             if (directUrls.mediaUrl) {
-                console.log('✅ URLs encontradas directamente');
+                console.log('URLs encontradas directamente');
                 return directUrls;
             }
 
             throw new Error('No se pudieron extraer datos del pin');
-
         } catch (error) {
-            console.error('❌ Error extrayendo datos:', error.message);
+            console.error('Error extrayendo datos:', error.message);
             throw error;
         }
     }
 
-    /**
-     * Parsea datos de __PWS_DATA__
-     */
     parsePWSData(jsonData) {
         try {
-            // Navegar por la estructura compleja de Pinterest
             const findMediaUrl = (obj) => {
                 if (typeof obj === 'object' && obj !== null) {
-                    // Buscar URLs de imágenes
                     if (obj.images) {
                         const images = obj.images;
                         const qualityOrder = ['orig', 'origin', 'original', '736x', '564x'];
@@ -168,9 +145,8 @@ export class PinterestDownloader {
                         }
                     }
 
-                    // Buscar URLs de video
                     if (obj.videos) {
-                        const videoUrl = obj.videos.video_list?.V_720P?.url || 
+                        const videoUrl = obj.videos.video_list?.V_720P?.url ||
                                        obj.videos.video_list?.V_480P?.url ||
                                        Object.values(obj.videos).find(url => url && url.includes('.mp4'));
                         if (videoUrl) {
@@ -184,7 +160,6 @@ export class PinterestDownloader {
                         }
                     }
 
-                    // Buscar recursivamente
                     for (const key in obj) {
                         const result = findMediaUrl(obj[key]);
                         if (result) return result;
@@ -197,16 +172,12 @@ export class PinterestDownloader {
             if (result) return result;
 
             throw new Error('No se encontraron medios en PWS_DATA');
-
         } catch (error) {
             console.error('Error parseando PWS_DATA:', error.message);
             throw error;
         }
     }
 
-    /**
-     * Extrae datos de meta tags
-     */
     extractFromMetaTags(html) {
         const metaData = {
             mediaUrl: null,
@@ -216,37 +187,24 @@ export class PinterestDownloader {
             author: 'Usuario de Pinterest'
         };
 
-        // Buscar og:image
         const ogImageMatch = html.match(/<meta property="og:image" content="([^"]+)"/);
-        if (ogImageMatch) {
-            metaData.mediaUrl = ogImageMatch[1];
-        }
+        if (ogImageMatch) metaData.mediaUrl = ogImageMatch[1];
 
-        // Buscar og:video
         const ogVideoMatch = html.match(/<meta property="og:video" content="([^"]+)"/);
         if (ogVideoMatch) {
             metaData.mediaUrl = ogVideoMatch[1];
             metaData.isVideo = true;
         }
 
-        // Buscar título
         const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
-        if (titleMatch) {
-            metaData.title = titleMatch[1];
-        }
+        if (titleMatch) metaData.title = titleMatch[1];
 
-        // Buscar descripción
         const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/);
-        if (descMatch) {
-            metaData.description = descMatch[1];
-        }
+        if (descMatch) metaData.description = descMatch[1];
 
         return metaData;
     }
 
-    /**
-     * Extrae URLs directas del HTML
-     */
     extractDirectUrls(html) {
         const result = {
             mediaUrl: null,
@@ -256,54 +214,38 @@ export class PinterestDownloader {
             author: 'Usuario de Pinterest'
         };
 
-        // Buscar URLs de imagen
         const imageUrlMatch = html.match(/"url":"(https:\/\/[^"]+\.(jpg|jpeg|png|webp)[^"]*)"/);
-        if (imageUrlMatch) {
-            result.mediaUrl = imageUrlMatch[1];
-        }
+        if (imageUrlMatch) result.mediaUrl = imageUrlMatch[1];
 
-        // Buscar URLs de video
         const videoUrlMatch = html.match(/"url":"(https:\/\/[^"]+\.mp4[^"]*)"/);
         if (videoUrlMatch) {
             result.mediaUrl = videoUrlMatch[1];
             result.isVideo = true;
         }
 
-        // Buscar en src de imágenes
         if (!result.mediaUrl) {
             const srcMatch = html.match(/<img[^>]+src="(https:\/\/[^"]+\.(jpg|jpeg|png|webp)[^"]*)"/);
-            if (srcMatch) {
-                result.mediaUrl = srcMatch[1];
-            }
+            if (srcMatch) result.mediaUrl = srcMatch[1];
         }
 
-        // Buscar título en meta tags como respaldo
         const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
-        if (titleMatch) {
-            result.title = titleMatch[1];
-        }
+        if (titleMatch) result.title = titleMatch[1];
 
-        // Buscar descripción en meta tags como respaldo
         const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/);
-        if (descMatch) {
-            result.description = descMatch[1];
-        }
+        if (descMatch) result.description = descMatch[1];
 
         return result;
     }
 
-    /**
-     * Descarga el archivo multimedia
-     */
     async downloadMediaFile(mediaUrl, filePath) {
         try {
-            console.log(`📥 Descargando desde: ${mediaUrl}`);
+            console.log(`Descargando desde: ${mediaUrl}`);
 
             const response = await axios({
                 method: 'GET',
                 url: mediaUrl,
                 responseType: 'stream',
-                timeout: 60000, // Más tiempo para videos
+                timeout: 60000,
                 headers: {
                     ...this.headers,
                     'Referer': 'https://www.pinterest.com/',
@@ -317,60 +259,49 @@ export class PinterestDownloader {
 
                 response.data.on('data', (chunk) => {
                     downloadedBytes += chunk.length;
-                    if (downloadedBytes % 1000000 === 0) { // Log cada ~1MB
-                        console.log(`📊 Descargados: ${(downloadedBytes / 1000000).toFixed(1)}MB`);
+                    if (downloadedBytes % 1000000 === 0) {
+                        console.log(`Descargados: ${(downloadedBytes / 1000000).toFixed(1)}MB`);
                     }
                 });
 
                 response.data.pipe(writer);
 
                 writer.on('finish', () => {
-                    console.log(`✅ Descarga completada: ${downloadedBytes} bytes`);
+                    console.log(`Descarga completada: ${downloadedBytes} bytes`);
                     resolve(filePath);
                 });
 
                 writer.on('error', reject);
                 response.data.on('error', reject);
-
             });
-
         } catch (error) {
-            console.error('❌ Error descargando archivo:', error.message);
+            console.error('Error descargando archivo:', error.message);
             throw error;
         }
     }
 
-    /**
-     * Función principal de descarga MEJORADA para videos
-     */
     async downloadPinterestMedia(url) {
         let tempFilePath = null;
         let processedFilePath = null;
 
         try {
-            console.log(`📥 Descargando pin: ${url}`); // Log simplificado
-
-            // Extraer datos del pin
+            console.log(`Descargando pin: ${url}`);
             const pinData = await this.extractPinData(url);
 
             if (!pinData.mediaUrl) {
                 throw new Error('No se pudo obtener URL de descarga');
             }
 
-            // Crear archivo temporal
             const timestamp = Date.now();
             const fileExtension = pinData.isVideo ? 'mp4' : 'jpg';
             tempFilePath = join(tmpdir(), `pinterest-raw-${timestamp}.${fileExtension}`);
 
-            // Para videos, crear también archivo procesado
             if (pinData.isVideo) {
                 processedFilePath = join(tmpdir(), `pinterest-processed-${timestamp}.mp4`);
             }
 
-            // Descargar el archivo
             await this.downloadMediaFile(pinData.mediaUrl, tempFilePath);
 
-            // Verificar descarga
             const stats = fs.statSync(tempFilePath);
             if (stats.size === 0) {
                 throw new Error('Archivo descargado está vacío');
@@ -378,17 +309,14 @@ export class PinterestDownloader {
 
             let finalFilePath = tempFilePath;
 
-            // Si es video, procesarlo para WhatsApp
             if (pinData.isVideo && processedFilePath) {
-                console.log('🔄 Procesando video...');
+                console.log('Procesando video...');
                 try {
                     finalFilePath = await this.processVideo(tempFilePath, processedFilePath);
-
-                    // Limpiar archivo temporal original
                     this.cleanUpFile(tempFilePath);
                     tempFilePath = null;
                 } catch (processError) {
-                    console.warn('⚠️ Usando video original');
+                    console.warn('Usando video original');
                     if (processedFilePath && fs.existsSync(processedFilePath)) {
                         this.cleanUpFile(processedFilePath);
                     }
@@ -410,9 +338,8 @@ export class PinterestDownloader {
             };
 
         } catch (error) {
-            console.error('❌ Error:', error.message);
+            console.error('Error:', error.message);
 
-            // Limpiar archivos temporales si existen
             if (tempFilePath && fs.existsSync(tempFilePath)) {
                 this.cleanUpFile(tempFilePath);
             }
@@ -424,25 +351,20 @@ export class PinterestDownloader {
         }
     }
 
-    /**
-     * Limpieza de archivos temporales
-     */
     cleanUpFile(filePath) {
         try {
             if (filePath && fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath);
-                console.log(`🧹 Archivo eliminado: ${filePath}`);
+                console.log(`Archivo eliminado: ${filePath}`);
             }
         } catch (e) {
-            console.warn(`⚠️ Error limpiando archivo: ${e.message}`);
+            console.warn(`Error limpiando archivo: ${e.message}`);
         }
     }
 }
 
-// Exportar instancia singleton
 export const pinterestDownloader = new PinterestDownloader();
 
-// Funciones de compatibilidad
 export async function downloadPinterestMedia(url) {
     return await pinterestDownloader.downloadPinterestMedia(url);
 }

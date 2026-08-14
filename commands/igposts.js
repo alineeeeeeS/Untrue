@@ -16,7 +16,7 @@ class BK9InstagramService {
 
     async downloadPost(rawUrl) {
         const cleanUrl = this.cleanUrl(rawUrl);
-        
+
         for (const apiUrl of this.apis) {
             try {
                 const response = await axios.get(apiUrl, {
@@ -27,10 +27,7 @@ class BK9InstagramService {
 
                 if (response.data && response.data.status) {
                     let results = response.data.BK9;
-                    
-                    // VALIDACIÓN ANTI-DUPLICADOS:
-                    // BK9 a veces devuelve objetos repetidos o con la misma URL.
-                    // Usamos un Set para filtrar por URL única.
+
                     const uniqueUrls = new Set();
                     const filteredResults = [];
 
@@ -47,7 +44,6 @@ class BK9InstagramService {
                     if (filteredResults.length > 0) return filteredResults;
                 }
             } catch (error) {
-                console.log(`⚠️ Fallo en BK9: ${error.message}`);
                 continue;
             }
         }
@@ -55,10 +51,10 @@ class BK9InstagramService {
     }
 
     async getBuffer(url) {
-        const res = await axios.get(url, { 
+        const res = await axios.get(url, {
             responseType: 'arraybuffer',
             httpsAgent: this.httpsAgent,
-            timeout: 15000 
+            timeout: 15000
         });
         return Buffer.from(res.data);
     }
@@ -69,31 +65,23 @@ const bk9 = new BK9InstagramService();
 export async function igpostsCommand(sock, m, args) {
     const jid = m.key.remoteJid;
     try {
-        // --- 1. LÓGICA DE ARGUMENTOS (Posición + Link) ---
         let pos = null;
         let url = null;
 
         if (args.length >= 2 && !isNaN(args[0])) {
-            // Caso: #post 2 [link]
             pos = parseInt(args[0]);
             url = args[1];
         } else {
-            // Caso: #post [link]
             url = args[0] || (m.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation);
         }
 
         if (!url || !url.includes('instagram.com')) return;
         if (url.includes('/reel/')) return;
 
-        // --- 2. REACCIÓN INICIAL (Procesando) ---
-        await sock.sendMessage(jid, { react: { text: "⏳", key: m.key } });
-
         const mediaItems = await bk9.downloadPost(url);
 
-        // --- 3. FILTRADO POR POSICIÓN ---
         let itemsToSend = mediaItems;
         if (pos !== null) {
-            // Si el usuario pide la posición 2, es el índice 1 del array
             const index = pos - 1;
             if (mediaItems[index]) {
                 itemsToSend = [mediaItems[index]];
@@ -102,19 +90,17 @@ export async function igpostsCommand(sock, m, args) {
             }
         }
 
-        // --- 4. ENVÍO DE CONTENIDO ---
         for (let i = 0; i < itemsToSend.length; i++) {
             const item = itemsToSend[i];
             try {
                 const buffer = await bk9.getBuffer(item.url);
-                
-                // Texto estético
+
                 let caption = "";
                 if (pos !== null) {
-                    caption = `*Post descargado!*`;
+                    caption = `Post descargado!`;
                 } else {
-                    caption = itemsToSend.length > 1 
-                        ? `Carrusel descargado! _(${i + 1}/${itemsToSend.length})_`
+                    caption = itemsToSend.length > 1
+                        ? `Carrusel descargado! (${i + 1}/${itemsToSend.length})`
                         : `Post descargado!`;
                 }
 
@@ -126,22 +112,16 @@ export async function igpostsCommand(sock, m, args) {
                 if (itemsToSend.length > 1) await new Promise(r => setTimeout(r, 1500));
 
             } catch (err) {
-                console.error(`Error enviando elemento:`, err.message);
+                // ignorar el error individual para no interrumpir el flujo del carrusel
             }
         }
 
-        // --- 5. REACCIÓN FINAL (Éxito) ---
-        await sock.sendMessage(jid, { react: { text: "✅", key: m.key } });
-
     } catch (e) {
-        console.error("Error Post:", e.message);
-        await sock.sendMessage(jid, { react: { text: "❌", key: m.key } });
-        
-        let errorMsg = "⚠️ *Error:* No se pudo descargar el contenido.";
+        let errorMsg = "Error: No se pudo descargar el contenido.";
         if (e.message === 'POSITION_NOT_FOUND') {
-            errorMsg = "⚠️ *Error:* La posición solicitada no existe en este carrusel.";
+            errorMsg = "Error: La posición solicitada no existe en este carrusel.";
         }
-        
+
         await sock.sendMessage(jid, { text: errorMsg }, { quoted: m });
     }
 }

@@ -1,81 +1,60 @@
 import { readFileSync, existsSync } from 'fs';
 
-const BANNER_IMAGE_PATH = './assets/untrue_banner.jpg'; 
+const BANNER_IMAGE_PATH = './assets/untrue_banner.jpg';
 
 export async function helpCommand(sock, m) {
     const helpText = `
-*UntrueBot | MENÚ DE AYUDA*
+*UntrueBot | Menú*
 
-🎥 *DESCARGAS*
-  • #tt [link] ▸ Videos/imágenes de TikTok
-  • #tta [link] ▸ Audio de un TikTok
-  • #ytv [link/búsqueda] ▸ Videos de YouTube
-  • #yta [link/búsqueda] ▸ Audio de YouTube
-  • #reel [link] ▸ Reel de Instagram
-  • #post [link] ▸ Post específico o carrusel entero de Instagram
-  • #story [usuario] ▸ Historias de Instagram
-  • #fb [link] ▸ Videos de Facebook
-  • #pin [link] ▸ Contenido de Pinterest
-  • #tw [link] ▸ Videos de X/Twitter
-  • #dl [link] ▸ Distintos tipos de descargas
+*Descargas*
+• #tt [link] — TikTok
+• #tta [link] — Audio de TikTok
+• #ytv [link/búsqueda] — Video de YouTube
+• #yta [link/búsqueda] — Audio de YouTube
+• #reel [link] — Reel de Instagram
+• #post [link] — Post/carrusel de Instagram
+• #fb [link] — Facebook
+• #tw [link] — Twitter/X
+• #pin [link] — Pinterest
+• #sc [link/búsqueda] — SoundCloud
+• #cover [álbum] — Portada de álbum
 
-🎵 *ENTRETENIMIENTO*
-  • #movie [búsqueda] ▸ Películas para descargar
-  • #music [link/búsqueda] ▸ Música desde YouTube
-  • #sc [link/búsqueda] ▸ Música desde SoundCloud
-  • #letra [artista] [canción]
-  • #cover [álbum/sencillo] ▸ Portada de algún proyecto
+*Utilidades*
+• #bcv — Tasa BCV
+• #usdt — Precio USDT
+• #qr [texto] — Generar QR
+• #traducir [idioma] — Traducir texto
+• #todos — Mencionar a todos
 
-🧰 *UTILIDADES*
-  • #ia [prompt] ▸ Consultar con la IA
-  • #trans [idioma] ▸ Texto a traducir
-  • #qr [texto/link] ▸ Generar códigos QR
-  • #bcv ▸ Tasa del dólar/euro BCV
-  • #usdt ▸ Precio promedio del USDT
-  • #calc ▸ Conversor de monedas
-  • #todos ▸ Menciona a todos en un grupo
-  
-💾 *CONVERTIDORES*
-  • #s ▸ Imagen/video para crear un sticker
-  • #sm ▸ Sticker a imagen/video
-  • #toa ▸ Extraer audio de video
-  • #tot ▸ Extraer texto de imagen/audio
-  • #toi ▸ Documentos convertidos a imágenes
+*Convertidores*
+• #s — Crear sticker
+• #sm — Sticker a media
+• #toa — Extraer audio
+• #tot — Extraer texto
+• #toi — Documento a imagen
 
-🔧 *INFOBOT*
-  • #ping ▸ Latencia del bot
-  • #menu ▸ Ver este mensaje
-  
-*>|<* _Desarrollado por: @josentss_
+*Info*
+• #ping — Latencia
+• #stats — Estadísticas
+• #menu — Este menú
     `.trim();
 
     try {
-        let messageOptions = {
-            text: helpText,
-            quoted: m
-        };
-
-        // 1. Verificar si el archivo de la imagen existe
         if (existsSync(BANNER_IMAGE_PATH)) {
             const imageBuffer = readFileSync(BANNER_IMAGE_PATH);
-            
-            // 2. Cambiar a mensaje de imagen + caption
-            messageOptions = {
+            await sock.sendMessage(m.key.remoteJid, {
                 image: imageBuffer,
-                caption: helpText,
-                quoted: m
-            };
-            console.log('🖼️ Enviando menú con banner de imagen.');
+                caption: helpText
+            }, { quoted: m });
         } else {
-            console.warn(`⚠️ Advertencia: No se encontró la imagen del banner en la ruta: ${BANNER_IMAGE_PATH}. Enviando solo texto.`);
-            messageOptions.text = helpText;
+            await sock.sendMessage(m.key.remoteJid, {
+                text: helpText
+            }, { quoted: m });
         }
-
-        // Enviar el mensaje
-        await sock.sendMessage(m.key.remoteJid, messageOptions);
-
     } catch (error) {
-        console.error('❌ Error enviando el mensaje de ayuda:', error);
-        await sock.sendMessage(m.key.remoteJid, { text: '❌ Error al mostrar el menú de ayuda.' }, { quoted: m });
+        console.error('Error sending help:', error.message);
+        await sock.sendMessage(m.key.remoteJid, {
+            text: 'Error al mostrar el menú.'
+        }, { quoted: m });
     }
 }

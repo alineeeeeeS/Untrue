@@ -2,29 +2,25 @@ class StatsManager {
     constructor() {
         this.startTime = new Date();
         this.totalCommands = 0;
-        this.uniqueUsers = new Set(); // Almacena IDs de usuarios únicos
+        this.uniqueUsers = new Set();
     }
 
     recordCommand(commandName, userId) {
         this.totalCommands++;
-        this.uniqueUsers.add(userId); // Agregar usuario a la lista de únicos
+        this.uniqueUsers.add(userId);
     }
 
     getStats() {
         const uptime = Date.now() - this.startTime;
         const hours = Math.floor(uptime / (1000 * 60 * 60));
         const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
-        
-        // Obtener uso de memoria
-        const memoryUsage = process.memoryUsage();
-        const memoryMB = (memoryUsage.rss / 1024 / 1024).toFixed(2);
-        
+        const memoryMB = (process.memoryUsage().rss / 1024 / 1024).toFixed(2);
+
         return {
-            uptime: `${hours}h ${minutes}m`,
+            uptime: hours === 0 ? `${minutes}m` : `${hours}h ${minutes}m`,
             totalCommands: this.totalCommands,
             uniqueUsers: this.uniqueUsers.size,
-            memoryUsage: `${memoryMB} MB`,
-            startTime: this.startTime
+            memoryUsage: `${memoryMB} MB`
         };
     }
 
@@ -35,98 +31,54 @@ class StatsManager {
     }
 }
 
-// Instancia global del administrador de estadísticas
 const statsManager = new StatsManager();
-
-// ID del creador
 const CREATOR_ID = '30837949124772@lid';
 
-/**
- * Verifica si el usuario es el creador del bot (compatible con grupos)
- */
 function isCreator(userId, participant = null) {
-    // En grupos, el ID real del usuario está en participant
-    // En chats individuales, está en userId
-    const effectiveUserId = participant || userId;
-    
-    console.log('🔍 DEBUG - UserId:', userId);
-    console.log('🔍 DEBUG - Participant:', participant);
-    console.log('🔍 DEBUG - Effective UserId:', effectiveUserId);
-    console.log('🔍 DEBUG - Creator ID:', CREATOR_ID);
-    console.log('🔍 DEBUG - ¿Es creador?:', effectiveUserId === CREATOR_ID);
-    
-    return effectiveUserId === CREATOR_ID;
+    return (participant || userId) === CREATOR_ID;
 }
 
-/**
- * Formatea la duración de forma legible
- */
-function formatUptime(uptimeStr) {
-    const [hours, minutes] = uptimeStr.split(' ').map(val => parseInt(val));
-    if (hours === 0) return `${minutes} minutos`;
-    if (minutes === 0) return `${hours} horas`;
-    return `${hours}h ${minutes}m`;
-}
-
-/**
- * Comando para ver estadísticas del bot (SOLO CREADOR)
- */
 export async function statsCommand(sock, m, args) {
     const remoteJid = m.key.remoteJid;
-    const userId = m.key.remoteJid;
     const participant = m.key.participant;
 
     try {
-        // Verificar si es el creador
-        if (!isCreator(userId, participant)) {
-            await sock.sendMessage(remoteJid, { 
-                text: '❌ *Acceso denegado*\n\nEste comando solo está disponible para el creador del bot.'
+        if (!isCreator(remoteJid, participant)) {
+            await sock.sendMessage(remoteJid, {
+                text: 'Este comando solo está disponible para el creador.'
             }, { quoted: m });
             return;
         }
 
         const stats = statsManager.getStats();
+        let text = `*Estadísticas*\n\n`;
+        text += `Uptime: ${stats.uptime}\n`;
+        text += `Memoria: ${stats.memoryUsage}\n`;
+        text += `Usuarios: ${stats.uniqueUsers}\n`;
+        text += `Comandos: ${stats.totalCommands}`;
 
-        let statsText = '🤖 *ESTADÍSTICAS DEL BOT*\n\n';
-        
-        // Información simplificada
-        statsText += `⏰ *Encendido:* ${formatUptime(stats.uptime)}\n`;
-        statsText += `📊 *Memoria:* ${stats.memoryUsage}\n`;
-        statsText += `👥 *Usuarios:* ${stats.uniqueUsers}\n`;
-        statsText += `🎯 *Comandos usados:* ${stats.totalCommands}`;
-
-        // Manejar comando de reset
         if (args[0] === 'reset') {
             statsManager.resetStats();
-            statsText += '\n\n✅ *Estadísticas reiniciadas correctamente*';
+            text += '\n\nEstadísticas reiniciadas.';
         }
 
-        await sock.sendMessage(remoteJid, { 
-            text: statsText
-        }, { quoted: m });
+        await sock.sendMessage(remoteJid, { text }, { quoted: m });
 
-        // Registrar el uso del comando stats (usar participant si existe para grupos)
-        const userToRecord = participant || userId;
+        const userToRecord = participant || remoteJid;
         statsManager.recordCommand('stats', userToRecord);
 
     } catch (error) {
-        console.error('Error en comando stats:', error);
-        await sock.sendMessage(remoteJid, { 
-            text: '❌ Error al obtener estadísticas' 
+        console.error('Error in stats:', error.message);
+        await sock.sendMessage(remoteJid, {
+            text: 'Error al obtener estadísticas.'
         }, { quoted: m });
     }
 }
 
-/**
- * Función para registrar comandos
- */
 export function recordCommandUsage(commandName, userId) {
     statsManager.recordCommand(commandName, userId);
 }
 
-/**
- * Obtener estadísticas para otros usos
- */
 export function getStats() {
     return statsManager.getStats();
 }

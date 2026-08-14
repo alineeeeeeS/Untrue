@@ -7,10 +7,6 @@ import { downloadMediaMessage } from '@whiskeysockets/baileys';
 
 const execPromise = promisify(exec);
 
-/**
- * Convierte un sticker a imagen (JPEG) o a video (MP4).
- * Implementa una lógica de conversión ULTRA-AGRESIVA con triple capa de fallback.
- */
 export async function convertSticker(sock, quotedMsg, targetFormat) {
     let mediaData = null;
     let extension = '';
@@ -23,7 +19,6 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
     let mimeType = quotedMsg.message.stickerMessage.mimetype;
     let isVideoSticker = mimeType.includes('video');
 
-    // 1. Determinar tipo de salida y descargar
     if (targetFormat === 'image') {
         finalExtension = 'jpeg';
         mediaData = await downloadMediaMessage(quotedMsg, 'buffer');
@@ -31,7 +26,7 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
     } else if (targetFormat === 'video') {
         finalExtension = 'mp4';
         if (!isVideoSticker && mimeType !== 'image/webp') {
-            await sock.sendMessage(quotedMsg.key.remoteJid, { text: "⚠️ Este sticker no es animado o no puede convertirse a video." }, { quoted: quotedMsg });
+            await sock.sendMessage(quotedMsg.key.remoteJid, { text: "Este sticker no es animado o no puede convertirse a video." }, { quoted: quotedMsg });
             return null;
         }
         mediaData = await downloadMediaMessage(quotedMsg, 'buffer');
@@ -47,65 +42,50 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
     try {
         fs.writeFileSync(inputFilePath, mediaData);
 
-        // 🔹 CASO #simg → IMAGEN
         if (targetFormat === 'image') {
-            console.log("Convirtiendo a Imagen fija (FFmpeg)...");
+            console.log("Convirtiendo a imagen fija...");
             const cmd = `ffmpeg -y -i "${inputFilePath}" -vframes 1 -vf scale=512:-1 -q:v 2 "${outputFilePath}"`;
             await execPromise(cmd, { maxBuffer: 1024 * 1024 * 50 });
         }
-
-        // 🔹 CASO #svid → VIDEO con FALLBACK DE TRIPLE CAPA
         else if (targetFormat === 'video') {
             if (extension === 'webp') {
-                const tempFrameWebpPath = join(tmpdir(), `temp-frame-${fileBase}.webp`); 
-                const tempPngPath = join(tmpdir(), `temp-${fileBase}.png`); 
+                const tempFrameWebpPath = join(tmpdir(), `temp-frame-${fileBase}.webp`);
+                const tempPngPath = join(tmpdir(), `temp-${fileBase}.png`);
                 let successfullyExtractedFrame = false;
 
                 try {
-                    console.log("Convirtiendo WebP: ¡FUERZA BRUTA FINAL! Forzando formato de entrada a 'image2'...");
-                    // RUTA A: CONVERSIÓN DIRECTA (FORZANDO FORMATO DE ENTRADA A 'image2')
+                    console.log("Iniciando conversión de WebP a video...");
                     const cmd_animated = `ffmpeg -y -f image2 -i "${inputFilePath}" -fflags +genpts -ignore_editlist -c:v libx264 -pix_fmt yuv420p -movflags +faststart -crf 25 -vf scale=512:-1 -r 25 "${outputFilePath}"`;
                     await execPromise(cmd_animated, { maxBuffer: 1024 * 1024 * 100 });
-                    console.log("   -> ✅ Ruta A (Animación completa) completada.");
-
+                    console.log("Conversión completada.");
                 } catch (errorA) {
-                    console.log(`   -> ⚠️ Ruta A Fallida. Iniciando Ruta B (Extracción de frame forzada con triple capa)...`);
+                    console.log("Conversión directa fallida. Iniciando extracción de frame...");
 
-                    // --- FALLBACK ROBUSTO (Ruta B: Frame estático a Video de 2s) ---
-
-                    // 1. Extracción de Frame (webpmux + dwebp)
                     try {
-                        console.log("      -> Intentando extracción con webpmux/dwebp (Herramientas Nativas)...");
-
-                        // 1a. Usar webpmux para obtener el primer frame
+                        console.log("Intentando extracción nativa...");
                         const cmd_webpmux = `webpmux -get frame 1 "${inputFilePath}" -o "${tempFrameWebpPath}"`;
                         await execPromise(cmd_webpmux, { maxBuffer: 1024 * 1024 * 50 });
 
-                        // 1b. Usar dwebp para convertir el frame a PNG
                         const cmd_dwebp = `dwebp "${tempFrameWebpPath}" -o "${tempPngPath}"`;
                         await execPromise(cmd_dwebp, { maxBuffer: 1024 * 1024 * 50 });
 
                         successfullyExtractedFrame = true;
                         cleanUpFile(tempFrameWebpPath);
-                        console.log("      -> ✅ Extracción Nativa (webpmux/dwebp) completada.");
-
+                        console.log("Extracción nativa completada.");
                     } catch (errorNative) {
                         cleanUpFile(tempFrameWebpPath);
-                        console.log(`      -> Falló la extracción nativa. Intentando FFmpeg (último recurso)...`);
+                        console.log("Extracción nativa fallida. Intentando con FFmpeg...");
 
-                        // 2. Extracción de Frame (FFmpeg - Último Recurso)
                         try {
                             const cmd_frame_ffmpeg = `ffmpeg -y -i "${inputFilePath}" -vframes 1 -vcodec png "${tempPngPath}"`;
                             await execPromise(cmd_frame_ffmpeg, { maxBuffer: 1024 * 1024 * 50 });
                             successfullyExtractedFrame = true;
-                            console.log("      -> ✅ Extracción con FFmpeg completada.");
-
+                            console.log("Extracción con FFmpeg completada.");
                         } catch (errorFinal) {
-                            throw new Error("Fallo crítico: No se pudo extraer el primer frame para el fallback de video.");
+                            throw new Error("Fallo crítico en la extracción del primer frame para video.");
                         }
                     }
 
-                    // 3. Crear video de 2 segundos a partir del frame extraído (PNG)
                     if (!successfullyExtractedFrame) {
                          throw new Error("Fallo interno en la lógica de extracción de frames.");
                     }
@@ -114,10 +94,9 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
                     await execPromise(cmd_video, { maxBuffer: 1024 * 1024 * 100 });
 
                     cleanUpFile(tempPngPath);
-                    console.log("   -> ✅ Ruta B (Video de Frame Forzado) completada. Se generó un video estático de 2s.");
-                } // <-- Esta llave corrige el error SyntaxError
+                    console.log("Video generado a partir de frame extraído.");
+                }
             } else if (extension === 'mp4') {
-                // MP4 a MP4 (copia directa)
                 fs.copyFileSync(inputFilePath, outputFilePath);
             } else {
                 throw new Error("Formato no compatible para conversión a video.");
@@ -129,7 +108,6 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
         }
 
         cleanUpFile(inputFilePath);
-
         return { filePath: outputFilePath, type: targetFormat };
 
     } catch (error) {
@@ -140,14 +118,11 @@ export async function convertSticker(sock, quotedMsg, targetFormat) {
     }
 }
 
-/**
- * Elimina un archivo temporal.
- */
 export function cleanUpFile(filePath) {
     if (filePath && fs.existsSync(filePath)) {
         try {
             fs.unlinkSync(filePath);
-            console.log(`🗑️ Archivo temporal eliminado: ${filePath}`);
+            console.log(`Archivo temporal eliminado: ${filePath}`);
         } catch {}
     }
 }

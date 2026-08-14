@@ -1,63 +1,52 @@
 import { downloadTiktokAudio, cleanUpFile } from '../services/tiktokDownloader.js';
 
 export async function tiktokAudioCommand(sock, m, args) {
-    const remoteJid = m.key.remoteJid;
+    const jid = m.key.remoteJid;
     const url = args[0];
+    let filePath = null;
 
     if (!url || !url.includes('tiktok.com')) {
-        await sock.sendMessage(remoteJid, { 
-            text: `❌ *Uso correcto:*\n▸ #ttaud _link_` 
+        await sock.sendMessage(jid, {
+            text: 'Uso: #tta [link]'
         }, { quoted: m });
         return;
     }
 
-    let filePath = null;
-
     try {
-        await sock.sendPresenceUpdate('composing', remoteJid);
+        const result = await downloadTiktokAudio(url);
 
-        const downloadResult = await downloadTiktokAudio(url);
-
-        // Manejar errores específicos
-        if (downloadResult && downloadResult.error) {
-            if (downloadResult.error === 'FFMPEG_NOT_AVAILABLE') {
-                await sock.sendMessage(remoteJid, { 
-                    text: `❌ *FUNCIONALIDAD NO DISPONIBLE*\n\nLa extracción de audio requiere FFmpeg, pero no está disponible en este momento.\n\nPuedes usar #tiktok para descargar el video completo con audio.` 
-                }, { quoted: m });
-                return;
-            } else {
-                await sock.sendMessage(remoteJid, { 
-                    text: `❌ *ERROR EN EXTRACCIÓN*\n\nNo se pudo extraer el audio: ${downloadResult.message}` 
-                }, { quoted: m });
-                return;
-            }
-        }
-
-        if (!downloadResult || !downloadResult.filePath) {
-            await sock.sendMessage(remoteJid, { 
-                text: `⚠️ *ERROR EN LA DESCARGA*\n\nNo se pudo procesar el audio. Intenta con otro video.` 
+        if (result?.error === 'FFMPEG_NOT_AVAILABLE') {
+            await sock.sendMessage(jid, {
+                text: 'FFmpeg no disponible. Usa #tt para descargar el video.'
             }, { quoted: m });
             return;
         }
 
-        filePath = downloadResult.filePath;
-        const videoInfo = downloadResult.videoInfo || {};
+        if (!result?.filePath) {
+            throw new Error(result?.message || 'No se pudo extraer el audio');
+        }
 
-        const caption = `🎵 *AUDIO EXTRAÍDO*\n\n👤 *Autor:* ${videoInfo.author || 'N/A'}\n📅 *Subido:* ${videoInfo.uploadDate || 'N/A'}\n\n✅ *Audio extraído del video*`;
+        filePath = result.filePath;
+        const info = result.videoInfo || {};
 
-        await sock.sendMessage(remoteJid, { 
-            audio: { url: filePath }, 
+        await sock.sendMessage(jid, {
+            audio: { url: filePath },
             mimetype: 'audio/mpeg',
-            caption: caption
+            ptt: false
         }, { quoted: m });
 
+        if (info.author) {
+            await sock.sendMessage(jid, {
+                text: `*${info.author}*`
+            }, { quoted: m });
+        }
+
     } catch (error) {
-        console.error("Error al enviar el audio:", error);
-        await sock.sendMessage(remoteJid, { 
-            text: `🔴 *ERROR INESPERADO*\n\nError: ${error.message}` 
+        console.error('Error in tta:', error.message);
+        await sock.sendMessage(jid, {
+            text: `Error: ${error.message}`
         }, { quoted: m });
     } finally {
         cleanUpFile(filePath);
-        await sock.sendPresenceUpdate('available', remoteJid);
     }
 }

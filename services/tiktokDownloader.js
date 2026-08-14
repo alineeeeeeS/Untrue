@@ -1,29 +1,25 @@
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import fs, { unlinkSync, rmSync, createWriteStream } from 'node:fs'; 
+import fs, { unlinkSync, rmSync, createWriteStream } from 'node:fs';
 import { exec } from 'node:child_process';
 import { promisify } from 'util';
-import axios from 'axios'; 
-import Tiktok from '@tobyg74/tiktok-api-dl'; 
+import axios from 'axios';
+import Tiktok from '@tobyg74/tiktok-api-dl';
 
 const execPromise = promisify(exec);
 
 const ytDlpCommand = '/home/runner/workspace/.pythonlibs/bin/yt-dlp';
 const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
 
-console.log('✅ Servicios configurados correctamente');
-
-// ----------------------------------------------------------------------
-// --- FUNCIONES AUXILIARES ---
-// ----------------------------------------------------------------------
+console.log('Servicios configurados correctamente');
 
 function getDefaultVideoInfo() {
     return {
         title: 'Sin título',
-        author: 'Autor desconocido', 
+        author: 'Autor desconocido',
         uploadDate: 'Desconocida',
         description: 'Sin descripción',
-        isCarousel: false // Bandera crucial
+        isCarousel: false
     };
 }
 
@@ -35,34 +31,22 @@ function formatDate(dateStr) {
     return `${day}/${month}/${year}`;
 }
 
-/**
- * Limpieza de archivos o directorios temporales
- */
 export function cleanUpFile(filePath) {
     try {
         if (!filePath) return;
 
-        // Si es un directorio (como los carruseles), usar rmSync recursivo
-        if (filePath.includes('tiktok-carousel')) { 
+        if (filePath.includes('tiktok-carousel')) {
             rmSync(filePath, { recursive: true, force: true });
-            console.log(`🗑️ Directorio temporal eliminado: ${filePath}`);
+            console.log(`Directorio temporal eliminado: ${filePath}`);
         } else {
-            // Es un archivo, usar unlinkSync
             unlinkSync(filePath);
-            console.log(`🧹 Archivo temporal eliminado: ${filePath}`);
+            console.log(`Archivo temporal eliminado: ${filePath}`);
         }
     } catch (e) {
-        console.warn(`⚠️ Error limpiando ${filePath}: ${e.message}`);
+        console.warn(`Error limpiando ${filePath}: ${e.message}`);
     }
 }
 
-// ----------------------------------------------------------------------
-// --- FUNCIONES DE INFORMACIÓN Y DESCARGA (yt-dlp para info y videos) ---
-// ----------------------------------------------------------------------
-
-/**
- * Función para obtener información del video (detecta carrusel)
- */
 export async function getTiktokVideoInfo(url) {
     let info = getDefaultVideoInfo();
 
@@ -80,85 +64,65 @@ export async function getTiktokVideoInfo(url) {
             isCarousel: false
         };
 
-        // Comprobación de carrusel: Si tiene formatos de imagen o entradas (entries).
-        // Simplificamos la detección solo a lo que yt-dlp puede inferir.
-        if (jsonOutput.formats?.some(f => f.ext === 'jpg' || f.ext === 'jpeg') || 
-            (Array.isArray(jsonOutput.entries) && jsonOutput.entries.length > 0)) 
-        {
+        if (jsonOutput.formats?.some(f => f.ext === 'jpg' || f.ext === 'jpeg') ||
+            (Array.isArray(jsonOutput.entries) && jsonOutput.entries.length > 0)) {
             info.isCarousel = true;
         }
-
     } catch (error) {
-        console.error("Error al obtener información (tolerado):", error.message.split('\n')[0]);
-        // No marcamos isCarousel=true aquí, dejamos que el fallback en tiktok.js decida
+        console.error("Error al obtener información:", error.message.split('\n')[0]);
     }
     return info;
 }
 
-
-/**
- * Descarga un video de TikTok
- */
 export async function downloadTiktokVideo(url) {
     let videoInfo = getDefaultVideoInfo();
-    // ... (Tu lógica existente para descargar videos con yt-dlp) ...
+
     try {
         videoInfo = await getTiktokVideoInfo(url);
-    } catch (error) {
-        // Ignoramos el error, se usa info por defecto
-    }
+    } catch (error) {}
 
     const tempFilePath = join(tmpdir(), `tiktok-video-${Date.now()}.mp4`);
 
-    console.log(`📥 Descargando VIDEO: ${url}`);
+    console.log(`Descargando VIDEO: ${url}`);
 
     try {
         const command = `"${ytDlpCommand}" --no-warnings --no-simulate --no-check-certificates -f "best[ext=mp4]" --output "${tempFilePath}" "${url}"`;
         await execPromise(command);
 
-        console.log(`✅ Video descargado: ${tempFilePath}`);
+        console.log(`Video descargado: ${tempFilePath}`);
         return {
             filePath: tempFilePath,
             videoInfo: videoInfo
         };
-
     } catch (error) {
-        console.error("❌ Error al descargar el video:", error.message);
+        console.error("Error al descargar el video:", error.message);
         return null;
     }
 }
 
-/**
- * Descarga y extrae solo el audio de TikTok
- */
 export async function downloadTiktokAudio(url) {
     let videoInfo = getDefaultVideoInfo();
-    // ... (Tu lógica existente para descargar audio con yt-dlp/ffmpeg) ...
+
     try {
         videoInfo = await getTiktokVideoInfo(url);
-    } catch (error) {
-        // Ignoramos el error, se usa info por defecto
-    }
+    } catch (error) {}
 
-    console.log(`🎵 EXTRAYENDO AUDIO de: ${url}`);
+    console.log(`Extrayendo AUDIO de: ${url}`);
 
     const tempVideoPath = join(tmpdir(), `tiktok-video-audio-${Date.now()}.mp4`);
     const tempAudioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
 
     try {
-        // 1. Descargar el video
-        console.log('📥 Descargando video...');
+        console.log('Descargando video para audio...');
         const downloadCommand = `"${ytDlpCommand}" --no-warnings --no-simulate --no-check-certificates -f "best[ext=mp4]" --output "${tempVideoPath}" "${url}"`;
         await execPromise(downloadCommand);
-        console.log(`✅ Video descargado: ${tempVideoPath}`);
+        console.log(`Video descargado para extracción: ${tempVideoPath}`);
 
-        // 2. Extraer solo el audio con FFmpeg
-        console.log('🎧 Extrayendo audio...');
+        console.log('Procesando extracción de audio...');
         const extractCommand = `"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -ar 44100 -y "${tempAudioPath}"`;
         await execPromise(extractCommand);
-        console.log(`✅ Audio extraído: ${tempAudioPath}`);
+        console.log(`Audio extraído con éxito: ${tempAudioPath}`);
 
-        // 3. Limpiar archivo de video temporal
         cleanUpFile(tempVideoPath);
 
         return {
@@ -166,28 +130,19 @@ export async function downloadTiktokAudio(url) {
             videoInfo: videoInfo,
             mimetype: 'audio/mpeg'
         };
-
     } catch (error) {
-        console.error("❌ Error al extraer audio:", error.message);
-
+        console.error("Error al extraer audio:", error.message);
         cleanUpFile(tempVideoPath);
         cleanUpFile(tempAudioPath);
-
         return null;
     }
 }
 
-
-/**
- * Descarga imágenes de un carrusel de TikTok (Photo Post) usando la librería @tobyg74/tiktok-api-dl.
- * Esta es la solución robusta que reemplaza a yt-dlp para carruseles.
- */
 export async function downloadTiktokImages(url) {
     const tempDir = join(tmpdir(), `tiktok-carousel-${Date.now()}`);
     let videoInfo = getDefaultVideoInfo();
 
     try {
-        // 1. Crear directorio temporal
         if (!fs.existsSync(tempDir)) {
             fs.mkdirSync(tempDir);
         }
@@ -196,41 +151,35 @@ export async function downloadTiktokImages(url) {
         return null;
     }
 
-    // 2. Llamar a la librería para obtener las URLs
-    console.log(`📡 Llamando a la librería @tobyg74/tiktok-api-dl para carrusel: ${url}`);
+    console.log(`Iniciando descarga de carrusel: ${url}`);
+
     let result;
     try {
-        // Usamos la versión 3 si es posible para tener mejor soporte a carrusel/slides
         result = await Tiktok.Downloader(url, { version: "v3" });
 
         if (!result.status || result.result.length === 0) {
-            throw new Error(`Librería falló: ${result.message || 'No se encontraron resultados.'}`);
+            throw new Error(`Error en la librería: ${result.message || 'Sin resultados.'}`);
         }
 
-        // La librería retorna un array de imágenes en result.result.images
         const imageUrls = result.result.images;
 
         if (!imageUrls || imageUrls.length === 0) {
-             throw new Error('Librería falló: La respuesta no contiene enlaces de imágenes (images array).');
+             throw new Error('La respuesta no contiene enlaces de imágenes.');
         }
 
-        // Actualizamos la info
         videoInfo.title = result.result.title || 'Carrusel de TikTok';
         videoInfo.author = result.result.author?.nickname || 'Desconocido';
         videoInfo.isCarousel = true;
 
-        // 3. Descargar cada imagen
-        console.log(`📥 Descargando ${imageUrls.length} imágenes del carrusel...`);
+        console.log(`Descargando ${imageUrls.length} imágenes...`);
 
         for (let i = 0; i < imageUrls.length; i++) {
             const imageUrl = imageUrls[i];
-            // Intentamos extraer la extensión, si no, usamos .jpeg
-            const ext = imageUrl.split('.').pop().split('?')[0].toLowerCase() === 'jpeg' ? 'jpeg' : 'jpeg'; 
+            const ext = imageUrl.split('.').pop().split('?')[0].toLowerCase() === 'jpeg' ? 'jpeg' : 'jpeg';
             const filePath = join(tempDir, `${i + 1}.${ext}`);
 
             const imageResponse = await axios.get(imageUrl, { responseType: 'stream' });
 
-            // Usamos una promesa para esperar a que el stream termine de escribir
             await new Promise((resolve, reject) => {
                 const writer = createWriteStream(filePath);
                 imageResponse.data.pipe(writer);
@@ -242,15 +191,14 @@ export async function downloadTiktokImages(url) {
             });
         }
 
-        console.log(`✅ Imágenes descargadas en: ${tempDir}`);
+        console.log(`Imágenes descargadas en: ${tempDir}`);
 
         return {
-            filePaths: tempDir, // Devuelve la ruta del directorio
+            filePaths: tempDir,
             videoInfo: videoInfo
         };
-
     } catch (error) {
-        console.error("❌ Error al descargar las imágenes (final):", error.message);
+        console.error("Error al descargar carrusel:", error.message);
         cleanUpFile(tempDir);
         return null;
     }

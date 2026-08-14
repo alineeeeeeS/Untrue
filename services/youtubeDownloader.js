@@ -32,9 +32,9 @@ function getBaseFlags() {
 
     if (fs.existsSync(COOKIES_PATH)) {
         flags.push('--cookies', COOKIES_PATH);
-        console.log('🍪 Usando youtube-cookies.txt');
+        console.log('usando youtube-cookies.txt');
     } else {
-        console.log('⚠️ No se encontró youtube-cookies.txt');
+        console.log('no existe el youtube-cookies.txt');
     }
 
     return flags.join(' ');
@@ -110,7 +110,7 @@ export async function downloadYoutubeAudio(args) {
     for (let i = 0; i < strategies.length; i++) {
         try {
             const command = `"${ytDlpCommand}" ${getBaseFlags()} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
-            console.log(`🎵 Intentando estrategia de audio ${i + 1}...`);
+            console.log(`intentando manera ${i + 1}...`);
 
             await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 180000 });
 
@@ -126,16 +126,16 @@ export async function downloadYoutubeAudio(args) {
             for (const file of possibleFiles) {
                 if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
                     const stats = fs.statSync(file);
-                    console.log(`✅ Audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                    console.log(`audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
                     return {
-                        filePath: file,
+                        filePath: filse,
                         videoInfo
                     };
                 }
             }
         } catch (error) {
             lastError = error;
-            console.error(`❌ Estrategia de audio ${i + 1} falló:`, error.message);
+            console.error(`estrategia de audio ${i + 1} falló:`, error.message);
         }
     }
 
@@ -148,7 +148,7 @@ export async function downloadYoutubeVideo(args) {
 
     let videoInfo = getDefaultVideoInfo();
 
-    console.log(`📥 Descargando Video: ${isSearch ? 'Búsqueda' : 'URL'}`);
+    console.log(`descargando Video: ${isSearch ? 'Búsqueda' : 'URL'}`);
 
     try {
         videoInfo = await getYouTubeVideoInfo(queryOrUrl);

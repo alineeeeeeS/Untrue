@@ -1,461 +1,215 @@
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { unlinkSync } from 'node:fs';
+import { unlinkSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { exec } from 'node:child_process';
+import { promisify } from 'util';
 import axios from 'axios';
 import Tesseract from 'tesseract.js';
+import { downloadContentFromMessage } from '@whiskeysockets/baileys';
 
-/**
- * Función unificada para extraer texto de imágenes Y transcribir audio
- */
-export async function totextCommand(sock, m, args) {
+const execPromise = promisify(exec);
+
+function getFfmpegPath() {
+    return process.env.FFMPEG_PATH || 'ffmpeg';
+}
+
+export async function totextCommand(sock, m) {
     let tempFilePath;
 
     try {
-        // Verificar si hay un mensaje respondido
-        const quotedMessage = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        const quoted = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
 
-        if (!quotedMessage) {
-            await sock.sendMessage(
-                m.key.remoteJid,
-                { 
-                    text: `❌ *Uso incorrecto*\n\n▸ Responde a una _imagen/audio_ con: *#totext*` 
-                },
-                { quoted: m }
-            );
+        if (!quoted) {
+            await sock.sendMessage(m.key.remoteJid, {
+                text: 'Responde a una imagen o audio con #tot'
+            }, { quoted: m });
             return;
         }
 
-        // Determinar el tipo de medio
         let mediaType = '';
         let mediaBuffer = null;
 
-        if (quotedMessage.imageMessage) {
+        if (quoted.imageMessage) {
             mediaType = 'image';
-            mediaBuffer = await downloadImage(quotedMessage.imageMessage);
-        } else if (quotedMessage.audioMessage) {
+            mediaBuffer = await downloadMedia(quoted.imageMessage, 'image');
+        } else if (quoted.audioMessage) {
             mediaType = 'audio';
-            mediaBuffer = await downloadAudio(quotedMessage.audioMessage);
-        } else if (quotedMessage.videoMessage) {
+            mediaBuffer = await downloadMedia(quoted.audioMessage, 'audio');
+        } else if (quoted.videoMessage) {
             mediaType = 'audio';
-            // Extraer audio del video
-            mediaBuffer = await extractAudioFromVideo(quotedMessage.videoMessage);
+            mediaBuffer = await extractAudioFromVideo(quoted.videoMessage);
         } else {
-            await sock.sendMessage(
-                m.key.remoteJid,
-                { 
-                    text: `❌ *MEDIO NO SOPORTADO*\n\nResponde a una *imagen* o *audio* válido.` 
-                },
-                { quoted: m }
-            );
+            await sock.sendMessage(m.key.remoteJid, {
+                text: 'Solo imagen o audio.'
+            }, { quoted: m });
             return;
         }
 
-        if (!mediaBuffer || mediaBuffer.length === 0) {
-            throw new Error('No se pudo descargar el medio');
-        }
+        if (!mediaBuffer?.length) throw new Error('No se pudo descargar el medio');
 
-        console.log(`📥 ${mediaType === 'image' ? 'Imagen' : 'Audio'} descargado: ${(mediaBuffer.length / 1024).toFixed(2)} KB`);
+        await sock.sendMessage(m.key.remoteJid, {
+            text: mediaType === 'image' ? 'Extrayendo texto...' : 'Transcribiendo audio...'
+        }, { quoted: m });
 
-        // Enviar mensaje de procesamiento
-        const processingMsg = await sock.sendMessage(
-            m.key.remoteJid,
-            { 
-                text: mediaType === 'image' 
-                    ? `🔍 *Analizando imagen...*\n⏳ Extrayendo texto...`
-                    : `🎵 *Transcribiendo audio...*\n⏳ Convirtiendo a texto...`
-            },
-            { quoted: m }
-        );
+        const ext = mediaType === 'image' ? 'jpg' : 'mp3';
+        tempFilePath = join(tmpdir(), `totext-${Date.now()}.${ext}`);
+        writeFileSync(tempFilePath, mediaBuffer);
 
-        // Guardar archivo temporalmente
-        const extension = mediaType === 'image' ? 'jpg' : 'mp3';
-        tempFilePath = join(tmpdir(), `totext-${mediaType}-${Date.now()}.${extension}`);
-        const fs = await import('fs');
-        await fs.promises.writeFile(tempFilePath, mediaBuffer);
-
-        let textoExtraido = '';
+        let text = '';
 
         if (mediaType === 'image') {
-            console.log('🔍 Procesando imagen con OCR...');
-            textoExtraido = await procesarImagen(tempFilePath);
+            text = await processImage(tempFilePath);
         } else {
-            console.log('🎵 Procesando audio con Speech-to-Text...');
-
-            // Optimizar audio antes de transcribir
-            const audioOptimizadoPath = await optimizarAudio(tempFilePath);
-            textoExtraido = await transcribirConAssemblyAI(audioOptimizadoPath);
-
-            // Limpiar archivo optimizado
-            if (audioOptimizadoPath !== tempFilePath) {
-                unlinkSync(audioOptimizadoPath);
+            const optimized = await optimizeAudio(tempFilePath);
+            text = await transcribeAudio(optimized);
+            if (optimized !== tempFilePath && existsSync(optimized)) {
+                unlinkSync(optimized);
             }
         }
 
-        // Procesar el texto extraído
-        const textoLimpio = limpiarTexto(textoExtraido);
+        text = cleanText(text);
 
-        if (!textoLimpio || textoLimpio.trim().length === 0) {
-            await sock.sendMessage(
-                m.key.remoteJid,
-                { 
-                    text: `❌ *NO SE DETECTÓ TEXTO*\n\nNo se pudo ${
-                        mediaType === 'image' 
-                        ? 'reconocer texto en la imagen' 
-                        : 'transcribir el audio'
-                    }.\n\n💡 Intenta con ${
-                        mediaType === 'image' 
-                        ? 'una imagen más clara y nítida' 
-                        : 'un audio más claro y sin ruido'
-                    }.` 
-                },
-                { quoted: m }
-            );
+        if (!text?.trim()) {
+            await sock.sendMessage(m.key.remoteJid, {
+                text: mediaType === 'image'
+                    ? 'No se detectó texto en la imagen.'
+                    : 'No se pudo transcribir el audio.'
+            }, { quoted: m });
             return;
         }
 
-        // Enviar el resultado
-        await sock.sendMessage(
-            m.key.remoteJid,
-            { 
-                text: `✅ *TEXTO EXTRAÍDO* | ${mediaType === 'image' ? '📷 IMAGEN' : '🎵 AUDIO'}\n\n${textoLimpio}` 
-            },
-            { quoted: m }
-        );
-
-        console.log(`✅ ${mediaType === 'image' ? 'OCR' : 'Transcripción'} completado: ${textoLimpio.length} caracteres`);
-
-        // Eliminar mensaje de procesamiento
-        if (processingMsg) {
-            try {
-                await sock.sendMessage(m.key.remoteJid, { delete: processingMsg.key });
-            } catch (deleteError) {
-                console.warn('⚠️ No se pudo eliminar mensaje de procesamiento:', deleteError.message);
-            }
-        }
+        await sock.sendMessage(m.key.remoteJid, {
+            text: `*Texto extraído*\n\n${text}`
+        }, { quoted: m });
 
     } catch (error) {
-        console.error('❌ Error en totextCommand:', error);
-        await sock.sendMessage(
-            m.key.remoteJid,
-            { 
-                text: `❌ *ERROR AL PROCESAR*\n\n${error.message}` 
-            },
-            { quoted: m }
-        );
+        console.error('Error in totext:', error.message);
+        await sock.sendMessage(m.key.remoteJid, {
+            text: `Error: ${error.message}`
+        }, { quoted: m });
     } finally {
-        // Limpieza de archivos temporales
-        try {
-            if (tempFilePath) unlinkSync(tempFilePath);
-            console.log('🧹 Archivo temporal eliminado');
-        } catch (cleanError) {
-            console.warn('⚠️ Error limpiando archivo temporal:', cleanError.message);
+        if (tempFilePath && existsSync(tempFilePath)) {
+            try { unlinkSync(tempFilePath); } catch {}
         }
     }
 }
 
-/**
- * Optimizar audio para mejor transcripción
- */
-async function optimizarAudio(audioPath) {
+async function downloadMedia(message, type) {
+    const stream = await downloadContentFromMessage(message, type);
+    const chunks = [];
+    for await (const chunk of stream) chunks.push(chunk);
+    return Buffer.concat(chunks);
+}
+
+async function extractAudioFromVideo(videoMessage) {
+    const videoBuffer = await downloadMedia(videoMessage, 'video');
+    const tempVideo = join(tmpdir(), `vid-${Date.now()}.mp4`);
+    const tempAudio = join(tmpdir(), `aud-${Date.now()}.mp3`);
+
+    writeFileSync(tempVideo, videoBuffer);
+    const ffmpeg = getFfmpegPath();
+    await execPromise(`"${ffmpeg}" -i "${tempVideo}" -vn -acodec libmp3lame -ab 128k -y "${tempAudio}"`);
+
+    const audio = readFileSync(tempAudio);
     try {
-        const fs = await import('fs');
-        const { exec } = await import('child_process');
-        const { promisify } = await import('util');
-        const execPromise = promisify(exec);
-        const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
+        unlinkSync(tempVideo);
+        unlinkSync(tempAudio);
+    } catch {}
+    return audio;
+}
 
-        const audioOptimizadoPath = join(tmpdir(), `audio-optimizado-${Date.now()}.mp3`);
-
-        // Optimizar audio para Speech-to-Text:
-        // - 16kHz sample rate (estándar para STT)
-        // - Mono channel
-        // - Bitrate constante
-        // - Normalizar volumen
-        const optimizeCommand = `"${ffmpegCommand}" -i "${audioPath}" -ac 1 -ar 16000 -b:a 64k -af "volume=1.5" -y "${audioOptimizadoPath}"`;
-
-        await execPromise(optimizeCommand);
-        console.log('✅ Audio optimizado para transcripción');
-
-        return audioOptimizadoPath;
-
-    } catch (error) {
-        console.log('❌ Optimización de audio falló, usando original:', error.message);
-        return audioPath; // Devolver original si falla
+async function optimizeAudio(audioPath) {
+    try {
+        const out = join(tmpdir(), `opt-${Date.now()}.mp3`);
+        const ffmpeg = getFfmpegPath();
+        await execPromise(`"${ffmpeg}" -i "${audioPath}" -ac 1 -ar 16000 -b:a 64k -y "${out}"`);
+        return out;
+    } catch {
+        return audioPath;
     }
 }
 
-/**
- * Procesar imagen con OCR de alta calidad
- */
-async function procesarImagen(imagePath) {
-    try {
-        console.log('🔄 Usando OCR.space para imagen...');
+async function processImage(imagePath) {
+    const ocrText = await processWithOCRSpace(imagePath);
+    if (ocrText && ocrText.trim().length > 10) return ocrText;
 
-        // Primero intentar con OCR.space (mejor calidad)
-        const textoOCRspace = await procesarConOCRspace(imagePath);
-        if (textoOCRspace && textoOCRspace.trim().length > 10) {
-            console.log('✅ OCR.space exitoso');
-            return textoOCRspace;
-        }
-
-        // Si falla OCR.space, usar Tesseract como respaldo
-        console.log('🔄 OCR.space falló, usando Tesseract...');
-        const textoTesseract = await procesarConTesseract(imagePath);
-        return textoTesseract;
-
-    } catch (error) {
-        console.error('Error en procesamiento de imagen:', error);
-        throw new Error('Error al procesar la imagen con OCR');
-    }
+    const { data: { text } } = await Tesseract.recognize(imagePath, 'spa+eng');
+    return text || '';
 }
 
-/**
- * OCR.space API (Alta precisión)
- */
-async function procesarConOCRspace(imagePath) {
+async function processWithOCRSpace(imagePath) {
     try {
-        const fs = await import('fs');
-        const imageBuffer = await fs.promises.readFile(imagePath);
-
-        const API_KEY = 'K87430069588957'; // Tu API key de OCR.space
+        const buffer = readFileSync(imagePath);
+        const API_KEY = process.env.OCR_SPACE_KEY;
 
         const response = await axios.post(
             'https://api.ocr.space/parse/image',
             {
-                base64Image: `data:image/jpeg;base64,${imageBuffer.toString('base64')}`,
+                base64Image: `data:image/jpeg;base64,${buffer.toString('base64')}`,
                 apikey: API_KEY,
                 language: 'spa',
-                isOverlayRequired: false,
                 OCREngine: 2,
-                scale: true,
-                isTable: true,
-                detectOrientation: true
+                scale: true
             },
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                timeout: 30000
-            }
+            { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, timeout: 30000 }
         );
 
-        if (response.data && 
-            response.data.ParsedResults && 
-            response.data.ParsedResults[0] &&
-            response.data.ParsedResults[0].ParsedText) {
-
-            return response.data.ParsedResults[0].ParsedText;
-        }
-
-        return null;
-
-    } catch (error) {
-        console.log('❌ OCR.space falló:', error.message);
+        return response.data?.ParsedResults?.[0]?.ParsedText || null;
+    } catch {
         return null;
     }
 }
 
-/**
- * Tesseract.js (Respaldo local)
- */
-async function procesarConTesseract(imagePath) {
-    try {
-        const { data: { text } } = await Tesseract.recognize(
-            imagePath,
-            'spa+eng',
-            { logger: m => console.log('Tesseract:', m.status) }
-        );
-        return text;
-    } catch (error) {
-        console.log('❌ Tesseract falló:', error.message);
-        return null;
-    }
-}
+async function transcribeAudio(audioPath) {
+    const API_KEY = process.env.ASSEMBLYAI_KEY;
+    const buffer = readFileSync(audioPath);
 
-/**
- * AssemblyAI (Funciona perfectamente - Único método para audio)
- */
-async function transcribirConAssemblyAI(audioPath) {
-    try {
-        const fs = await import('fs');
-        const audioBuffer = await fs.promises.readFile(audioPath);
-
-        // Tu API key de AssemblyAI
-        const ASSEMBLYAI_API_KEY = 'f5f81f9039c64126aae7e3d117a49650';
-
-        console.log('🎵 Subiendo audio a AssemblyAI...');
-
-        // Subir audio a AssemblyAI
-        const uploadResponse = await axios.post(
-            'https://api.assemblyai.com/v2/upload',
-            audioBuffer,
-            {
-                headers: {
-                    'Authorization': ASSEMBLYAI_API_KEY,
-                    'Content-Type': 'application/octet-stream'
-                },
-                timeout: 30000
-            }
-        );
-
-        const uploadUrl = uploadResponse.data.upload_url;
-        console.log('✅ Audio subido, solicitando transcripción...');
-
-        // Solicitar transcripción con parámetros optimizados
-        const transcribeResponse = await axios.post(
-            'https://api.assemblyai.com/v2/transcript',
-            {
-                audio_url: uploadUrl,
-                language_code: 'es',
-                punctuate: true,
-                format_text: true,
-                disfluencies: false
+    const upload = await axios.post(
+        'https://api.assemblyai.com/v2/upload',
+        buffer,
+        {
+            headers: {
+                Authorization: API_KEY,
+                'Content-Type': 'application/octet-stream'
             },
-            {
-                headers: {
-                    'Authorization': ASSEMBLYAI_API_KEY,
-                    'Content-Type': 'application/json'
-                },
-                timeout: 30000
-            }
+            timeout: 30000
+        }
+    );
+
+    const { data } = await axios.post(
+        'https://api.assemblyai.com/v2/transcript',
+        {
+            audio_url: upload.data.upload_url,
+            language_code: 'es',
+            punctuate: true,
+            format_text: true
+        },
+        {
+            headers: {
+                Authorization: API_KEY,
+                'Content-Type': 'application/json'
+            },
+            timeout: 30000
+        }
+    );
+
+    const id = data.id;
+
+    for (let i = 0; i < 45; i++) {
+        await new Promise(r => setTimeout(r, 1000));
+        const status = await axios.get(
+            `https://api.assemblyai.com/v2/transcript/${id}`,
+            { headers: { Authorization: API_KEY }, timeout: 10000 }
         );
 
-        const transcriptId = transcribeResponse.data.id;
-        console.log(`🔄 ID de transcripción: ${transcriptId}`);
-
-        // Esperar y obtener resultado (máximo 45 segundos)
-        let transcriptResult = null;
-        for (let i = 0; i < 45; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            const statusResponse = await axios.get(
-                `https://api.assemblyai.com/v2/transcript/${transcriptId}`,
-                {
-                    headers: {
-                        'Authorization': ASSEMBLYAI_API_KEY
-                    },
-                    timeout: 10000
-                }
-            );
-
-            const status = statusResponse.data.status;
-            console.log(`⏳ Estado transcripción [${i + 1}/45]: ${status}`);
-
-            if (status === 'completed') {
-                transcriptResult = statusResponse.data.text;
-                console.log('✅ Transcripción completada por AssemblyAI');
-                break;
-            } else if (status === 'error') {
-                console.log('❌ AssemblyAI error:', statusResponse.data.error);
-                break;
-            }
-        }
-
-        if (!transcriptResult) {
-            throw new Error('Tiempo de espera agotado para la transcripción');
-        }
-
-        return transcriptResult;
-
-    } catch (error) {
-        console.log('❌ AssemblyAI falló:', error.message);
-        throw new Error('Error al transcribir el audio con AssemblyAI');
+        if (status.data.status === 'completed') return status.data.text;
+        if (status.data.status === 'error') throw new Error(status.data.error || 'Error de transcripción');
     }
+
+    throw new Error('Tiempo de espera agotado');
 }
 
-/**
- * Descargar imagen del mensaje
- */
-async function downloadImage(imageMessage) {
-    try {
-        const stream = await downloadContentFromMessage(imageMessage, 'image');
-        const chunks = [];
-
-        for await (const chunk of stream) {
-            chunks.push(chunk);
-        }
-
-        return Buffer.concat(chunks);
-    } catch (error) {
-        console.error('Error descargando imagen:', error);
-        return null;
-    }
-}
-
-/**
- * Descargar audio del mensaje
- */
-async function downloadAudio(audioMessage) {
-    try {
-        const stream = await downloadContentFromMessage(audioMessage, 'audio');
-        const chunks = [];
-
-        for await (const chunk of stream) {
-            chunks.push(chunk);
-        }
-
-        return Buffer.concat(chunks);
-    } catch (error) {
-        console.error('Error descargando audio:', error);
-        return null;
-    }
-}
-
-/**
- * Extraer audio de video
- */
-async function extractAudioFromVideo(videoMessage) {
-    try {
-        // Primero descargar el video
-        const videoBuffer = await downloadContentFromMessage(videoMessage, 'video');
-        const tempVideoPath = join(tmpdir(), `video-${Date.now()}.mp4`);
-        const tempAudioPath = join(tmpdir(), `audio-${Date.now()}.mp3`);
-
-        const fs = await import('fs');
-        await fs.promises.writeFile(tempVideoPath, videoBuffer);
-
-        // Extraer audio con FFmpeg
-        const { exec } = await import('child_process');
-        const { promisify } = await import('util');
-        const execPromise = promisify(exec);
-        const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
-
-        await execPromise(`"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -ar 44100 -y "${tempAudioPath}"`);
-
-        const audioBuffer = await fs.promises.readFile(tempAudioPath);
-
-        // Limpiar temporales
-        unlinkSync(tempVideoPath);
-        unlinkSync(tempAudioPath);
-
-        return audioBuffer;
-
-    } catch (error) {
-        console.error('Error extrayendo audio de video:', error);
-        return null;
-    }
-}
-
-/**
- * Función auxiliar para descargar contenido
- */
-async function downloadContentFromMessage(message, type) {
-    const { downloadContentFromMessage } = await import('@whiskeysockets/baileys');
-    return downloadContentFromMessage(message, type);
-}
-
-/**
- * Limpiar y formatear el texto extraído
- */
-function limpiarTexto(texto) {
-    if (!texto) return '';
-
-    return texto
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0)
-        .join('\n')
-        .replace(/\n{3,}/g, '\n\n')
-        .replace(/[^\S\n]+/g, ' ')
-        .trim();
+function cleanText(text) {
+    if (!text) return '';
+    return text.replace(/\s+/g, ' ').trim();
 }

@@ -1,162 +1,92 @@
-import { pingCommand } from "./ping.js"; // Ver latencia del bot
-import { statsCommand } from "./stats.js"; // Ver estadísticas del bot
-import { tiktokCommand } from "./tiktok.js"; // Descargar un tiktok
-import { tiktokAudioCommand } from "./tiktokAudio.js"; // Descargar solo audio de un tiktok
-import { igreelsCommand } from "./igreels.js"; // Descargar reels de instagram
-import { igpostsCommand } from "./igposts.js"; // Descargar posts/carruseles de instagram
-import { igstorysCommand } from "./igstorys.js"; // Descargar historias de instagram
-import { facebookCommand } from "./facebook.js"; // Descargar contenido desde facebook
-import { twitterCommand } from "./twitter.js"; // Descargar contenido desde X/Twitter
-import { scCommand } from "./soundcloud.js"; // Descargar música desde SoundCloud
-import { movieCommand } from "./movies.js";
-import { pinterestCommand } from "./pinterest.js" // Descargar contenido desde pinterest
-import { helpCommand } from "./help.js"; // Menú de ayuda
-import { mediaToStickerCommand } from "./mediaToSticker.js"; // Convertir imagen/video a sticker
-import { youtubeCommand } from "./youtube.js"; // Descargar video desde youtube
-import { youtubeAudioCommand } from "./youtubeAudio.js"; // Descargar audio desde youtube
-import { dlCommand } from './downloader.js'; // Descargas de cualquier tipo de link directo
-import { stickerToMediaCommand } from "./stickerToMedia.js"; // Convertir un sticker a imagen/video
-import { lyricsCommand } from "./lyrics.js"; // Buscar letra de canciones desde letras.com
-import { coverCommand } from "./cover.js"; // Buscar portada de álbum/sencillo
-import { bcvCommand } from "./bcv.js"; // Consultar tasa del dólar diaria del bcv.org.ve
-import { usdtCommand } from "./usdt.js"; // Consultar precio promedio del USDT desde el p2p de Binance
-import { calcCommand } from "./calc.js"; // Conversión de monedas utilizando las tasas
-import { qrGeneratorCommand } from "./qrGenerator.js"; // Texto/link a QR
-import { iaCommand } from "./ia.js"; // Preguntas a la ia (Groq AI)
-import { toAudioCommand } from "./toAudio.js"; // Extraer el audio de un video
-import { todosCommand } from "./todos.js"; // Mencionar a todos en un grupo
-import { totextCommand } from "./totext.js"; // Audio/imagen a texto
-import { toimgCommand } from "./toimg.js"; // Documentos docx/xlsx/pdf a imagen
-import { traducirCommand } from "./traducir.js"; // Traducir textos a multiples idiomas (es,en,ja,it,fr...)
-import { blackjackCommand } from './blackjack.js'; // Juego de cartas sencillo para el chat
-import { ruletaCommand } from './ruleta.js'; // Juego de ruleta sencillo
-import { slotsCommand } from './slots.js'; // Juego de tragamonedas
-import { dueloHandler } from './duelo.js'; // Juego de dados para 2 jugadores
-import { payCommand } from './pay.js'; // Transferir dinero a otros usuarios
-import { robCommand } from './rob.js'; // Robar dinero a usuarios
-import { eventosCommand } from './eventos.js'; // Eventos aleatorios enfocados en el país
-import { balCommand } from './bal.js'; // Estadísticas del jugador (dinero, partidas ganadas/perdidas...)
-import { dailyCommand } from './daily.js'; // Recompensa diaria para jugadores 
-
-// Importación de variable para recopilar estadísticas de uso de comandos
+import { pingCommand } from "./ping.js";
+import { statsCommand } from "./stats.js";
+import { tiktokCommand } from "./tiktok.js";
+import { tiktokAudioCommand } from "./tiktokAudio.js";
+import { igreelsCommand } from "./igreels.js";
+import { igpostsCommand } from "./igposts.js";
+import { facebookCommand } from "./facebook.js";
+import { twitterCommand } from "./twitter.js";
+import { scCommand } from "./soundcloud.js";
+import { pinterestCommand } from "./pinterest.js";
+import { helpCommand } from "./help.js";
+import { mediaToStickerCommand } from "./mediaToSticker.js";
+import { youtubeCommand } from "./youtube.js";
+import { youtubeAudioCommand } from "./youtubeAudio.js";
+import { stickerToMediaCommand } from "./stickerToMedia.js";
+import { bcvCommand } from "./bcv.js";
+import { usdtCommand } from "./usdt.js";
+import { qrGeneratorCommand } from "./qrGenerator.js";
+import { toAudioCommand } from "./toAudio.js";
+import { totextCommand } from "./totext.js";
+import { toimgCommand } from "./toimg.js";
+import { traducirCommand } from "./traducir.js";
 import { recordCommandUsage } from "./stats.js";
 
-// Mapeo de comandos
 const commands = {
-	
-    // COMANDOS BÁSICOS
     ping: pingCommand,
     help: helpCommand,
     menu: helpCommand,
     info: helpCommand,
     stats: statsCommand,
 
-    // COMANDOS DE DESCARGA
     tt: tiktokCommand,
     ttaud: tiktokAudioCommand,
-	tta: tiktokAudioCommand,
+    tta: tiktokAudioCommand,
     reel: igreelsCommand,
-	r: igreelsCommand,
+    r: igreelsCommand,
     post: igpostsCommand,
-	p: igpostsCommand,
-	story: igstorysCommand,
-	st: igstorysCommand,
+    p: igpostsCommand,
     fb: facebookCommand,
     tw: twitterCommand,
     pin: pinterestCommand,
-    ytvid: youtubeCommand,  
+    ytvid: youtubeCommand,
     ytaud: youtubeAudioCommand,
-	ytv: youtubeCommand,  
-	yta: youtubeAudioCommand,
+    ytv: youtubeCommand,
+    yta: youtubeAudioCommand,
     music: youtubeAudioCommand,
-	sc: scCommand,
-	soundcloud: scCommand,
-	dl: dlCommand,
-	cover: coverCommand,
-	mv: movieCommand,
-	movie: movieCommand,
-	
-	// ECONOMÍA
-	bj: blackjackCommand,
-	ruleta: ruletaCommand,
-	rul: ruletaCommand,
-	slots: slotsCommand,
-	duelo: dueloHandler,
-	aceptar: dueloHandler,
-	rechazar: dueloHandler,
-	sl: slotsCommand,
-	bal: balCommand,
-	daily: dailyCommand,
-	pagar: payCommand,
-	pm: payCommand,
-	robar: robCommand,
-	rob: robCommand,
-	evento: eventosCommand,
-	
-    // UTILIDADES VARIAS
-    letra: lyricsCommand,
+    sc: scCommand,
+    soundcloud: scCommand,
+
     bcv: bcvCommand,
     usdt: usdtCommand,
-	calc: calcCommand,
     qr: qrGeneratorCommand,
-    todos: todosCommand,
     traducir: traducirCommand,
     trans: traducirCommand,
-	ia: iaCommand,
 
-    // COMANDOS DE CONVERSIÓN
     s: mediaToStickerCommand,
     sticker: mediaToStickerCommand,
     smedia: stickerToMediaCommand,
-	sm: stickerToMediaCommand,
+    sm: stickerToMediaCommand,
     toaud: toAudioCommand,
-	toa: toAudioCommand,
+    toa: toAudioCommand,
     totext: totextCommand,
-	tot: totextCommand,
+    tot: totextCommand,
     toimg: toimgCommand,
-	toi: toimgCommand,
+    toi: toimgCommand,
 };
 
 async function handleInvalidCommand(sock, m, invalidCommandName) {
-    const remoteJid = m.key.remoteJid;
-    const fullCommand = `#${invalidCommandName}`; 
-    
-    const customErrorMessage = `
-❌ *ERROR: Comando no reconocido*
-El comando *${fullCommand}* no existe o está mal escrito.
-
-▸ Asegúrate de no tener errores tipográficos.
-▸ Para ver la lista de comandos, usa *#menu*.
-    `.trim();
-
-    try {
-        await sock.sendMessage(remoteJid, {
-            text: customErrorMessage
-        }, { quoted: m });
-    } catch (error) {
-        console.error('❌ Error enviando mensaje de comando inválido:', error);
-    }
+    await sock.sendMessage(m.key.remoteJid, {
+        text: `Comando #${invalidCommandName} no existe.\nUsa #menu para ver la lista.`
+    }, { quoted: m });
 }
 
 export async function handleCommand(sock, m, commandName, args) {
     const userId = m.key.remoteJid;
-    
-    // REGISTRAR USO DEL COMANDO (excepto comandos básicos/metadatos)
-    const excludedCommands = ['ping', 'stats', 'help', 'menu', 'info'];
-    if (!excludedCommands.includes(commandName)) {
+    const excluded = ['ping', 'stats', 'help', 'menu', 'info'];
+
+    if (!excluded.includes(commandName)) {
         recordCommandUsage(commandName, userId);
     }
-    
+
     if (commands[commandName]) {
         try {
             await commands[commandName](sock, m, args);
         } catch (error) {
-            console.error(`Error ejecutando el comando ${commandName}:`, error);
-            await sock.sendMessage(
-                m.key.remoteJid,
-                { text: `⚠️ Error al ejecutar el comando *#${commandName}*` },
-                { quoted: m },
-            );
+            console.error(`Error in ${commandName}:`, error.message);
+            await sock.sendMessage(m.key.remoteJid, {
+                text: `Error al ejecutar #${commandName}`
+            }, { quoted: m });
         }
     } else {
         await handleInvalidCommand(sock, m, commandName);

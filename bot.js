@@ -6,7 +6,7 @@ let currentSocket = null;
 
 export async function connectToWhatsApp() {
     try {
-        console.log('🔧 Iniciando conexión WhatsApp...');
+        console.log('conectando con whatsapp...');
 
         const { state, saveCreds } = await useMultiFileAuthState('/app/sessions');
         const { version } = await fetchLatestBaileysVersion();
@@ -14,7 +14,7 @@ export async function connectToWhatsApp() {
         const sock = makeWASocket({
             version,
             auth: { creds: state.creds, keys: state.keys },
-            browser: ["Chrome", "Windows", "10.0.0"],
+            browser: ['Chrome', 'Windows', '10.0.0'],
             printQRInTerminal: true,
             markOnlineOnConnect: false,
             syncFullHistory: false,
@@ -24,25 +24,22 @@ export async function connectToWhatsApp() {
         currentSocket = sock;
 
         sock.ev.on('connection.update', (update) => {
-            const { connection, qr, lastDisconnect } = update;
+            const { connection, qr } = update;
 
-            console.log('📡 Estado:', connection);
+            console.log('Connection status:', connection);
 
             if (qr) {
-                console.log('\n' + '='.repeat(40));
-                console.log('📱 ESCANEA EL CÓDIGO QR:');
-                console.log('='.repeat(40));
+                console.log('Scan the QR code:');
                 qrcode.generate(qr, { small: true });
-                console.log('='.repeat(40) + '\n');
             }
 
             if (connection === 'open') {
-                console.log('🎉 ¡CONECTADO! Bot listo');
+                console.log('Bot connected');
                 isConnected = true;
             }
 
             if (connection === 'close') {
-                console.log('❌ Conexión cerrada, reconectando...');
+                console.log('Connection closed, reconnecting...');
                 isConnected = false;
                 setTimeout(connectToWhatsApp, 5000);
             }
@@ -50,16 +47,13 @@ export async function connectToWhatsApp() {
 
         sock.ev.on('creds.update', saveCreds);
 
-    
         sock.ev.on('messages.upsert', async (m) => {
             try {
                 const message = m.messages[0];
                 if (!message || message.key.fromMe) return;
 
                 const user = message.key.remoteJid;
-                console.log(`📩 Mensaje de: ${user}`);
 
-            
                 let text = '';
                 if (message.message?.conversation) {
                     text = message.message.conversation;
@@ -71,54 +65,49 @@ export async function connectToWhatsApp() {
                     text = message.message.videoMessage.caption;
                 }
 
-                console.log(`🔍 Texto: ${text}`);
-                
                 if (text.startsWith('#')) {
                     const args = text.trim().split(' ');
                     const commandName = args[0].toLowerCase().replace('#', '');
 
-                    console.log(`⚡ Comando: ${commandName}`, args.slice(1));
+                    console.log(`Command: ${commandName}`, args.slice(1));
 
                     try {
                         const { handleCommand } = await import('./commands/commandHandler.js');
                         await handleCommand(sock, message, commandName, args.slice(1));
                     } catch (error) {
-                        console.error(`❌ Error en ${commandName}:`, error.message);
-                        
+                        console.error(`Error in ${commandName}:`, error.message);
                         await sock.sendMessage(user, {
-                            text: `❌ Error en #${commandName}:\n${error.message}`
+                            text: `Error in #${commandName}:\n${error.message}`
                         }, { quoted: message });
                     }
                 }
-
             } catch (error) {
-                console.error('💥 Error procesando mensaje:', error.message);
+                console.error('Error processing message:', error.message);
             }
         });
 
         return sock;
 
     } catch (error) {
-        console.error('💥 Error en conexión:', error.message);
-        console.log('🔄 Reintentando en 10 segundos...');
+        console.error('Connection error:', error.message);
         setTimeout(connectToWhatsApp, 10000);
     }
 }
 
 process.on('SIGINT', () => {
-    console.log('\n🛑 Cerrando bot...');
+    console.log('Shutting down...');
     process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-    console.log('\n📡 Señal de terminación...');
+    console.log('Termination signal received');
     process.exit(0);
 });
 
 process.on('uncaughtException', (error) => {
-    console.error('❌ Error no capturado:', error.message);
+    console.error('Uncaught exception:', error.message);
 });
 
 process.on('unhandledRejection', (reason) => {
-    console.error('❌ Promise rechazada:', reason);
+    console.error('Unhandled rejection:', reason);
 });
