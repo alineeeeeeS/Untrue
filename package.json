@@ -4,11 +4,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-	"prestart": "mkdir -p database",  
+	"prestart": "mkdir -p database",
     "start": "node index.js"
   },
   "engines": {
-    "node": "20.x"
+    "node": "20"
   },
   "dependencies": {
     "@bochilteam/scraper": "^5.0.1",
