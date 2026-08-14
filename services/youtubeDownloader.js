@@ -19,20 +19,23 @@ function getYtDlpPath() {
 const ytDlpCommand = getYtDlpPath();
 const COOKIES_PATH = process.env.COOKIES_PATH || './youtube-cookies.txt';
 
-function getBaseFlags() {
+function getBaseFlags(useCookies = true) {
     const flags = [
         '--no-playlist',
         '--no-warnings',
         '--no-check-certificates',
         '--geo-bypass',
+        '--extractor-args', '"youtube:player_client=tv,web_safari,default"',
         '--sleep-requests', '1',
         '--sleep-interval', '2',
         '--max-sleep-interval', '5'
     ];
 
-    if (fs.existsSync(COOKIES_PATH)) {
+    if (useCookies && fs.existsSync(COOKIES_PATH)) {
         flags.push('--cookies', COOKIES_PATH);
         console.log('usando youtube-cookies.txt');
+    } else if (!useCookies) {
+        console.log('reintentando sin cookies');
     } else {
         console.log('no existe el youtube-cookies.txt');
     }
@@ -40,11 +43,11 @@ function getBaseFlags() {
     return flags.join(' ');
 }
 
-export async function getYouTubeVideoInfo(queryOrUrl) {
+export async function getYouTubeVideoInfo(queryOrUrl, useCookies = true) {
     try {
-        const command = `"${ytDlpCommand}" ${getBaseFlags()} --dump-json "${queryOrUrl}"`;
+        const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} --ignore-no-formats-error --dump-json "${queryOrUrl}"`;
         const { stdout } = await execPromise(command, { maxBuffer: 10 * 1024 * 1024 });
-        const info = JSON.parse(stdout);
+        const info = JSON.parse(stdout.trim().split('\n')[0]);
 
         const uploadDate = info.upload_date
             ? `${info.upload_date.substring(6, 8)}/${info.upload_date.substring(4, 6)}/${info.upload_date.substring(0, 4)}`
@@ -107,36 +110,40 @@ export async function downloadYoutubeAudio(args) {
 
     let lastError = null;
 
-    for (let i = 0; i < strategies.length; i++) {
-        try {
-            const command = `"${ytDlpCommand}" ${getBaseFlags()} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
-            console.log(`intentando manera ${i + 1}...`);
+    for (const useCookies of [true, false]) {
+        for (let i = 0; i < strategies.length; i++) {
+            try {
+                const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
+                console.log(`intentando manera ${i + 1}...`);
 
-            await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 180000 });
+                await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 180000 });
 
-            const possibleFiles = [
-                `${tempFilePath}.mp3`,
-                `${tempFilePath}.m4a`,
-                `${tempFilePath}.webm`,
-                `${tempFilePath}.opus`,
-                `${tempFilePath}.ogg`,
-                tempFilePath
-            ];
+                const possibleFiles = [
+                    `${tempFilePath}.mp3`,
+                    `${tempFilePath}.m4a`,
+                    `${tempFilePath}.webm`,
+                    `${tempFilePath}.opus`,
+                    `${tempFilePath}.ogg`,
+                    tempFilePath
+                ];
 
-            for (const file of possibleFiles) {
-                if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
-                    const stats = fs.statSync(file);
-                    console.log(`audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-                    return {
-                        filePath: filse,
-                        videoInfo
-                    };
+                for (const file of possibleFiles) {
+                    if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
+                        const stats = fs.statSync(file);
+                        console.log(`audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                        return {
+                            filePath: file,
+                            videoInfo
+                        };
+                    }
                 }
+            } catch (error) {
+                lastError = error;
+                console.error(`estrategia de audio ${i + 1} falló:`, error.message);
             }
-        } catch (error) {
-            lastError = error;
-            console.error(`estrategia de audio ${i + 1} falló:`, error.message);
         }
+
+        if (!fs.existsSync(COOKIES_PATH)) break;
     }
 
     throw new Error(`No se pudo descargar el audio: ${lastError?.message || 'Error desconocido'}`);
@@ -172,34 +179,38 @@ export async function downloadYoutubeVideo(args) {
 
     let lastError = null;
 
-    for (let i = 0; i < strategies.length; i++) {
-        try {
-            const command = `"${ytDlpCommand}" ${getBaseFlags()} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
-            console.log(`📥 Intentando estrategia de video ${i + 1}...`);
+    for (const useCookies of [true, false]) {
+        for (let i = 0; i < strategies.length; i++) {
+            try {
+                const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
+                console.log(`📥 Intentando estrategia de video ${i + 1}...`);
 
-            await execPromise(command, { maxBuffer: 100 * 1024 * 1024, timeout: 180000 });
+                await execPromise(command, { maxBuffer: 100 * 1024 * 1024, timeout: 180000 });
 
-            const possibleFiles = [
-                `${tempFilePath}.mp4`,
-                `${tempFilePath}.webm`,
-                `${tempFilePath}.mkv`,
-                tempFilePath
-            ];
+                const possibleFiles = [
+                    `${tempFilePath}.mp4`,
+                    `${tempFilePath}.webm`,
+                    `${tempFilePath}.mkv`,
+                    tempFilePath
+                ];
 
-            for (const file of possibleFiles) {
-                if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
-                    const stats = fs.statSync(file);
-                    console.log(`✅ Video descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-                    return {
-                        filePath: file,
-                        videoInfo
-                    };
+                for (const file of possibleFiles) {
+                    if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
+                        const stats = fs.statSync(file);
+                        console.log(`✅ Video descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                        return {
+                            filePath: file,
+                            videoInfo
+                        };
+                    }
                 }
+            } catch (error) {
+                lastError = error;
+                console.error(`❌ Estrategia de video ${i + 1} falló:`, error.message);
             }
-        } catch (error) {
-            lastError = error;
-            console.error(`❌ Estrategia de video ${i + 1} falló:`, error.message);
         }
+
+        if (!fs.existsSync(COOKIES_PATH)) break;
     }
 
     throw new Error(`No se pudo descargar el video: ${lastError?.message || 'Error desconocido'}`);
