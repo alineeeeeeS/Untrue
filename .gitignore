@@ -1,18 +1,14 @@
-# Dependencias
 node_modules/
 
-# Datos del bot
 sessions/
 database/
 logs/
 temp/
 
-# Archivos grandes / innecesarios
 eng.traineddata
 spa.traineddata
 cookies.txt
 
-# Entorno y logs
 .env
 *.log
 .DS_Store
