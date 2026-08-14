@@ -14,12 +14,10 @@ function getYtDlpPath() {
         '/usr/bin/yt-dlp',
         '/home/runner/workspace/.pythonlibs/bin/yt-dlp'
     ].filter(Boolean);
-
     return possiblePaths[0];
 }
 
 const ytDlpCommand = getYtDlpPath();
-
 const COOKIES_PATH = process.env.COOKIES_PATH || './youtube-cookies.txt';
 
 function getBaseFlags() {
@@ -30,7 +28,7 @@ function getBaseFlags() {
         '--geo-bypass',
         '--sleep-interval', '1',
         '--max-sleep-interval', '3',
-        '--extractor-args', 'youtube:player_client=android,web,mweb'
+        '--extractor-args', 'youtube:player_client=android,ios,tv,web,mweb'
     ];
 
     if (fs.existsSync(COOKIES_PATH)) {
@@ -101,9 +99,11 @@ export async function downloadYoutubeAudio(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f "bestaudio[ext=m4a]/bestaudio[ext=mp3]/bestaudio" --extract-audio --audio-format m4a --audio-quality 0`,
-        `-f "bestaudio" --extract-audio --audio-format mp3 --audio-quality 5`,
-        `-f "bestaudio/best"`
+        `-f "bestaudio/best" --extract-audio --audio-format mp3 --audio-quality 5`,
+        `-f "ba/b" --extract-audio --audio-format mp3`,
+        `-f "bestaudio" --extract-audio --audio-format m4a`,
+        `-f "bestaudio/best"`,
+        `-f "best"`
     ];
 
     let lastError = null;
@@ -113,11 +113,11 @@ export async function downloadYoutubeAudio(args) {
             const command = `"${ytDlpCommand}" ${getBaseFlags()} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
             console.log(`🎵 Intentando estrategia de audio ${i + 1}...`);
 
-            await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 120000 });
+            await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 180000 });
 
             const possibleFiles = [
-                `${tempFilePath}.m4a`,
                 `${tempFilePath}.mp3`,
+                `${tempFilePath}.m4a`,
                 `${tempFilePath}.webm`,
                 `${tempFilePath}.opus`,
                 `${tempFilePath}.ogg`,
@@ -128,7 +128,6 @@ export async function downloadYoutubeAudio(args) {
                 if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
                     const stats = fs.statSync(file);
                     console.log(`✅ Audio descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-
                     return {
                         filePath: file,
                         videoInfo
@@ -143,7 +142,6 @@ export async function downloadYoutubeAudio(args) {
 
     throw new Error(`No se pudo descargar el audio: ${lastError?.message || 'Error desconocido'}`);
 }
-
 
 export async function downloadYoutubeVideo(args) {
     const isSearch = !args[0]?.startsWith('http');
@@ -168,9 +166,10 @@ export async function downloadYoutubeVideo(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f "best[height<=480][ext=mp4]/best[height<=480]"`,
-        `-f "best[height<=720][ext=mp4]/best[height<=720]"`,
-        `-f "best[ext=mp4]/best"`
+        `-f "best[height<=480][ext=mp4]/best[height<=480]/best[ext=mp4]/best"`,
+        `-f "best[height<=720][ext=mp4]/best[height<=720]/best"`,
+        `-f "best[ext=mp4]/best"`,
+        `-f "best"`
     ];
 
     let lastError = null;
@@ -193,7 +192,6 @@ export async function downloadYoutubeVideo(args) {
                 if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
                     const stats = fs.statSync(file);
                     console.log(`✅ Video descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-
                     return {
                         filePath: file,
                         videoInfo
@@ -213,7 +211,6 @@ export function cleanUpFile(filePath) {
     if (filePath && fs.existsSync(filePath)) {
         try {
             fs.unlinkSync(filePath);
-        } catch (error) {
-        }
+        } catch (error) {}
     }
 }
