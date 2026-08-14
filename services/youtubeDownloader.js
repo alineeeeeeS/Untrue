@@ -19,31 +19,40 @@ function getYtDlpPath() {
 const ytDlpCommand = getYtDlpPath();
 const COOKIES_PATH = process.env.COOKIES_PATH || './youtube-cookies.txt';
 
-function getBaseFlags(useCookies = true) {
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
+
+// No fijar --extractor-args player_client: los clientes por defecto de yt-dlp
+// (android_vr y compañía) son los únicos que devuelven formatos. Forzar "web",
+// "tv" o "web_safari" hace que YouTube solo sirva storyboards y yt-dlp corte con
+// "Requested format is not available".
+function getBaseFlags(useCookies = false) {
     const flags = [
         '--no-playlist',
         '--no-warnings',
         '--no-check-certificates',
         '--geo-bypass',
-        '--extractor-args', '"youtube:player_client=tv,web_safari,default"',
-        '--sleep-requests', '1',
-        '--sleep-interval', '2',
-        '--max-sleep-interval', '5'
+        '--user-agent', `"${USER_AGENT}"`,
+        '--socket-timeout', '25',
+        '--retries', '3',
+        '--fragment-retries', '3'
     ];
 
     if (useCookies && fs.existsSync(COOKIES_PATH)) {
         flags.push('--cookies', COOKIES_PATH);
-        console.log('usando youtube-cookies.txt');
-    } else if (!useCookies) {
-        console.log('reintentando sin cookies');
-    } else {
-        console.log('no existe el youtube-cookies.txt');
+        console.log('reintentando con youtube-cookies.txt');
     }
 
     return flags.join(' ');
 }
 
-export async function getYouTubeVideoInfo(queryOrUrl, useCookies = true) {
+// Sin cookies primero: con cookies de sesión YouTube deja de entregar formatos
+// descargables (verificado: mismo comando pasa sin cookies y falla con ellas).
+// Solo se reintenta con cookies si sin ellas salta el bot check.
+function getCookieModes() {
+    return fs.existsSync(COOKIES_PATH) ? [false, true] : [false];
+}
+
+export async function getYouTubeVideoInfo(queryOrUrl, useCookies = false) {
     try {
         const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} --ignore-no-formats-error --dump-json "${queryOrUrl}"`;
         const { stdout } = await execPromise(command, { maxBuffer: 10 * 1024 * 1024 });
@@ -101,20 +110,17 @@ export async function downloadYoutubeAudio(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f ba/b --extract-audio --audio-format mp3 --audio-quality 5`,
-        `-f bestaudio --extract-audio --audio-format mp3`,
-        `-f best --extract-audio --audio-format mp3`,
-        `-f bestaudio/best`,
-        `-f best`
+        `-f bestaudio/best --extract-audio --audio-format mp3 --audio-quality 5`,
+        `-f bestaudio/best`
     ];
 
     let lastError = null;
 
-    for (const useCookies of [true, false]) {
+    for (const useCookies of getCookieModes()) {
         for (let i = 0; i < strategies.length; i++) {
             try {
                 const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
-                console.log(`intentando manera ${i + 1}...`);
+                console.log(`intentando audio ${i + 1}${useCookies ? ' (cookies)' : ''}...`);
 
                 await execPromise(command, { maxBuffer: 50 * 1024 * 1024, timeout: 180000 });
 
@@ -142,8 +148,6 @@ export async function downloadYoutubeAudio(args) {
                 console.error(`estrategia de audio ${i + 1} falló:`, error.message);
             }
         }
-
-        if (!fs.existsSync(COOKIES_PATH)) break;
     }
 
     throw new Error(`No se pudo descargar el audio: ${lastError?.message || 'Error desconocido'}`);
@@ -172,18 +176,17 @@ export async function downloadYoutubeVideo(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f "best[height<=480]/best[height<=720]/best"`,
-        `-f "best[ext=mp4]/best"`,
-        `-f best`
+        `-f "bv*[height<=480][ext=mp4]+ba[ext=m4a]/b[height<=480]/bv*+ba/b" --merge-output-format mp4`,
+        `-f "b[ext=mp4]/b"`
     ];
 
     let lastError = null;
 
-    for (const useCookies of [true, false]) {
+    for (const useCookies of getCookieModes()) {
         for (let i = 0; i < strategies.length; i++) {
             try {
                 const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
-                console.log(`📥 Intentando estrategia de video ${i + 1}...`);
+                console.log(`📥 Intentando estrategia de video ${i + 1}${useCookies ? ' (cookies)' : ''}...`);
 
                 await execPromise(command, { maxBuffer: 100 * 1024 * 1024, timeout: 180000 });
 
@@ -209,8 +212,6 @@ export async function downloadYoutubeVideo(args) {
                 console.error(`❌ Estrategia de video ${i + 1} falló:`, error.message);
             }
         }
-
-        if (!fs.existsSync(COOKIES_PATH)) break;
     }
 
     throw new Error(`No se pudo descargar el video: ${lastError?.message || 'Error desconocido'}`);
