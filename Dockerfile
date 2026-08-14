@@ -20,9 +20,12 @@ RUN apt update && apt install -y --no-install-recommends \
     default-jre-headless \
     && rm -rf /var/lib/apt/lists/*
 
-# yt-dlp descargado directo
-RUN wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
-    chmod a+rx /usr/local/bin/yt-dlp
+# yt-dlp nightly (youtube rompe formatos seguido, el stable queda viejo)
+# cambiar YTDLP_CACHE_BUST fuerza rebuild de esta capa
+ARG YTDLP_CACHE_BUST=1
+RUN wget https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp && \
+    /usr/local/bin/yt-dlp --version
 
 # symlinks para compatibilidad
 RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
