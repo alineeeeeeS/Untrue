@@ -20,7 +20,7 @@ function getYtDlpPath() {
 
 const ytDlpCommand = getYtDlpPath();
 
-const COOKIES_PATH = process.env.COOKIES_PATH || '/app/youtube-cookies.txt';
+const COOKIES_PATH = process.env.COOKIES_PATH || './youtube-cookies.txt';
 
 function getBaseFlags() {
     const flags = [
@@ -30,15 +30,14 @@ function getBaseFlags() {
         '--geo-bypass',
         '--sleep-interval', '1',
         '--max-sleep-interval', '3',
-        '--extractor-args', 'youtube:player_client=android,web,mweb',
-        '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        '--extractor-args', 'youtube:player_client=android,web,mweb'
     ];
 
     if (fs.existsSync(COOKIES_PATH)) {
         flags.push('--cookies', COOKIES_PATH);
-        console.log('🍪 Usando cookies.txt');
+        console.log('🍪 Usando youtube-cookies.txt');
     } else {
-        console.log('⚠️ No se encontró cookies.txt - puede fallar por detección de bot');
+        console.log('⚠️ No se encontró youtube-cookies.txt');
     }
 
     return flags.join(' ');
@@ -144,6 +143,7 @@ export async function downloadYoutubeAudio(args) {
 
     throw new Error(`No se pudo descargar el audio: ${lastError?.message || 'Error desconocido'}`);
 }
+
 
 export async function downloadYoutubeVideo(args) {
     const isSearch = !args[0]?.startsWith('http');
