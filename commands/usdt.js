@@ -1,5 +1,4 @@
 import axios from 'axios';
-import logger from '../services/logger.js';
 
 const CRIPTOYA_API_URL = 'https://criptoya.com/api/usdt/ves';
 
@@ -51,7 +50,7 @@ export async function getUSDTPrice() {
         };
 
     } catch (error) {
-        logger.error('usdt', 'Error obteniendo precio USDT para calc:', error);
+        console.error('Error obteniendo precio USDT para calc:', error.message);
         const { date } = getVenezuelanDateTime();
         return { avgPrice: "N/A Bs (Est.)", date: date };
     }
@@ -62,7 +61,6 @@ export async function usdtCommand(sock, m, args) {
 
     try {
         await sock.sendMessage(jid, { text: 'Consultando precios desde BinanceP2P...' }, { quoted: m });
-        logger.info('usdt', `Consultando tasa USDT P2P para ${m.pushName}`, { jid });
 
         const response = await axios.get(CRIPTOYA_API_URL, { timeout: 10000 });
         const data = response.data;
@@ -93,11 +91,10 @@ export async function usdtCommand(sock, m, args) {
                         `Fuente: www.binance.com`;
 
         await sock.sendMessage(jid, { text: message }, { quoted: m });
-        logger.success('usdt', `Tasa USDT P2P enviada: ${formatVES(usdtAveragePrice, 4)}`, { jid });
 
     } catch (error) {
         const errorMsg = `Error al consultar USDT. No se pudo obtener la tasa P2P.\nDetalle: ${error.message}`;
         await sock.sendMessage(jid, { text: errorMsg }, { quoted: m });
-        logger.error('usdt', `Error fetching USDT: ${error.message}`, { jid });
+        console.error('Error fetching USDT:', error.message);
     }
 }
