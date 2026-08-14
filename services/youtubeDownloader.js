@@ -11,8 +11,7 @@ function getYtDlpPath() {
         process.env.YTDLP_PATH,
         'yt-dlp',
         '/usr/local/bin/yt-dlp',
-        '/usr/bin/yt-dlp',
-        '/home/runner/workspace/.pythonlibs/bin/yt-dlp'
+        '/usr/bin/yt-dlp'
     ].filter(Boolean);
     return possiblePaths[0];
 }
@@ -26,9 +25,9 @@ function getBaseFlags() {
         '--no-warnings',
         '--no-check-certificates',
         '--geo-bypass',
-        '--sleep-interval', '1',
-        '--max-sleep-interval', '3',
-        '--extractor-args', 'youtube:player_client=android,ios,tv,web,mweb'
+        '--sleep-requests', '1',
+        '--sleep-interval', '2',
+        '--max-sleep-interval', '5'
     ];
 
     if (fs.existsSync(COOKIES_PATH)) {
@@ -99,11 +98,11 @@ export async function downloadYoutubeAudio(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f "bestaudio/best" --extract-audio --audio-format mp3 --audio-quality 5`,
-        `-f "ba/b" --extract-audio --audio-format mp3`,
-        `-f "bestaudio" --extract-audio --audio-format m4a`,
-        `-f "bestaudio/best"`,
-        `-f "best"`
+        `-f ba/b --extract-audio --audio-format mp3 --audio-quality 5`,
+        `-f bestaudio --extract-audio --audio-format mp3`,
+        `-f best --extract-audio --audio-format mp3`,
+        `-f bestaudio/best`,
+        `-f best`
     ];
 
     let lastError = null;
@@ -166,10 +165,9 @@ export async function downloadYoutubeVideo(args) {
     const tempFilePath = join(tmpdir(), tempFileName);
 
     const strategies = [
-        `-f "best[height<=480][ext=mp4]/best[height<=480]/best[ext=mp4]/best"`,
-        `-f "best[height<=720][ext=mp4]/best[height<=720]/best"`,
+        `-f "best[height<=480]/best[height<=720]/best"`,
         `-f "best[ext=mp4]/best"`,
-        `-f "best"`
+        `-f best`
     ];
 
     let lastError = null;
