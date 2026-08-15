@@ -6,12 +6,62 @@ import { promisify } from 'util';
 
 const execPromise = promisify(exec);
 
+<<<<<<< HEAD
 /**
  * Obtiene información del video de YouTube
  * @param {string} query - URL o búsqueda
  * @returns {Promise<object>} Información del video
  */
 async function getVideoInfo(query) {
+=======
+function getYtDlpPath() {
+    const possiblePaths = [
+        process.env.YTDLP_PATH,
+        'yt-dlp',
+        '/usr/local/bin/yt-dlp',
+        '/usr/bin/yt-dlp'
+    ].filter(Boolean);
+    return possiblePaths[0];
+}
+
+const ytDlpCommand = getYtDlpPath();
+const COOKIES_PATH = process.env.COOKIES_PATH || './youtube-cookies.txt';
+
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
+
+// No fijar --extractor-args player_client: los clientes por defecto de yt-dlp
+// (android_vr y compañía) son los únicos que devuelven formatos. Forzar "web",
+// "tv" o "web_safari" hace que YouTube solo sirva storyboards y yt-dlp corte con
+// "Requested format is not available".
+function getBaseFlags(useCookies = false) {
+    const flags = [
+        '--no-playlist',
+        '--no-warnings',
+        '--no-check-certificates',
+        '--geo-bypass',
+        '--user-agent', `"${USER_AGENT}"`,
+        '--socket-timeout', '25',
+        '--retries', '3',
+        '--fragment-retries', '3'
+    ];
+
+    if (useCookies && fs.existsSync(COOKIES_PATH)) {
+        flags.push('--cookies', COOKIES_PATH);
+        console.log('reintentando con youtube-cookies.txt');
+    }
+
+    return flags.join(' ');
+}
+
+// Sin cookies primero: con cookies de sesión YouTube deja de entregar formatos
+// descargables (verificado: mismo comando pasa sin cookies y falla con ellas).
+// Solo se reintenta con cookies si sin ellas salta el bot check.
+function getCookieModes() {
+    return fs.existsSync(COOKIES_PATH) ? [false, true] : [false];
+}
+
+export async function getYouTubeVideoInfo(queryOrUrl, useCookies = false) {
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
     try {
         let videoInfo = null;
 
@@ -61,16 +111,31 @@ export async function downloadYoutubeVideo(query) {
         const fileName = `yt-video-${Date.now()}.mp4`;
         filePath = path.join(tmpDir, fileName);
 
+<<<<<<< HEAD
         const stream = await play.stream(videoInfo.url);
+=======
+    const strategies = [
+        `-f bestaudio/best --extract-audio --audio-format mp3 --audio-quality 5`,
+        `-f bestaudio/best`
+    ];
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
 
         await new Promise((resolve, reject) => {
             const ffmpegCmd = `ffmpeg -i pipe:0 -c:v libx264 -preset veryfast -c:a aac -b:a 128k -y "${filePath}"`;
             const ffmpeg = exec(ffmpegCmd);
 
+<<<<<<< HEAD
             let errorOutput = '';
             ffmpeg.stderr.on('data', (data) => {
                 errorOutput += data.toString();
             });
+=======
+    for (const useCookies of getCookieModes()) {
+        for (let i = 0; i < strategies.length; i++) {
+            try {
+                const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
+                console.log(`intentando audio ${i + 1}${useCookies ? ' (cookies)' : ''}...`);
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
 
             stream.stream.pipe(ffmpeg.stdin);
 
@@ -101,7 +166,10 @@ export async function downloadYoutubeVideo(query) {
         if (filePath) {
             await cleanUpFile(filePath);
         }
+<<<<<<< HEAD
         throw new Error(`No se pudo descargar el video: ${error.message}`);
+=======
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
     }
 }
 
@@ -125,14 +193,22 @@ export async function downloadYoutubeAudio(query, format = 'mp3') {
         const fileName = `yt-audio-${Date.now()}.${format}`;
         filePath = path.join(tmpDir, fileName);
 
+<<<<<<< HEAD
         const stream = await play.stream(videoInfo.url, {
             quality: 1,
             discardWebm: false
         });
+=======
+    const strategies = [
+        `-f "bv*[height<=480][ext=mp4]+ba[ext=m4a]/b[height<=480]/bv*+ba/b" --merge-output-format mp4`,
+        `-f "b[ext=mp4]/b"`
+    ];
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
 
         await new Promise((resolve, reject) => {
             let ffmpegCmd = '';
 
+<<<<<<< HEAD
             if (format === 'mp3') {
                 ffmpegCmd = `ffmpeg -i pipe:0 -q:a 0 -map a -y "${filePath}"`;
             } else if (format === 'm4a') {
@@ -141,6 +217,36 @@ export async function downloadYoutubeAudio(query, format = 'mp3') {
                 ffmpegCmd = `ffmpeg -i pipe:0 -acodec libopus -b:a 128k -y "${filePath}"`;
             } else {
                 ffmpegCmd = `ffmpeg -i pipe:0 -acodec libvorbis -b:a 128k -y "${filePath}"`;
+=======
+    for (const useCookies of getCookieModes()) {
+        for (let i = 0; i < strategies.length; i++) {
+            try {
+                const command = `"${ytDlpCommand}" ${getBaseFlags(useCookies)} ${strategies[i]} --output "${tempFilePath}.%(ext)s" "${queryOrUrl}"`;
+                console.log(`📥 Intentando estrategia de video ${i + 1}${useCookies ? ' (cookies)' : ''}...`);
+
+                await execPromise(command, { maxBuffer: 100 * 1024 * 1024, timeout: 180000 });
+
+                const possibleFiles = [
+                    `${tempFilePath}.mp4`,
+                    `${tempFilePath}.webm`,
+                    `${tempFilePath}.mkv`,
+                    tempFilePath
+                ];
+
+                for (const file of possibleFiles) {
+                    if (fs.existsSync(file) && fs.statSync(file).size > 1024) {
+                        const stats = fs.statSync(file);
+                        console.log(`✅ Video descargado: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+                        return {
+                            filePath: file,
+                            videoInfo
+                        };
+                    }
+                }
+            } catch (error) {
+                lastError = error;
+                console.error(`❌ Estrategia de video ${i + 1} falló:`, error.message);
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
             }
 
             const ffmpeg = exec(ffmpegCmd);
@@ -183,7 +289,20 @@ export async function downloadYoutubeAudio(query, format = 'mp3') {
         if (filePath) {
             await cleanUpFile(filePath);
         }
+<<<<<<< HEAD
         throw new Error(`No se pudo descargar el audio: ${error.message}`);
+=======
+    }
+
+    throw new Error(`No se pudo descargar el video: ${lastError?.message || 'Error desconocido'}`);
+}
+
+export function cleanUpFile(filePath) {
+    if (filePath && fs.existsSync(filePath)) {
+        try {
+            fs.unlinkSync(filePath);
+        } catch (error) {}
+>>>>>>> 5bb13e4732c71488a29bb354a6e183dbdbb53406
     }
 }
 

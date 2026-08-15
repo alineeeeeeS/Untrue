@@ -13,6 +13,7 @@ RUN apt update && apt install -y --no-install-recommends \
     librsvg2-dev \
     ffmpeg \
     wget \
+    ca-certificates \
     libreoffice \
     imagemagick \
     ghostscript \
