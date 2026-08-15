@@ -18,21 +18,17 @@ RUN apt update && apt install -y --no-install-recommends \
     ghostscript \
     fonts-freefont-ttf \
     default-jre-headless \
+    curl \
+    ca-certificates \
+    libopus0 \
+    libvpx7 \
     && rm -rf /var/lib/apt/lists/*
-
-# yt-dlp nightly (youtube rompe formatos seguido, el stable queda viejo)
-# cambiar YTDLP_CACHE_BUST fuerza rebuild de esta capa
-ARG YTDLP_CACHE_BUST=1
-RUN wget https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
-    chmod a+rx /usr/local/bin/yt-dlp && \
-    /usr/local/bin/yt-dlp --version
 
 # symlinks para compatibilidad
 RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
-    ln -sf /usr/local/bin/yt-dlp /home/runner/workspace/.pythonlibs/bin/yt-dlp && \
-    ln -sf /usr/local/bin/yt-dlp /usr/bin/yt-dlp && \
     mkdir -p /home/runner/workspace/node_modules/ffmpeg-static && \
-    ln -sf /usr/bin/ffmpeg /home/runner/workspace/node_modules/ffmpeg-static/ffmpeg
+    ln -sf /usr/bin/ffmpeg /home/runner/workspace/node_modules/ffmpeg-static/ffmpeg && \
+    ln -sf /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
 # políticas de imagemagick para permitir pdf
 RUN POLICY_FILE=$(find /etc/ImageMagick-* -name policy.xml | head -n 1) ; \
@@ -49,8 +45,13 @@ RUN npm install
 
 COPY . .
 
-RUN mkdir -p sessions temp logs assets
+RUN mkdir -p sessions temp logs assets /tmp && \
+    chmod -R 777 /tmp
 
 EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
 CMD ["npm", "start"]

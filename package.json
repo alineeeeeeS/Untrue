@@ -4,22 +4,27 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-	"prestart": "mkdir -p database && (yt-dlp -U --update-to nightly || true)",
-    "start": "node index.js"
+    "prestart": "mkdir -p database",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "verify": "node verify-setup.js",
+    "audit": "npm audit"
   },
   "engines": {
-    "node": "20"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   },
   "dependencies": {
     "@bochilteam/scraper": "^5.0.1",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@google/generative-ai": "^0.24.1",
     "@tobyg74/tiktok-api-dl": "^1.3.7",
-    "@whiskeysockets/baileys": "^6.5.0",
-    "axios": "^1.13.2",
+    "@whiskeysockets/baileys": "^6.7.0",
+    "axios": "^1.7.2",
+    "chalk": "^5.3.0",
     "cheerio": "^1.1.2",
-    "crypto": "^1.0.1",
-    "express": "^4.18.2",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.0",
     "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.3",
     "form-data": "^4.0.4",
@@ -27,10 +32,17 @@
     "link-preview-js": "^3.1.0",
     "node-fetch": "^3.3.2",
     "node-webpmux": "^3.2.1",
+    "play-dl": "^1.9.7",
     "qrcode": "^1.5.4",
     "qrcode-terminal": "^0.12.0",
     "sharp": "^0.34.5",
     "tesseract.js": "^6.0.1",
-    "webp-converter": "^2.3.3"
+    "webp-converter": "^2.3.3",
+    "ws": "^8.21.3",
+    "pino": "^8.20.0",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
