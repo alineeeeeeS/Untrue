@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-# dependencias críticas
+# dependencias importantes
 RUN apt update && apt install -y --no-install-recommends \
     git \
     build-essential \

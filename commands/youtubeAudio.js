@@ -2,7 +2,7 @@ import { downloadYoutubeAudio, cleanUpFile } from '../services/youtubeDownloader
 import fs from 'fs';
 
 /**
- * Obtiene el MIME type según la extensión
+ * Obtiene el MIME type según la exten
  * @param {string} ext - Extensión del archivo
  * @returns {string} MIME type
  */

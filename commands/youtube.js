@@ -109,7 +109,7 @@ export async function youtubeCommand(sock, m, args) {
 }
 
 /**
- * Comando para obtener información de un video sin descargar
+ * Comando para obtener información de un video sin descarga
  * Uso: #ytinfo [URL o búsqueda]
  * @param {object} sock - Instancia de Baileys
  * @param {object} m - Mensaje
