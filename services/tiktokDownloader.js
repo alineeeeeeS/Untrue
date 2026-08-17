@@ -59,7 +59,6 @@ function firstUrl(value) {
 
 function pickVideoUrl(result) {
     const r = result?.result || result || {};
-
     const candidates = [
         r.videoHD,
         r.videoSD,
@@ -72,7 +71,6 @@ function pickVideoUrl(result) {
         r.download?.url,
         r.direct
     ];
-
     for (const c of candidates) {
         const u = firstUrl(c);
         if (u) return u;
@@ -82,12 +80,7 @@ function pickVideoUrl(result) {
 
 function pickMusicUrl(result) {
     const r = result?.result || result || {};
-    const candidates = [
-        r.music?.playUrl,
-        r.music,
-        r.music_url,
-        r.sound
-    ];
+    const candidates = [r.music?.playUrl, r.music, r.music_url, r.sound];
     for (const c of candidates) {
         const u = firstUrl(c);
         if (u) return u;
@@ -103,20 +96,32 @@ function pickImages(result) {
 }
 
 function buildInfo(result) {
-    const r = result?.result || {};
+    const r = result?.result || result || {};
+
+    const author =
+        r.author?.nickname ||
+        r.author?.username ||
+        r.author?.unique_id ||
+        r.author?.uniqueId ||
+        (typeof r.author === 'string' ? r.author : null) ||
+        r.nickname ||
+        'Desconocido';
+
+    const title =
+        r.desc ||
+        r.description ||
+        r.title ||
+        r.caption ||
+        'TikTok';
+
     const images = pickImages(result);
     const videoUrl = pickVideoUrl(result);
 
     return {
-        title: r.title || r.desc || r.description || 'TikTok',
-        author:
-            r.author?.nickname ||
-            r.author?.username ||
-            r.author?.unique_id ||
-            (typeof r.author === 'string' ? r.author : null) ||
-            'Desconocido',
+        title: String(title).trim() || 'TikTok',
+        author: String(author).trim() || 'Desconocido',
         uploadDate: 'Desconocida',
-        description: r.title || r.desc || r.description || '',
+        description: String(title).trim() || '',
         isCarousel: images.length > 0 && !videoUrl
     };
 }
@@ -223,34 +228,35 @@ export async function downloadTiktokVideo(url) {
     const tempFilePath = join(tmpdir(), `tiktok-video-${Date.now()}.mp4`);
 
     try {
-        // 1) Cobalt primero
+        let videoInfo = getDefaultVideoInfo();
+
+        try {
+            const metaResult = await fetchTiktokLib(url);
+            videoInfo = buildInfo(metaResult);
+        } catch (e) {
+            console.warn('Metadata TikTok:', e.message);
+        }
+
         const cobalt = await fetchViaCobalt(url, 'auto');
         if (cobalt?.type === 'file' && cobalt.url) {
             await downloadUrlToFile(cobalt.url, tempFilePath);
-            return {
-                filePath: tempFilePath,
-                videoInfo: {
-                    ...getDefaultVideoInfo(),
-                    title: cobalt.filename?.replace(/\.[^.]+$/, '') || 'TikTok'
-                }
-            };
+            return { filePath: tempFilePath, videoInfo };
         }
 
         if (cobalt?.type === 'picker') {
             const video = cobalt.items.find(i => i.type === 'video') || cobalt.items[0];
             if (video?.url) {
                 await downloadUrlToFile(video.url, tempFilePath);
-                return { filePath: tempFilePath, videoInfo: getDefaultVideoInfo() };
+                return { filePath: tempFilePath, videoInfo };
             }
         }
 
-        // 2) Librería
         const result = await fetchTiktokLib(url);
-        const videoInfo = buildInfo(result);
+        videoInfo = buildInfo(result);
         const videoUrl = pickVideoUrl(result);
 
         if (!videoUrl) {
-            console.error('Result keys:', Object.keys(result?.result || {}));
+            console.error('Result keys:', JSON.stringify(Object.keys(result?.result || {})));
             throw new Error('No se encontró URL de video');
         }
 
@@ -273,18 +279,27 @@ export async function downloadTiktokAudio(url) {
     const tempAudioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
 
     try {
+        let videoInfo = getDefaultVideoInfo();
+
+        try {
+            const metaResult = await fetchTiktokLib(url);
+            videoInfo = buildInfo(metaResult);
+        } catch (e) {
+            console.warn('Metadata TikTok audio:', e.message);
+        }
+
         const cobalt = await fetchViaCobalt(url, 'audio');
         if (cobalt?.type === 'file' && cobalt.url) {
             await downloadUrlToFile(cobalt.url, tempAudioPath);
             return {
                 filePath: tempAudioPath,
-                videoInfo: getDefaultVideoInfo(),
+                videoInfo,
                 mimetype: 'audio/mpeg'
             };
         }
 
         const result = await fetchTiktokLib(url);
-        const videoInfo = buildInfo(result);
+        videoInfo = buildInfo(result);
         const musicUrl = pickMusicUrl(result);
 
         if (musicUrl) {
@@ -316,6 +331,16 @@ export async function downloadTiktokImages(url) {
     try {
         mkdirSync(tempDir, { recursive: true });
 
+        let videoInfo = getDefaultVideoInfo();
+
+        try {
+            const metaResult = await fetchTiktokLib(url);
+            videoInfo = buildInfo(metaResult);
+            videoInfo.isCarousel = true;
+        } catch (e) {
+            console.warn('Metadata carrusel:', e.message);
+        }
+
         const cobalt = await fetchViaCobalt(url, 'auto');
         if (cobalt?.type === 'picker') {
             const photos = cobalt.items.filter(i => i.type === 'photo' || i.type === 'gif');
@@ -325,13 +350,13 @@ export async function downloadTiktokImages(url) {
                 }
                 return {
                     filePaths: tempDir,
-                    videoInfo: { ...getDefaultVideoInfo(), isCarousel: true }
+                    videoInfo: { ...videoInfo, isCarousel: true }
                 };
             }
         }
 
         const result = await fetchTiktokLib(url);
-        const videoInfo = buildInfo(result);
+        videoInfo = buildInfo(result);
         const imageUrls = pickImages(result);
 
         if (!imageUrls.length) {
