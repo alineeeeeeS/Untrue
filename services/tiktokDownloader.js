@@ -1,17 +1,13 @@
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import fs, { unlinkSync, rmSync, createWriteStream } from 'node:fs';
+import fs, { unlinkSync, rmSync, createWriteStream, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { exec } from 'node:child_process';
 import { promisify } from 'util';
 import axios from 'axios';
 import Tiktok from '@tobyg74/tiktok-api-dl';
 
 const execPromise = promisify(exec);
-
-const ytDlpCommand = '/home/runner/workspace/.pythonlibs/bin/yt-dlp';
-const ffmpegCommand = '/home/runner/workspace/node_modules/ffmpeg-static/ffmpeg';
-
-console.log('Servicios configurados correctamente');
+const ffmpegCommand = process.env.FFMPEG_PATH || 'ffmpeg';
 
 function getDefaultVideoInfo() {
     return {
@@ -23,115 +19,149 @@ function getDefaultVideoInfo() {
     };
 }
 
-function formatDate(dateStr) {
-    if (!dateStr) return 'Desconocida';
-    const year = dateStr.substring(0, 4);
-    const month = dateStr.substring(4, 6);
-    const day = dateStr.substring(6, 8);
-    return `${day}/${month}/${year}`;
-}
-
 export function cleanUpFile(filePath) {
     try {
         if (!filePath) return;
-
         if (filePath.includes('tiktok-carousel')) {
             rmSync(filePath, { recursive: true, force: true });
-            console.log(`Directorio temporal eliminado: ${filePath}`);
-        } else {
+        } else if (existsSync(filePath)) {
             unlinkSync(filePath);
-            console.log(`Archivo temporal eliminado: ${filePath}`);
         }
     } catch (e) {
         console.warn(`Error limpiando ${filePath}: ${e.message}`);
     }
 }
 
-export async function getTiktokVideoInfo(url) {
-    let info = getDefaultVideoInfo();
+async function fetchTiktok(url) {
+    const versions = ['v3', 'v2', 'v1'];
+    let lastError;
 
-    try {
-        const command = `"${ytDlpCommand}" --dump-json --skip-download --no-check-certificates "${url}"`;
-        const { stdout } = await execPromise(command);
-
-        const jsonOutput = JSON.parse(stdout);
-
-        info = {
-            title: jsonOutput.title || 'Sin título',
-            author: jsonOutput.uploader || jsonOutput.creator || 'Autor desconocido',
-            uploadDate: jsonOutput.upload_date ? formatDate(jsonOutput.upload_date) : 'Desconocida',
-            description: jsonOutput.description || 'Sin descripción',
-            isCarousel: false
-        };
-
-        if (jsonOutput.formats?.some(f => f.ext === 'jpg' || f.ext === 'jpeg') ||
-            (Array.isArray(jsonOutput.entries) && jsonOutput.entries.length > 0)) {
-            info.isCarousel = true;
+    for (const version of versions) {
+        try {
+            const result = await Tiktok.Downloader(url, { version });
+            if (result?.status && result?.result) {
+                return result;
+            }
+            lastError = new Error(result?.message || `Sin resultados (${version})`);
+        } catch (e) {
+            lastError = e;
         }
-    } catch (error) {
-        console.error("Error al obtener información:", error.message.split('\n')[0]);
     }
-    return info;
+
+    throw lastError || new Error('No se pudo obtener el contenido de TikTok');
+}
+
+function buildInfo(result) {
+    const r = result.result || {};
+    const images = r.images || r.image || [];
+    const hasImages = Array.isArray(images) && images.length > 0;
+
+    return {
+        title: r.title || r.desc || 'TikTok',
+        author: r.author?.nickname || r.author?.unique_id || r.author || 'Desconocido',
+        uploadDate: 'Desconocida',
+        description: r.title || r.desc || '',
+        isCarousel: hasImages && !r.video && !r.play
+    };
+}
+
+async function downloadUrlToFile(fileUrl, destPath) {
+    const res = await axios.get(fileUrl, {
+        responseType: 'arraybuffer',
+        timeout: 60000,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            Referer: 'https://www.tiktok.com/'
+        }
+    });
+    writeFileSync(destPath, Buffer.from(res.data));
+    return destPath;
+}
+
+function pickVideoUrl(result) {
+    const r = result.result || {};
+    return (
+        r.video?.downloadAddr ||
+        r.video?.playAddr ||
+        r.play ||
+        r.video ||
+        r.download?.url ||
+        (Array.isArray(r.video) ? r.video[0] : null)
+    );
+}
+
+export async function getTiktokVideoInfo(url) {
+    try {
+        const result = await fetchTiktok(url);
+        return buildInfo(result);
+    } catch (error) {
+        console.error('Error info TikTok:', error.message);
+        return getDefaultVideoInfo();
+    }
 }
 
 export async function downloadTiktokVideo(url) {
-    let videoInfo = getDefaultVideoInfo();
-
-    try {
-        videoInfo = await getTiktokVideoInfo(url);
-    } catch (error) {}
-
     const tempFilePath = join(tmpdir(), `tiktok-video-${Date.now()}.mp4`);
 
-    console.log(`Descargando VIDEO: ${url}`);
-
     try {
-        const command = `"${ytDlpCommand}" --no-warnings --no-simulate --no-check-certificates -f "best[ext=mp4]" --output "${tempFilePath}" "${url}"`;
-        await execPromise(command);
+        const result = await fetchTiktok(url);
+        const videoInfo = buildInfo(result);
+        const videoUrl = pickVideoUrl(result);
 
-        console.log(`Video descargado: ${tempFilePath}`);
-        return {
-            filePath: tempFilePath,
-            videoInfo: videoInfo
-        };
+        if (!videoUrl || typeof videoUrl !== 'string') {
+            throw new Error('No se encontró URL de video');
+        }
+
+        await downloadUrlToFile(videoUrl, tempFilePath);
+
+        if (!existsSync(tempFilePath) || fs.statSync(tempFilePath).size < 1000) {
+            throw new Error('Video descargado inválido o vacío');
+        }
+
+        return { filePath: tempFilePath, videoInfo };
     } catch (error) {
-        console.error("Error al descargar el video:", error.message);
+        console.error('Error video TikTok:', error.message);
+        cleanUpFile(tempFilePath);
         return null;
     }
 }
 
 export async function downloadTiktokAudio(url) {
-    let videoInfo = getDefaultVideoInfo();
-
-    try {
-        videoInfo = await getTiktokVideoInfo(url);
-    } catch (error) {}
-
-    console.log(`Extrayendo AUDIO de: ${url}`);
-
-    const tempVideoPath = join(tmpdir(), `tiktok-video-audio-${Date.now()}.mp4`);
+    const tempVideoPath = join(tmpdir(), `tiktok-va-${Date.now()}.mp4`);
     const tempAudioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
 
     try {
-        console.log('Descargando video para audio...');
-        const downloadCommand = `"${ytDlpCommand}" --no-warnings --no-simulate --no-check-certificates -f "best[ext=mp4]" --output "${tempVideoPath}" "${url}"`;
-        await execPromise(downloadCommand);
-        console.log(`Video descargado para extracción: ${tempVideoPath}`);
+        const result = await fetchTiktok(url);
+        const videoInfo = buildInfo(result);
+        const r = result.result || {};
 
-        console.log('Procesando extracción de audio...');
-        const extractCommand = `"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -ar 44100 -y "${tempAudioPath}"`;
-        await execPromise(extractCommand);
-        console.log(`Audio extraído con éxito: ${tempAudioPath}`);
+        const musicUrl = r.music?.playUrl || r.music || r.music_url || r.sound;
+        if (musicUrl && typeof musicUrl === 'string') {
+            const audioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
+            await downloadUrlToFile(musicUrl, audioPath);
+            return {
+                filePath: audioPath,
+                videoInfo,
+                mimetype: 'audio/mpeg'
+            };
+        }
 
+        const videoUrl = pickVideoUrl(result);
+        if (!videoUrl) throw new Error('No hay audio ni video para extraer');
+
+        await downloadUrlToFile(videoUrl, tempVideoPath);
+        await execPromise(
+            `"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -ar 44100 -y "${tempAudioPath}"`
+        );
         cleanUpFile(tempVideoPath);
 
         return {
             filePath: tempAudioPath,
-            videoInfo: videoInfo,
+            videoInfo,
             mimetype: 'audio/mpeg'
         };
     } catch (error) {
-        console.error("Error al extraer audio:", error.message);
+        console.error('Error audio TikTok:', error.message);
         cleanUpFile(tempVideoPath);
         cleanUpFile(tempAudioPath);
         return null;
@@ -140,65 +170,46 @@ export async function downloadTiktokAudio(url) {
 
 export async function downloadTiktokImages(url) {
     const tempDir = join(tmpdir(), `tiktok-carousel-${Date.now()}`);
-    let videoInfo = getDefaultVideoInfo();
 
     try {
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir);
-        }
-    } catch (e) {
-        console.error("Error creando directorio temporal:", e);
-        return null;
-    }
+        mkdirSync(tempDir, { recursive: true });
 
-    console.log(`Iniciando descarga de carrusel: ${url}`);
+        const result = await fetchTiktok(url);
+        const videoInfo = buildInfo(result);
+        const r = result.result || {};
+        const imageUrls = r.images || r.image || [];
 
-    let result;
-    try {
-        result = await Tiktok.Downloader(url, { version: "v3" });
-
-        if (!result.status || result.result.length === 0) {
-            throw new Error(`Error en la librería: ${result.message || 'Sin resultados.'}`);
+        if (!Array.isArray(imageUrls) || !imageUrls.length) {
+            throw new Error('No hay imágenes en este post');
         }
 
-        const imageUrls = result.result.images;
-
-        if (!imageUrls || imageUrls.length === 0) {
-             throw new Error('La respuesta no contiene enlaces de imágenes.');
-        }
-
-        videoInfo.title = result.result.title || 'Carrusel de TikTok';
-        videoInfo.author = result.result.author?.nickname || 'Desconocido';
         videoInfo.isCarousel = true;
 
-        console.log(`Descargando ${imageUrls.length} imágenes...`);
-
         for (let i = 0; i < imageUrls.length; i++) {
-            const imageUrl = imageUrls[i];
-            const ext = imageUrl.split('.').pop().split('?')[0].toLowerCase() === 'jpeg' ? 'jpeg' : 'jpeg';
-            const filePath = join(tempDir, `${i + 1}.${ext}`);
+            const imageUrl = typeof imageUrls[i] === 'string' ? imageUrls[i] : imageUrls[i]?.url;
+            if (!imageUrl) continue;
 
-            const imageResponse = await axios.get(imageUrl, { responseType: 'stream' });
+            const filePath = join(tempDir, `${i + 1}.jpeg`);
+            const res = await axios.get(imageUrl, {
+                responseType: 'stream',
+                timeout: 30000,
+                headers: {
+                    'User-Agent': 'Mozilla/5.0',
+                    Referer: 'https://www.tiktok.com/'
+                }
+            });
 
             await new Promise((resolve, reject) => {
                 const writer = createWriteStream(filePath);
-                imageResponse.data.pipe(writer);
+                res.data.pipe(writer);
                 writer.on('finish', resolve);
-                writer.on('error', (err) => {
-                    console.error(`Error escribiendo imagen ${i+1}:`, err);
-                    reject(err);
-                });
+                writer.on('error', reject);
             });
         }
 
-        console.log(`Imágenes descargadas en: ${tempDir}`);
-
-        return {
-            filePaths: tempDir,
-            videoInfo: videoInfo
-        };
+        return { filePaths: tempDir, videoInfo };
     } catch (error) {
-        console.error("Error al descargar carrusel:", error.message);
+        console.error('Error carrusel TikTok:', error.message);
         cleanUpFile(tempDir);
         return null;
     }
