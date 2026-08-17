@@ -1,6 +1,14 @@
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import fs, { unlinkSync, rmSync, createWriteStream, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import fs, {
+    unlinkSync,
+    rmSync,
+    createWriteStream,
+    writeFileSync,
+    existsSync,
+    mkdirSync,
+    statSync
+} from 'node:fs';
 import { exec } from 'node:child_process';
 import { promisify } from 'util';
 import axios from 'axios';
@@ -8,13 +16,14 @@ import Tiktok from '@tobyg74/tiktok-api-dl';
 
 const execPromise = promisify(exec);
 const ffmpegCommand = process.env.FFMPEG_PATH || 'ffmpeg';
+const COBALT_API = (process.env.COBALT_API_URL || '').replace(/\/$/, '');
 
 function getDefaultVideoInfo() {
     return {
-        title: 'Sin título',
-        author: 'Autor desconocido',
+        title: 'TikTok',
+        author: 'Desconocido',
         uploadDate: 'Desconocida',
-        description: 'Sin descripción',
+        description: '',
         isCarousel: false
     };
 }
@@ -22,80 +31,190 @@ function getDefaultVideoInfo() {
 export function cleanUpFile(filePath) {
     try {
         if (!filePath) return;
-        if (filePath.includes('tiktok-carousel')) {
+        if (String(filePath).includes('tiktok-carousel')) {
             rmSync(filePath, { recursive: true, force: true });
         } else if (existsSync(filePath)) {
             unlinkSync(filePath);
         }
     } catch (e) {
-        console.warn(`Error limpiando ${filePath}: ${e.message}`);
+        console.warn(`Error limpiando: ${e.message}`);
     }
 }
 
-async function fetchTiktok(url) {
-    const versions = ['v3', 'v2', 'v1'];
+function firstUrl(value) {
+    if (!value) return null;
+    if (typeof value === 'string' && value.startsWith('http')) return value;
+    if (Array.isArray(value)) {
+        for (const item of value) {
+            const u = firstUrl(item);
+            if (u) return u;
+        }
+    }
+    if (typeof value === 'object') {
+        if (typeof value.url === 'string') return value.url;
+        if (typeof value.src === 'string') return value.src;
+    }
+    return null;
+}
+
+function pickVideoUrl(result) {
+    const r = result?.result || result || {};
+
+    const candidates = [
+        r.videoHD,
+        r.videoSD,
+        r.videoWatermark,
+        r.video?.downloadAddr,
+        r.video?.playAddr,
+        r.video?.play,
+        r.play,
+        r.video,
+        r.download?.url,
+        r.direct
+    ];
+
+    for (const c of candidates) {
+        const u = firstUrl(c);
+        if (u) return u;
+    }
+    return null;
+}
+
+function pickMusicUrl(result) {
+    const r = result?.result || result || {};
+    const candidates = [
+        r.music?.playUrl,
+        r.music,
+        r.music_url,
+        r.sound
+    ];
+    for (const c of candidates) {
+        const u = firstUrl(c);
+        if (u) return u;
+    }
+    return null;
+}
+
+function pickImages(result) {
+    const r = result?.result || result || {};
+    const images = r.images || r.image || [];
+    if (!Array.isArray(images)) return [];
+    return images.map(firstUrl).filter(Boolean);
+}
+
+function buildInfo(result) {
+    const r = result?.result || {};
+    const images = pickImages(result);
+    const videoUrl = pickVideoUrl(result);
+
+    return {
+        title: r.title || r.desc || r.description || 'TikTok',
+        author:
+            r.author?.nickname ||
+            r.author?.username ||
+            r.author?.unique_id ||
+            (typeof r.author === 'string' ? r.author : null) ||
+            'Desconocido',
+        uploadDate: 'Desconocida',
+        description: r.title || r.desc || r.description || '',
+        isCarousel: images.length > 0 && !videoUrl
+    };
+}
+
+async function fetchTiktokLib(url) {
+    const versions = ['v3', 'v1', 'v2'];
     let lastError;
 
     for (const version of versions) {
         try {
             const result = await Tiktok.Downloader(url, { version });
-            if (result?.status && result?.result) {
-                return result;
+            if (result?.status === 'success' || result?.status === true || result?.result) {
+                const videoUrl = pickVideoUrl(result);
+                const images = pickImages(result);
+                if (videoUrl || images.length) {
+                    console.log(`TikTok lib OK (${version}): video=${!!videoUrl} images=${images.length}`);
+                    return result;
+                }
             }
-            lastError = new Error(result?.message || `Sin resultados (${version})`);
+            lastError = new Error(result?.message || `Sin media (${version})`);
         } catch (e) {
             lastError = e;
+            console.error(`TikTok ${version}:`, e.message);
         }
     }
 
     throw lastError || new Error('No se pudo obtener el contenido de TikTok');
 }
 
-function buildInfo(result) {
-    const r = result.result || {};
-    const images = r.images || r.image || [];
-    const hasImages = Array.isArray(images) && images.length > 0;
+async function fetchViaCobalt(url, mode = 'auto') {
+    if (!COBALT_API) return null;
 
-    return {
-        title: r.title || r.desc || 'TikTok',
-        author: r.author?.nickname || r.author?.unique_id || r.author || 'Desconocido',
-        uploadDate: 'Desconocida',
-        description: r.title || r.desc || '',
-        isCarousel: hasImages && !r.video && !r.play
-    };
+    try {
+        const res = await fetch(`${COBALT_API}/`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url,
+                downloadMode: mode,
+                tiktokFullAudio: mode === 'audio'
+            })
+        });
+
+        const data = await res.json();
+        if (data.status === 'error') {
+            console.error('Cobalt TikTok error:', data.error?.code);
+            return null;
+        }
+
+        if (data.status === 'tunnel' || data.status === 'redirect') {
+            return { type: 'file', url: data.url, filename: data.filename };
+        }
+
+        if (data.status === 'picker' && data.picker?.length) {
+            return {
+                type: 'picker',
+                items: data.picker,
+                audio: data.audio
+            };
+        }
+
+        return null;
+    } catch (e) {
+        console.error('Cobalt TikTok fail:', e.message);
+        return null;
+    }
 }
 
 async function downloadUrlToFile(fileUrl, destPath) {
     const res = await axios.get(fileUrl, {
         responseType: 'arraybuffer',
-        timeout: 60000,
+        timeout: 90000,
+        maxRedirects: 5,
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            Referer: 'https://www.tiktok.com/'
+            'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            Referer: 'https://www.tiktok.com/',
+            Accept: '*/*'
         }
     });
-    writeFileSync(destPath, Buffer.from(res.data));
-    return destPath;
-}
 
-function pickVideoUrl(result) {
-    const r = result.result || {};
-    return (
-        r.video?.downloadAddr ||
-        r.video?.playAddr ||
-        r.play ||
-        r.video ||
-        r.download?.url ||
-        (Array.isArray(r.video) ? r.video[0] : null)
-    );
+    const buf = Buffer.from(res.data);
+    if (buf.length < 500) {
+        throw new Error(`Archivo muy pequeño (${buf.length} B)`);
+    }
+
+    writeFileSync(destPath, buf);
+    return destPath;
 }
 
 export async function getTiktokVideoInfo(url) {
     try {
-        const result = await fetchTiktok(url);
+        const result = await fetchTiktokLib(url);
         return buildInfo(result);
-    } catch (error) {
-        console.error('Error info TikTok:', error.message);
+    } catch {
         return getDefaultVideoInfo();
     }
 }
@@ -104,18 +223,41 @@ export async function downloadTiktokVideo(url) {
     const tempFilePath = join(tmpdir(), `tiktok-video-${Date.now()}.mp4`);
 
     try {
-        const result = await fetchTiktok(url);
+        // 1) Cobalt primero
+        const cobalt = await fetchViaCobalt(url, 'auto');
+        if (cobalt?.type === 'file' && cobalt.url) {
+            await downloadUrlToFile(cobalt.url, tempFilePath);
+            return {
+                filePath: tempFilePath,
+                videoInfo: {
+                    ...getDefaultVideoInfo(),
+                    title: cobalt.filename?.replace(/\.[^.]+$/, '') || 'TikTok'
+                }
+            };
+        }
+
+        if (cobalt?.type === 'picker') {
+            const video = cobalt.items.find(i => i.type === 'video') || cobalt.items[0];
+            if (video?.url) {
+                await downloadUrlToFile(video.url, tempFilePath);
+                return { filePath: tempFilePath, videoInfo: getDefaultVideoInfo() };
+            }
+        }
+
+        // 2) Librería
+        const result = await fetchTiktokLib(url);
         const videoInfo = buildInfo(result);
         const videoUrl = pickVideoUrl(result);
 
-        if (!videoUrl || typeof videoUrl !== 'string') {
+        if (!videoUrl) {
+            console.error('Result keys:', Object.keys(result?.result || {}));
             throw new Error('No se encontró URL de video');
         }
 
         await downloadUrlToFile(videoUrl, tempFilePath);
 
-        if (!existsSync(tempFilePath) || fs.statSync(tempFilePath).size < 1000) {
-            throw new Error('Video descargado inválido o vacío');
+        if (!existsSync(tempFilePath) || statSync(tempFilePath).size < 1000) {
+            throw new Error('Video descargado inválido');
         }
 
         return { filePath: tempFilePath, videoInfo };
@@ -131,35 +273,35 @@ export async function downloadTiktokAudio(url) {
     const tempAudioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
 
     try {
-        const result = await fetchTiktok(url);
-        const videoInfo = buildInfo(result);
-        const r = result.result || {};
-
-        const musicUrl = r.music?.playUrl || r.music || r.music_url || r.sound;
-        if (musicUrl && typeof musicUrl === 'string') {
-            const audioPath = join(tmpdir(), `tiktok-audio-${Date.now()}.mp3`);
-            await downloadUrlToFile(musicUrl, audioPath);
+        const cobalt = await fetchViaCobalt(url, 'audio');
+        if (cobalt?.type === 'file' && cobalt.url) {
+            await downloadUrlToFile(cobalt.url, tempAudioPath);
             return {
-                filePath: audioPath,
-                videoInfo,
+                filePath: tempAudioPath,
+                videoInfo: getDefaultVideoInfo(),
                 mimetype: 'audio/mpeg'
             };
         }
 
+        const result = await fetchTiktokLib(url);
+        const videoInfo = buildInfo(result);
+        const musicUrl = pickMusicUrl(result);
+
+        if (musicUrl) {
+            await downloadUrlToFile(musicUrl, tempAudioPath);
+            return { filePath: tempAudioPath, videoInfo, mimetype: 'audio/mpeg' };
+        }
+
         const videoUrl = pickVideoUrl(result);
-        if (!videoUrl) throw new Error('No hay audio ni video para extraer');
+        if (!videoUrl) throw new Error('No hay audio ni video');
 
         await downloadUrlToFile(videoUrl, tempVideoPath);
         await execPromise(
-            `"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -ar 44100 -y "${tempAudioPath}"`
+            `"${ffmpegCommand}" -i "${tempVideoPath}" -vn -acodec libmp3lame -ab 128k -y "${tempAudioPath}"`
         );
         cleanUpFile(tempVideoPath);
 
-        return {
-            filePath: tempAudioPath,
-            videoInfo,
-            mimetype: 'audio/mpeg'
-        };
+        return { filePath: tempAudioPath, videoInfo, mimetype: 'audio/mpeg' };
     } catch (error) {
         console.error('Error audio TikTok:', error.message);
         cleanUpFile(tempVideoPath);
@@ -174,23 +316,33 @@ export async function downloadTiktokImages(url) {
     try {
         mkdirSync(tempDir, { recursive: true });
 
-        const result = await fetchTiktok(url);
-        const videoInfo = buildInfo(result);
-        const r = result.result || {};
-        const imageUrls = r.images || r.image || [];
+        const cobalt = await fetchViaCobalt(url, 'auto');
+        if (cobalt?.type === 'picker') {
+            const photos = cobalt.items.filter(i => i.type === 'photo' || i.type === 'gif');
+            if (photos.length) {
+                for (let i = 0; i < photos.length; i++) {
+                    await downloadUrlToFile(photos[i].url, join(tempDir, `${i + 1}.jpeg`));
+                }
+                return {
+                    filePaths: tempDir,
+                    videoInfo: { ...getDefaultVideoInfo(), isCarousel: true }
+                };
+            }
+        }
 
-        if (!Array.isArray(imageUrls) || !imageUrls.length) {
+        const result = await fetchTiktokLib(url);
+        const videoInfo = buildInfo(result);
+        const imageUrls = pickImages(result);
+
+        if (!imageUrls.length) {
             throw new Error('No hay imágenes en este post');
         }
 
         videoInfo.isCarousel = true;
 
         for (let i = 0; i < imageUrls.length; i++) {
-            const imageUrl = typeof imageUrls[i] === 'string' ? imageUrls[i] : imageUrls[i]?.url;
-            if (!imageUrl) continue;
-
             const filePath = join(tempDir, `${i + 1}.jpeg`);
-            const res = await axios.get(imageUrl, {
+            const res = await axios.get(imageUrls[i], {
                 responseType: 'stream',
                 timeout: 30000,
                 headers: {
@@ -198,7 +350,6 @@ export async function downloadTiktokImages(url) {
                     Referer: 'https://www.tiktok.com/'
                 }
             });
-
             await new Promise((resolve, reject) => {
                 const writer = createWriteStream(filePath);
                 res.data.pipe(writer);
