@@ -25,6 +25,12 @@ RUN apt update && apt install -y --no-install-recommends \
     libvpx7 \
     && rm -rf /var/lib/apt/lists/*
 
+# yt-dlp actualizado
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
+      -o /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp && \
+    yt-dlp --version
+
 # symlinks para compatibilidad
 RUN mkdir -p /home/runner/workspace/.pythonlibs/bin && \
     mkdir -p /home/runner/workspace/node_modules/ffmpeg-static && \
